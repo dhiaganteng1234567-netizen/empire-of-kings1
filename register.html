@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
 
@@ -15,198 +15,119 @@
         content="#101827"
     >
 
-    <title>Register | EMPIRE OF KINGS</title>
+    <title>Register | Empire of Kings</title>
 
     <link
         rel="stylesheet"
         href="css/style.css"
     >
 
-    <script
-        src="js/app.js"
-        defer
-    ></script>
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
 
 </head>
 
-<body class="auth-body">
+
+<body class="auth-page">
 
 
-<header class="auth-header">
-
-    <div class="container auth-header-content">
-
-        <a
-            href="index.html"
-            class="brand"
-        >
-
-            <div class="brand-symbol">
-
-                <svg
-                    viewBox="0 0 48 48"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-
-                    <path
-                        d="M24 3L39 9V22C39 32 32 40 24 45C16 40 9 32 9 22V9L24 3Z"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    />
-
-                    <path
-                        d="M15 29L20 17L24 24L28 17L33 29"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-
-                    <path
-                        d="M15 33H33"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    />
-
-                </svg>
-
-            </div>
-
-            <div class="brand-text">
-
-                <span class="brand-name">
-                    EMPIRE
-                </span>
-
-                <span class="brand-subtitle">
-                    OF KINGS
-                </span>
-
-            </div>
-
-        </a>
+    <main class="auth-container">
 
 
         <a
             href="index.html"
-            class="back-link"
+            class="auth-back"
         >
 
-            ← Back to Home
+            ← Kembali ke halaman utama
 
         </a>
 
-    </div>
 
-</header>
-
-
-
-<main class="auth-main register-main">
-
-    <div class="container auth-layout">
-
-
-        <!-- LEFT SIDE -->
-
-        <section class="auth-intro">
-
-            <span class="section-kicker">
-
-                A NEW LEGACY BEGINS
-
-            </span>
-
-
-            <h1>
-
-                CREATE YOUR
-
-                <span>
-                    DESTINY.
-                </span>
-
-            </h1>
-
-
-            <p>
-
-                Your journey begins here.
-
-                Establish your identity and prepare
-                to enter a world of kingdoms,
-                trade, politics, and power.
-
-            </p>
-
-
-            <div class="auth-decoration">
-
-                <span>♛</span>
-
-                <div></div>
-
-                <small>
-                    A NEW ERA BEGINS
-                </small>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- REGISTER CARD -->
 
         <section class="auth-card">
 
-            <div class="auth-card-heading">
 
-                <span class="section-kicker">
-                    JOIN THE REALM
-                </span>
+            <div class="auth-brand">
 
-                <h2>
-                    Create Account
-                </h2>
+                <div class="auth-crown">
+
+                    ♛
+
+                </div>
+
+                <h1>
+
+                    EMPIRE OF KINGS
+
+                </h1>
 
                 <p>
-                    Establish your player identity.
+
+                    Begin your journey.
+
                 </p>
 
             </div>
 
 
 
-            <form
-                data-auth-form="register"
-                novalidate
-            >
+            <div class="auth-heading">
+
+                <h2>
+
+                    Register
+
+                </h2>
+
+                <p>
+
+                    Buat akun pemain baru.
+
+                </p>
+
+            </div>
 
 
-                <div class="form-group">
 
-                    <label for="registerUsername">
+            <form id="register-form">
+
+
+                <div class="auth-field">
+
+                    <label for="username">
+
                         Username
+
                     </label>
 
                     <input
+
                         type="text"
-                        id="registerUsername"
+
+                        id="username"
+
                         name="username"
-                        placeholder="Choose a username"
+
+                        placeholder="Username kamu"
+
                         minlength="3"
+
                         maxlength="20"
+
                         pattern="[A-Za-z0-9_]+"
+
                         autocomplete="username"
+
                         required
+
                     >
 
-                    <small class="input-hint">
+                    <small>
 
-                        3–20 characters.
-                        Letters, numbers, and underscores only.
+                        3–20 karakter. Gunakan huruf, angka, dan underscore.
 
                     </small>
 
@@ -214,93 +135,123 @@
 
 
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label for="registerEmail">
-                        Email Address
+                    <label for="email">
+
+                        Email
+
                     </label>
 
                     <input
+
                         type="email"
-                        id="registerEmail"
+
+                        id="email"
+
                         name="email"
-                        placeholder="Enter your email"
+
+                        placeholder="nama@email.com"
+
                         autocomplete="email"
+
                         required
+
                     >
 
                 </div>
 
 
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label for="registerPassword">
+                    <label for="password">
+
                         Password
+
                     </label>
 
 
                     <div class="password-wrapper">
 
                         <input
+
                             type="password"
-                            id="registerPassword"
+
+                            id="password"
+
                             name="password"
-                            placeholder="Create a password"
+
+                            placeholder="Minimal 8 karakter"
+
                             minlength="8"
+
                             autocomplete="new-password"
+
                             required
+
                         >
 
                         <button
+
                             type="button"
+
                             class="password-toggle"
-                            data-password-toggle="registerPassword"
+
+                            data-toggle-password="password"
+
                         >
 
-                            Show
+                            Lihat
 
                         </button>
 
                     </div>
 
-
-                    <small class="input-hint">
-
-                        Minimum 8 characters.
-
-                    </small>
-
                 </div>
 
 
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label for="confirmPassword">
-                        Confirm Password
+                    <label for="confirm-password">
+
+                        Konfirmasi Password
+
                     </label>
 
 
                     <div class="password-wrapper">
 
                         <input
+
                             type="password"
-                            id="confirmPassword"
-                            name="confirm_password"
-                            placeholder="Confirm your password"
+
+                            id="confirm-password"
+
+                            name="confirm-password"
+
+                            placeholder="Ulangi password"
+
                             minlength="8"
+
                             autocomplete="new-password"
+
                             required
+
                         >
 
                         <button
+
                             type="button"
+
                             class="password-toggle"
-                            data-password-toggle="confirmPassword"
+
+                            data-toggle-password="confirm-password"
+
                         >
 
-                            Show
+                            Lihat
 
                         </button>
 
@@ -310,24 +261,29 @@
 
 
 
-                <div
-                    class="form-feedback"
-                    data-form-feedback
-                    role="status"
+                <p
+
+                    id="auth-message"
+
+                    class="auth-message"
+
                     aria-live="polite"
-                    hidden
-                ></div>
+
+                ></p>
 
 
 
                 <button
+
                     type="submit"
-                    class="button button-gold auth-submit"
+
+                    class="auth-button"
+
+                    id="register-submit"
+
                 >
 
-                    CREATE YOUR ACCOUNT
-
-                    <span>→</span>
+                    Buat Akun
 
                 </button>
 
@@ -336,50 +292,41 @@
 
 
 
-            <div class="auth-switch">
+            <div class="auth-footer">
 
-                <p>
-                    Already have an account?
-                </p>
+                Sudah memiliki akun?
 
                 <a href="login.html">
+
                     Login
+
                 </a>
-
-            </div>
-
-
-            <div class="auth-divider">
-
-                <span></span>
-
-                <small>
-                    EMPIRE OF KINGS
-                </small>
-
-                <span></span>
 
             </div>
 
 
         </section>
 
-    </div>
-
-</main>
 
 
+        <p class="auth-copyright">
 
-<footer class="auth-footer">
+            © 2026 Empire of Kings
 
-    <p>
-        © 2026 EMPIRE OF KINGS.
-        All rights reserved.
-    </p>
+        </p>
 
-</footer>
+
+    </main>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/auth.js"></script>
 
 
 </body>
 
-  </html>
+</html>
