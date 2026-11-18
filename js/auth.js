@@ -1,18 +1,37 @@
 // ==========================================
 // EMPIRE OF KINGS
 // AUTHENTICATION SYSTEM
-// VERSION 0.20
+// VERSION 0.21
+// NO EMAIL CONFIRMATION FLOW
 // ==========================================
 
-
 (function () {
-
 
     const supabase = window.EOK?.supabase;
 
     const messageElement =
         document.getElementById("auth-message");
 
+    // ======================================
+    // CHECK SUPABASE
+    // ======================================
+
+    if (!supabase) {
+
+        console.error("Supabase client tidak ditemukan.");
+
+        if (messageElement) {
+            messageElement.textContent =
+                "Koneksi Supabase gagal.";
+        }
+
+        return;
+    }
+
+
+    // ======================================
+    // MESSAGE
+    // ======================================
 
     function showMessage(message, type = "error") {
 
@@ -26,21 +45,8 @@
     }
 
 
-
-    if (!supabase) {
-
-        showMessage(
-            "Koneksi Supabase gagal. Periksa konfigurasi."
-        );
-
-        return;
-
-    }
-
-
-
     // ======================================
-    // PASSWORD TOGGLE
+    // PASSWORD VISIBILITY
     // ======================================
 
     document
@@ -49,11 +55,10 @@
 
             button.addEventListener("click", function () {
 
-                const inputId =
-                    this.dataset.togglePassword;
-
                 const input =
-                    document.getElementById(inputId);
+                    document.getElementById(
+                        this.dataset.togglePassword
+                    );
 
                 if (!input) return;
 
@@ -76,91 +81,88 @@
         });
 
 
-
     // ======================================
-    // REDIRECT IF ALREADY LOGGED IN
+    // REDIRECT EXISTING SESSION
     // ======================================
 
     async function redirectIfLoggedIn() {
 
-        const { data, error } =
-            await supabase.auth.getSession();
+        try {
 
-        if (!error && data.session) {
+            const { data, error } =
+                await supabase.auth.getSession();
 
-            window.location.replace(
-                "dashboard.html"
-            );
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            if (data.session) {
+
+                window.location.replace(
+                    "dashboard.html"
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(error);
 
         }
 
     }
-
-
 
     redirectIfLoggedIn();
 
 
-
     // ======================================
-    // FRIENDLY ERROR MESSAGES
+    // FRIENDLY ERROR
     // ======================================
 
     function getFriendlyError(error, mode) {
 
-        const text =
+        const message =
             String(error?.message || "").toLowerCase();
 
-
         if (
-            mode === "login" &&
-            text.includes("invalid login credentials")
+            message.includes("invalid login credentials")
         ) {
-
             return "Email atau password salah.";
-
         }
 
-
         if (
-            text.includes("email not confirmed")
+            message.includes("user already registered") ||
+            message.includes("already been registered")
         ) {
-
-            return "Email belum diverifikasi. Periksa kotak masuk email kamu.";
-
+            return "Email tersebut sudah memiliki akun.";
         }
 
-
         if (
-            text.includes("duplicate key") ||
-            text.includes("profiles_username")
+            message.includes("duplicate key") ||
+            message.includes("profiles_username")
         ) {
-
-            return "Username sudah digunakan. Gunakan username lain.";
-
+            return "Username sudah digunakan.";
         }
 
-
         if (
-            text.includes("password")
+            message.includes("password")
         ) {
-
             return "Password tidak memenuhi ketentuan.";
-
         }
 
+        if (
+            message.includes("database error saving new user")
+        ) {
+            return "Gagal membuat profil pemain. Periksa trigger Part 2A.";
+        }
 
         if (mode === "register") {
-
-            return "Pendaftaran gagal. Pastikan Query 2A sudah berhasil dan username belum digunakan.";
-
+            return "Registrasi gagal. Periksa data dan konfigurasi Supabase.";
         }
 
-
-        return "Terjadi kesalahan. Periksa koneksi internet dan data login.";
-
+        return "Terjadi kesalahan. Periksa koneksi internet.";
     }
-
 
 
     // ======================================
@@ -170,9 +172,7 @@
     const loginForm =
         document.getElementById("login-form");
 
-
     if (loginForm) {
-
 
         loginForm.addEventListener(
             "submit",
@@ -180,74 +180,58 @@
 
                 event.preventDefault();
 
-
                 if (!loginForm.reportValidity()) {
-
                     return;
-
                 }
 
-
                 const email =
-                    document
-                    .getElementById("email")
+                    document.getElementById("email")
                     .value
-                    .trim();
-
+                    .trim()
+                    .toLowerCase();
 
                 const password =
-                    document
-                    .getElementById("password")
+                    document.getElementById("password")
                     .value;
-
 
                 const button =
                     document.getElementById("login-submit");
 
-
                 button.disabled = true;
 
                 button.textContent = "Memproses...";
-
 
                 showMessage(
                     "Sedang masuk ke dunia...",
                     "success"
                 );
 
-
                 try {
 
                     const { data, error } =
                         await supabase.auth.signInWithPassword({
 
-                            email,
+                            email: email,
 
-                            password
+                            password: password
 
                         });
 
-
                     if (error) {
-
                         throw error;
-
                     }
 
-
-                    if (!data.user) {
+                    if (!data.session || !data.user) {
 
                         throw new Error(
-                            "Login gagal."
+                            "Login tidak menghasilkan session."
                         );
 
                     }
 
-
                     window.location.replace(
                         "dashboard.html"
                     );
-
 
                 } catch (error) {
 
@@ -264,12 +248,9 @@
                 }
 
             }
-
         );
 
-
     }
-
 
 
     // ======================================
@@ -279,9 +260,7 @@
     const registerForm =
         document.getElementById("register-form");
 
-
     if (registerForm) {
-
 
         registerForm.addEventListener(
             "submit",
@@ -289,44 +268,35 @@
 
                 event.preventDefault();
 
-
                 if (!registerForm.reportValidity()) {
-
                     return;
-
                 }
 
-
                 const username =
-                    document
-                    .getElementById("username")
+                    document.getElementById("username")
                     .value
                     .trim()
                     .toLowerCase();
 
-
                 const email =
-                    document
-                    .getElementById("email")
+                    document.getElementById("email")
                     .value
-                    .trim();
-
+                    .trim()
+                    .toLowerCase();
 
                 const password =
-                    document
-                    .getElementById("password")
+                    document.getElementById("password")
                     .value;
-
 
                 const confirmPassword =
-                    document
-                    .getElementById("confirm-password")
+                    document.getElementById("confirm-password")
                     .value;
-
 
                 const button =
                     document.getElementById("register-submit");
 
+
+                // VALIDATE USERNAME
 
                 if (!/^[a-z0-9_]{3,20}$/.test(username)) {
 
@@ -339,6 +309,8 @@
                 }
 
 
+                // VALIDATE PASSWORD
+
                 if (password.length < 8) {
 
                     showMessage(
@@ -349,6 +321,8 @@
 
                 }
 
+
+                // CONFIRM PASSWORD
 
                 if (password !== confirmPassword) {
 
@@ -365,7 +339,6 @@
 
                 button.textContent = "Membuat akun...";
 
-
                 showMessage(
                     "Sedang membuat akun pemain...",
                     "success"
@@ -374,20 +347,16 @@
 
                 try {
 
-
-                    const redirectURL =
-                        new URL(
-                            "login.html",
-                            window.location.href
-                        ).href;
-
+                    // ==================================
+                    // CREATE ACCOUNT
+                    // ==================================
 
                     const { data, error } =
                         await supabase.auth.signUp({
 
-                            email,
+                            email: email,
 
-                            password,
+                            password: password,
 
                             options: {
 
@@ -397,9 +366,7 @@
 
                                     display_name: username
 
-                                },
-
-                                emailRedirectTo: redirectURL
+                                }
 
                             }
 
@@ -407,42 +374,67 @@
 
 
                     if (error) {
-
                         throw error;
-
                     }
 
 
-                    if (data.session) {
+                    // ==================================
+                    // REQUIRE IMMEDIATE SESSION
+                    // ==================================
 
-                        window.location.replace(
-                            "dashboard.html"
+                    if (!data.user) {
+
+                        throw new Error(
+                            "Supabase tidak mengembalikan data pengguna."
                         );
 
-                        return;
+                    }
+
+
+                    if (!data.session) {
+
+                        throw new Error(
+                            "NO_SESSION_CONFIRM_EMAIL_STILL_ENABLED"
+                        );
 
                     }
 
 
+                    // ==================================
+                    // SUCCESS
+                    // ==================================
+
                     showMessage(
-                        "Pendaftaran berhasil. Periksa email untuk verifikasi, lalu login.",
+                        "Akun berhasil dibuat. Membuka dashboard...",
                         "success"
                     );
 
 
-                    button.disabled = false;
-
-                    button.textContent = "Buat Akun";
+                    window.location.replace(
+                        "dashboard.html"
+                    );
 
 
                 } catch (error) {
 
                     console.error(error);
 
-                    showMessage(
-                        getFriendlyError(error, "register")
-                    );
+                    if (
+                        error.message ===
+                        "NO_SESSION_CONFIRM_EMAIL_STILL_ENABLED"
+                    ) {
 
+                        showMessage(
+                            "Session tidak tersedia. Pastikan Confirm email di Supabase sudah OFF."
+                        );
+
+                    } else {
+
+                        showMessage(
+                            getFriendlyError(error, "register")
+                        );
+
+                    }
 
                     button.disabled = false;
 
@@ -451,12 +443,8 @@
                 }
 
             }
-
         );
 
-
     }
-
-
 
 })();
