@@ -12,11 +12,10 @@
 
     <meta
         name="theme-color"
-        content="#101827"
+        content="#0c1421"
     >
 
-    <title>Dashboard | Empire of Kings</title>
-
+    <title>Empire of Kings | Dashboard</title>
 
     <link
         rel="stylesheet"
@@ -34,249 +33,313 @@
 <body class="dashboard-page">
 
 
-    <header class="dashboard-topbar">
+<!-- ======================================
+     TOP NAVIGATION
+====================================== -->
 
+<header class="dashboard-topbar">
 
-        <a
-            href="index.html"
-            class="dashboard-brand"
-        >
+    <a href="index.html" class="brand">
 
-            <span>♛</span>
+        <span class="brand-crown">♛</span>
+
+        <span class="brand-text">
 
             EMPIRE OF KINGS
 
-        </a>
+            <small>THE REALM AWAITS</small>
+
+        </span>
+
+    </a>
 
 
+    <div class="topbar-actions">
 
-        <div class="dashboard-user">
+
+        <div class="top-user">
+
+            <div
+                id="top-avatar"
+                class="top-avatar"
+            >
+
+                ♟
+
+            </div>
+
 
             <span id="top-user-name">
 
-                Player
+                Loading...
 
             </span>
-
-
-            <button
-                id="logout-button"
-                class="logout-button"
-            >
-
-                Logout
-
-            </button>
 
         </div>
 
 
-    </header>
+        <button
+            type="button"
+            id="header-profile-button"
+            class="nav-button profile-nav-button"
+        >
+
+            Lihat Profil
+
+        </button>
+
+
+        <button
+            type="button"
+            id="logout-button"
+            class="nav-button logout-button"
+        >
+
+            Logout
+
+        </button>
+
+
+    </div>
+
+</header>
 
 
 
-    <main class="dashboard-main">
+<!-- ======================================
+     MAIN DASHBOARD
+====================================== -->
+
+<main class="dashboard-main">
 
 
-        <section class="dashboard-heading">
+    <!-- HERO -->
 
-            <div>
+    <section class="welcome-hero">
 
-                <p class="eyebrow">
 
-                    PLAYER REALM
+        <div class="hero-content">
 
-                </p>
+            <span class="hero-eyebrow">
 
-                <h1>
+                YOUR JOURNEY BEGINS
 
-                    Player Dashboard
+            </span>
 
-                </h1>
 
-                <p>
+            <h1>
 
-                    Selamat datang kembali di dunia Empire of Kings.
+                Welcome to the Realm
 
-                </p>
+            </h1>
+
+
+            <p>
+
+                Your legacy is waiting to be written.
+
+            </p>
+
+
+            <div class="hero-player-id">
+
+                PLAYER ID:
+
+                <strong id="hero-player-id">
+
+                    Loading...
+
+                </strong>
 
             </div>
 
-        </section>
+        </div>
+
+
+        <div class="hero-decoration">
+
+            ♛
+
+        </div>
+
+
+    </section>
 
 
 
-        <div class="dashboard-grid">
+    <!-- QUICK STATS -->
+
+    <section class="quick-stats">
 
 
-            <!-- PLAYER PROFILE -->
+        <article class="quick-stat-card">
 
-            <section class="dashboard-panel player-panel">
+            <span class="stat-icon">♟</span>
+
+            <div>
+
+                <small>PLAYER LEVEL</small>
+
+                <strong id="player-level">1</strong>
+
+            </div>
+
+        </article>
 
 
-                <div class="panel-heading">
+        <article class="quick-stat-card">
 
-                    <h2>
+            <span class="stat-icon">✦</span>
 
-                        Player Identity
+            <div>
 
-                    </h2>
+                <small>EXPERIENCE</small>
 
-                    <span id="role-label" class="role-badge">
+                <strong id="player-xp">0</strong>
 
-                        Player
+            </div>
+
+        </article>
+
+
+        <article class="quick-stat-card">
+
+            <span class="stat-icon">◈</span>
+
+            <div>
+
+                <small>GOLD</small>
+
+                <strong id="player-gold">0</strong>
+
+            </div>
+
+        </article>
+
+
+        <article class="quick-stat-card">
+
+            <span class="stat-icon">🏅</span>
+
+            <div>
+
+                <small>BADGES</small>
+
+                <strong id="player-badge-count">0</strong>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- MAIN GRID -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- PROFILE EDITOR -->
+
+        <article
+            class="dashboard-panel profile-editor-panel"
+            id="profile-editor-panel"
+        >
+
+
+            <div class="panel-heading">
+
+                <div>
+
+                    <span class="panel-eyebrow">
+
+                        IDENTITY
 
                     </span>
 
-                </div>
-
-
-
-                <div class="player-identity">
-
-
-                    <div class="player-avatar">
-
-                        ♟
-
-                    </div>
-
-
-                    <div>
-
-                        <h3 id="player-display-name">
-
-                            Player
-
-                        </h3>
-
-                        <p id="player-username">
-
-                            @player
-
-                        </p>
-
-                    </div>
-
+                    <h2>Player Profile</h2>
 
                 </div>
 
 
+                <button
+                    id="edit-profile-view-button"
+                    class="text-button"
+                    type="button"
+                >
 
-                <div class="player-details">
+                    Preview
 
+                </button>
 
-                    <div>
-
-                        <span>Player ID</span>
-
-                        <strong id="player-id">
-
-                            Loading...
-
-                        </strong>
-
-                    </div>
+            </div>
 
 
-                    <div>
 
-                        <span>Email</span>
-
-                        <strong id="player-email">
-
-                            Loading...
-
-                        </strong>
-
-                    </div>
+            <div class="profile-editor-top">
 
 
-                    <div>
+                <div
+                    id="editor-avatar"
+                    class="editor-avatar"
+                >
 
-                        <span>Account Created</span>
-
-                        <strong id="player-created">
-
-                            Loading...
-
-                        </strong>
-
-                    </div>
-
+                    ♟
 
                 </div>
 
 
+                <div class="avatar-editor-info">
 
-                <div class="player-stats">
+                    <strong id="editor-username">
 
+                        Player
 
-                    <div class="stat-box">
+                    </strong>
 
-                        <span>Level</span>
+                    <span id="editor-player-title">
 
-                        <strong id="player-level">
+                        Wanderer
 
-                            1
-
-                        </strong>
-
-                    </div>
+                    </span>
 
 
-                    <div class="stat-box">
+                    <label
+                        for="avatar-input"
+                        class="upload-avatar-button"
+                    >
 
-                        <span>Experience</span>
+                        Change Photo
 
-                        <strong id="player-xp">
-
-                            0
-
-                        </strong>
-
-                    </div>
+                    </label>
 
 
-                    <div class="stat-box">
+                    <input
+                        type="file"
+                        id="avatar-input"
+                        accept="image/png,image/jpeg,image/webp"
+                        hidden
+                    >
 
-                        <span>Gold</span>
+                    <small id="avatar-status">
 
-                        <strong id="player-gold">
+                        JPG, PNG, WebP · Max 2 MB
 
-                            0
-
-                        </strong>
-
-                    </div>
-
+                    </small>
 
                 </div>
 
 
-            </section>
+            </div>
 
 
 
-            <!-- PROFILE EDITOR -->
-
-            <section class="dashboard-panel">
+            <form id="profile-form">
 
 
-                <div class="panel-heading">
-
-                    <h2>
-
-                        Edit Profile
-
-                    </h2>
-
-                </div>
-
-
-
-                <form id="profile-form">
-
+                <div class="form-field">
 
                     <label for="display-name">
 
@@ -284,20 +347,53 @@
 
                     </label>
 
-
                     <input
-
-                        type="text"
-
                         id="display-name"
-
+                        type="text"
                         maxlength="30"
-
                         required
-
                     >
 
+                </div>
 
+
+                <div class="form-field">
+
+                    <label for="profile-title">
+
+                        Profile Title
+
+                    </label>
+
+                    <input
+                        id="profile-title"
+                        type="text"
+                        maxlength="30"
+                        placeholder="Wanderer"
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="motto">
+
+                        Personal Motto
+
+                    </label>
+
+                    <input
+                        id="motto"
+                        type="text"
+                        maxlength="80"
+                        placeholder="Write your motto..."
+                    >
+
+                </div>
+
+
+                <div class="form-field">
 
                     <label for="bio">
 
@@ -305,264 +401,271 @@
 
                     </label>
 
-
                     <textarea
-
                         id="bio"
-
-                        maxlength="160"
-
+                        maxlength="250"
                         rows="4"
-
-                        placeholder="Ceritakan tentang karaktermu..."
-
+                        placeholder="Tell the realm about yourself..."
                     ></textarea>
 
-
-
-                    <p
-
-                        id="profile-message"
-
-                        class="dashboard-message"
-
-                        aria-live="polite"
-
-                    ></p>
-
-
-
-                    <button
-
-                        type="submit"
-
-                        class="gold-button"
-
-                    >
-
-                        Save Profile
-
-                    </button>
-
-
-                </form>
-
-
-            </section>
-
-
-
-            <!-- GLOBAL CHAT -->
-
-            <section class="dashboard-panel chat-panel">
-
-
-                <div class="panel-heading">
-
-                    <h2>
-
-                        Global Chat
-
-                    </h2>
-
-                    <span class="online-indicator">
-
-                        Multiplayer
-
-                    </span>
-
                 </div>
 
 
-
-                <p class="panel-description">
-
-                    Chat bersama pemain lain di seluruh dunia.
-
-                </p>
-
-
-
-                <div
-
-                    id="chat-status"
-
-                    class="chat-status"
-
+                <p
+                    id="profile-message"
+                    class="form-message"
                     aria-live="polite"
+                ></p>
 
+
+                <button
+                    type="submit"
+                    class="primary-button"
                 >
 
-                    Menghubungkan chat...
+                    Save Profile
 
-                </div>
+                </button>
 
 
+            </form>
 
-                <div
 
-                    id="chat-messages"
-
-                    class="chat-messages"
-
-                >
-
-                </div>
+        </article>
 
 
 
-                <form id="chat-form" class="chat-form">
+        <!-- CHAT -->
 
-
-                    <input
-
-                        type="text"
-
-                        id="chat-input"
-
-                        maxlength="500"
-
-                        placeholder="Tulis pesan..."
-
-                        autocomplete="off"
-
-                        required
-
-                    >
-
-
-                    <button
-
-                        type="submit"
-
-                        id="chat-send"
-
-                    >
-
-                        Kirim
-
-                    </button>
-
-
-                </form>
-
-
-            </section>
-
-
-
-            <!-- NOTIFICATIONS -->
-
-            <section class="dashboard-panel notification-panel">
-
-
-                <div class="panel-heading">
-
-                    <h2>
-
-                        Notifications
-
-                    </h2>
-
-                    <span id="notification-count">
-
-                        0
-
-                    </span>
-
-                </div>
-
-
-
-                <div
-
-                    id="notification-list"
-
-                    class="notification-list"
-
-                >
-
-                    Memuat notifikasi...
-
-                </div>
-
-
-            </section>
-
-
-        </div>
-
-
-
-        <!-- FUTURE FEATURES -->
-
-        <section class="dashboard-panel future-panel">
+        <article class="dashboard-panel chat-panel">
 
 
             <div class="panel-heading">
 
-                <h2>
+                <div>
 
-                    World Development
+                    <span class="panel-eyebrow">
 
-                </h2>
+                        MULTIPLAYER
 
-                <span class="coming-soon">
+                    </span>
 
-                    Coming Soon
+                    <h2>Global Chat</h2>
+
+                </div>
+
+
+                <span class="realtime-badge">
+
+                    <i></i>
+
+                    REALTIME
 
                 </span>
 
             </div>
 
 
+            <p class="panel-description">
 
-            <div class="future-grid">
+                Connect with other players across the realm.
 
+            </p>
+
+
+            <div
+                id="chat-status"
+                class="chat-status"
+                aria-live="polite"
+            >
+
+                Connecting...
+
+            </div>
+
+
+            <div
+                id="chat-messages"
+                class="chat-messages"
+                aria-live="polite"
+            >
+
+            </div>
+
+
+            <form
+                id="chat-form"
+                class="chat-form"
+            >
+
+
+                <input
+                    type="text"
+                    id="chat-input"
+                    maxlength="500"
+                    placeholder="Write a message..."
+                    autocomplete="off"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    id="chat-send"
+                    class="chat-send-button"
+                >
+
+                    Send
+
+                </button>
+
+
+            </form>
+
+
+            <small class="chat-hint">
+
+                Tekan nama pemain untuk melihat profilnya.
+
+            </small>
+
+
+        </article>
+
+
+
+        <!-- NOTIFICATIONS -->
+
+        <article class="dashboard-panel notification-panel">
+
+
+            <div class="panel-heading">
 
                 <div>
 
-                    <span>♜</span>
+                    <span class="panel-eyebrow">
 
-                    <h3>World Map</h3>
+                        SYSTEM
 
-                    <p>
+                    </span>
 
-                        Dunia fiktif dengan 50 wilayah dan batas wilayahnya sendiri.
-
-                    </p>
+                    <h2>Notifications</h2>
 
                 </div>
 
 
+                <span
+                    id="notification-count"
+                    class="notification-counter"
+                >
+
+                    0
+
+                </span>
+
+            </div>
+
+
+            <div
+                id="notification-list"
+                class="notification-list"
+            >
+
+                Loading notifications...
+
+            </div>
+
+
+        </article>
+
+
+
+        <!-- ACCOUNT INFORMATION -->
+
+        <article class="dashboard-panel account-panel">
+
+
+            <div class="panel-heading">
 
                 <div>
 
-                    <span>♛</span>
+                    <span class="panel-eyebrow">
 
-                    <h3>Kingdoms</h3>
+                        ACCOUNT
 
-                    <p>
+                    </span>
 
-                        Pembentukan kerajaan, kepemimpinan, voting, dan pemerintahan.
+                    <h2>Account Information</h2>
 
-                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="account-information">
+
+
+                <div>
+
+                    <span>Username</span>
+
+                    <strong id="account-username">
+
+                        -
+
+                    </strong>
 
                 </div>
 
 
+                <div>
+
+                    <span>Email</span>
+
+                    <strong id="account-email">
+
+                        -
+
+                    </strong>
+
+                </div>
+
 
                 <div>
 
-                    <span>⚑</span>
+                    <span>Account Role</span>
 
-                    <h3>Citizenship</h3>
+                    <strong id="account-role">
 
-                    <p>
+                        PLAYER
 
-                        Sistem kewarganegaraan dan wilayah yang belum menjadi kerajaan.
+                    </strong>
 
-                    </p>
+                </div>
+
+
+                <div>
+
+                    <span>Member Since</span>
+
+                    <strong id="account-created">
+
+                        -
+
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Messages Sent</span>
+
+                    <strong id="account-messages">
+
+                        0
+
+                    </strong>
 
                 </div>
 
@@ -570,21 +673,327 @@
             </div>
 
 
+            <button
+                id="account-view-profile"
+                class="secondary-button"
+                type="button"
+            >
+
+                View Public Profile
+
+            </button>
+
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- ==================================
+         PROFILE MODAL
+    =================================== -->
+
+    <div
+        id="profile-modal"
+        class="profile-modal"
+        hidden
+    >
+
+
+        <div
+            class="modal-backdrop"
+            id="modal-backdrop"
+        ></div>
+
+
+        <section
+            class="profile-modal-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-display-name"
+        >
+
+
+            <button
+                type="button"
+                id="modal-close"
+                class="modal-close"
+                aria-label="Close profile"
+            >
+
+                ×
+
+            </button>
+
+
+
+            <div class="modal-cover">
+
+
+                <div
+                    id="modal-avatar"
+                    class="modal-avatar"
+                >
+
+                    ♟
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="modal-profile-header">
+
+
+                <div class="modal-player-name">
+
+
+                    <h2 id="modal-display-name">
+
+                        Player
+
+                    </h2>
+
+
+                    <p id="modal-username">
+
+                        @player
+
+                    </p>
+
+
+                    <span
+                        id="modal-status"
+                        class="player-status"
+                    >
+
+                        Offline
+
+                    </span>
+
+
+                </div>
+
+
+                <span
+                    id="modal-role"
+                    class="modal-role"
+                >
+
+                    PLAYER
+
+                </span>
+
+
+            </div>
+
+
+
+            <div class="modal-profile-details">
+
+
+                <h3 id="modal-title">
+
+                    Wanderer
+
+                </h3>
+
+
+                <p id="modal-motto" class="modal-motto"></p>
+
+
+                <p id="modal-bio" class="modal-bio">
+
+                    No biography.
+
+                </p>
+
+
+
+                <div class="modal-id-row">
+
+                    <span>Player ID</span>
+
+                    <strong id="modal-player-id">
+
+                        -
+
+                    </strong>
+
+                </div>
+
+
+                <div class="modal-id-row">
+
+                    <span>Joined</span>
+
+                    <strong id="modal-created">
+
+                        -
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PLAYER STATS -->
+
+            <section class="modal-section">
+
+
+                <div class="section-heading">
+
+                    <h3>Player Statistics</h3>
+
+                </div>
+
+
+                <div class="modal-stats">
+
+
+                    <div>
+
+                        <small>LEVEL</small>
+
+                        <strong id="modal-level">1</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <small>EXPERIENCE</small>
+
+                        <strong id="modal-xp">0</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <small>GOLD</small>
+
+                        <strong id="modal-gold">0</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <small>MESSAGES</small>
+
+                        <strong id="modal-messages">0</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <small>BADGES</small>
+
+                        <strong id="modal-badge-count">0</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <small>ACHIEVEMENTS</small>
+
+                        <strong id="modal-achievement-count">0</strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- BADGES -->
+
+            <section class="modal-section">
+
+
+                <div class="section-heading">
+
+                    <h3>Badges</h3>
+
+                    <span>Player Awards</span>
+
+                </div>
+
+
+                <div
+                    id="modal-badges"
+                    class="award-grid"
+                >
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- ACHIEVEMENTS -->
+
+            <section class="modal-section">
+
+
+                <div class="section-heading">
+
+                    <h3>Achievements</h3>
+
+                    <span>Unlocked</span>
+
+                </div>
+
+
+                <div
+                    id="modal-achievements"
+                    class="award-grid"
+                >
+
+                </div>
+
+
+            </section>
+
+
+
         </section>
 
 
-
-    </main>
-
+    </div>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script src="js/supabase.js"></script>
+</main>
 
-    <script src="js/dashboard.js"></script>
+
+
+<!-- ======================================
+     JAVASCRIPT
+====================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/dashboard.js"></script>
 
 
 </body>
 
-                  </html>
+                    </html>
