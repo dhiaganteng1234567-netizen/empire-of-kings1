@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#101827"
+    >
+
+    <title>Login | EMPIRE OF KINGS</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <script
+        src="js/app.js"
+        defer
+    ></script>
+
+</head>
+
+<body class="auth-body">
+
+
+<header class="auth-header">
+
+    <div class="container auth-header-content">
+
+        <a
+            href="index.html"
+            class="brand"
+        >
+
+            <div class="brand-symbol">
+
+                <svg
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+
+                    <path
+                        d="M24 3L39 9V22C39 32 32 40 24 45C16 40 9 32 9 22V9L24 3Z"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                    <path
+                        d="M15 29L20 17L24 24L28 17L33 29"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M15 33H33"
+                        stroke="currentColor"
+                        stroke-width="2"
+                    />
+
+                </svg>
+
+            </div>
+
+            <div class="brand-text">
+
+                <span class="brand-name">
+                    EMPIRE
+                </span>
+
+                <span class="brand-subtitle">
+                    OF KINGS
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <a
+            href="index.html"
+            class="back-link"
+        >
+
+            ← Back to Home
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main class="auth-main">
+
+    <div class="container auth-layout">
+
+
+        <!-- LEFT SIDE -->
+
+        <section class="auth-intro">
+
+            <span class="section-kicker">
+
+                THE KINGDOM AWAITS
+
+            </span>
+
+
+            <h1>
+
+                RETURN TO
+
+                <span>
+                    YOUR REALM.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Your kingdom, your ambitions,
+                and your legacy await your return.
+
+            </p>
+
+
+            <div class="auth-decoration">
+
+                <span>♛</span>
+
+                <div></div>
+
+                <small>
+                    POWER · HONOUR · LEGACY
+                </small>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- LOGIN CARD -->
+
+        <section class="auth-card">
+
+            <div class="auth-card-heading">
+
+                <span class="section-kicker">
+                    PLAYER ACCESS
+                </span>
+
+                <h2>
+                    Welcome Back
+                </h2>
+
+                <p>
+                    Enter your account details to continue.
+                </p>
+
+            </div>
+
+
+
+            <form
+                data-auth-form="login"
+                novalidate
+            >
+
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            data-password-toggle="loginPassword"
+                        >
+
+                            Show
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="form-feedback"
+                    data-form-feedback
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+
+
+                <button
+                    type="submit"
+                    class="button button-gold auth-submit"
+                >
+
+                    ENTER THE KINGDOM
+
+                    <span>→</span>
+
+                </button>
+
+
+            </form>
+
+
+
+            <div class="auth-switch">
+
+                <p>
+                    Don't have an account?
+                </p>
+
+                <a href="register.html">
+                    Create Account
+                </a>
+
+            </div>
+
+
+            <div class="auth-divider">
+
+                <span></span>
+
+                <small>
+                    EMPIRE OF KINGS
+                </small>
+
+                <span></span>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+</main>
+
+
+
+<footer class="auth-footer">
+
+    <p>
+        © 2026 EMPIRE OF KINGS.
+        All rights reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+  </html>
