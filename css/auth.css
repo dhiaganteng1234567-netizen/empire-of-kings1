@@ -1,231 +1,406 @@
 /* ==========================================
    EMPIRE OF KINGS
-   AUTHENTICATION STYLE
-   VERSION 0.21
+   PREMIUM AUTH DESIGN
+   VERSION 0.30
 ========================================== */
 
 .auth-page {
+
     min-height: 100vh;
+
     margin: 0;
 
     background:
-        radial-gradient(
-            circle at top,
-            #26354b,
-            #101827 65%
-        );
 
-    color: #f4ecd9;
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(65, 88, 119, .28),
+            transparent 35%
+        ),
+
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(164, 124, 63, .13),
+            transparent 35%
+        ),
+
+        #0c1421;
+
+    color: #f4efdf;
+
 }
 
+
 .auth-container {
-    width: 100%;
+
     min-height: 100vh;
 
     display: flex;
+
     flex-direction: column;
+
     justify-content: center;
+
     align-items: center;
 
-    padding: 24px;
-    box-sizing: border-box;
+    padding: 22px;
+
 }
+
 
 .auth-back {
+
     width: 100%;
+
     max-width: 440px;
 
-    color: #c9ad70;
+    margin-bottom: 16px;
+
+    color: #d6b46d;
+
+    font-size: 12px;
+
     text-decoration: none;
 
-    margin-bottom: 18px;
-    font-size: 13px;
 }
+
 
 .auth-card {
+
     width: 100%;
+
     max-width: 440px;
 
-    padding: 32px;
-    box-sizing: border-box;
+    padding: 36px;
 
-    border: 1px solid #665535;
     border-radius: 14px;
 
-    background: #172235;
+    border: 1px solid rgba(214, 180, 109, .3);
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #192a40,
+            #101d30
+        );
 
     box-shadow:
-        0 20px 60px rgba(0, 0, 0, .35);
+
+        0 25px 70px rgba(0, 0, 0, .4);
+
+    animation: authEnter .55s ease both;
+
 }
+
 
 .auth-brand {
+
     text-align: center;
-    margin-bottom: 34px;
+
+    margin-bottom: 35px;
+
 }
+
 
 .auth-crown {
-    font-size: 42px;
-    color: #d8b76e;
+
+    font-size: 48px;
+
+    color: #e4c47e;
+
+    text-shadow:
+
+        0 0 22px rgba(214, 180, 109, .3);
+
 }
+
 
 .auth-brand h1 {
-    font-size: 21px;
-    letter-spacing: 2px;
-    color: #e3c37b;
+
+    color: #e9ce92;
+
+    font-size: 19px;
+
+    letter-spacing: 3px;
+
     margin: 10px 0;
+
 }
+
 
 .auth-brand p {
-    color: #aeb9c8;
-    font-size: 13px;
+
+    color: #9facbd;
+
+    font-size: 12px;
+
 }
+
 
 .auth-heading {
-    margin-bottom: 24px;
+
+    margin-bottom: 23px;
+
 }
+
 
 .auth-heading h2 {
+
     font-size: 25px;
-    margin-bottom: 8px;
+
+    margin-bottom: 7px;
+
+    color: #f4efdf;
+
 }
+
 
 .auth-heading p {
-    color: #aeb9c8;
-    font-size: 14px;
+
+    color: #a3b1c2;
+
+    font-size: 13px;
+
 }
+
 
 .auth-field {
+
     margin-bottom: 19px;
+
 }
+
 
 .auth-field label {
+
     display: block;
+
     margin-bottom: 8px;
-    font-size: 13px;
-    color: #e3c37b;
+
+    color: #dfbd76;
+
+    font-size: 12px;
+
 }
 
+
 .auth-field input {
+
     width: 100%;
+
+    padding: 14px;
+
     box-sizing: border-box;
 
-    padding: 13px;
+    border: 1px solid #3c526b;
 
-    border: 1px solid #44536a;
     border-radius: 7px;
 
     outline: none;
 
-    background: #101827;
-    color: #f4ecd9;
+    background: #0c1829;
 
-    font-size: 14px;
-}
-
-.auth-field input:focus {
-    border-color: #d8b76e;
-}
-
-.auth-field small {
-    display: block;
-    color: #9ca9bb;
-    margin-top: 7px;
-    font-size: 11px;
-}
-
-.password-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-.password-wrapper input {
-    flex: 1;
-    min-width: 0;
-}
-
-.password-toggle {
-    padding: 12px;
-
-    background: #27364c;
-    border: 1px solid #53647a;
-    border-radius: 7px;
-
-    color: #e3c37b;
-    cursor: pointer;
-}
-
-.auth-button {
-    width: 100%;
-    padding: 14px;
-
-    border: 0;
-    border-radius: 7px;
-
-    background: #b38b43;
-    color: #101827;
-
-    font-weight: bold;
-    font-size: 14px;
-
-    cursor: pointer;
-    margin-top: 8px;
-}
-
-.auth-button:hover {
-    background: #d0ad65;
-}
-
-.auth-button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-.auth-message {
-    min-height: 20px;
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.auth-message.error {
-    color: #ff9999;
-}
-
-.auth-message.success {
-    color: #8ed6a2;
-}
-
-.auth-footer {
-    text-align: center;
-    margin-top: 24px;
+    color: #f4efdf;
 
     font-size: 13px;
-    color: #aeb9c8;
+
 }
+
+
+.auth-field input:focus {
+
+    border-color: #d6b46d;
+
+    box-shadow:
+
+        0 0 0 3px rgba(214, 180, 109, .08);
+
+}
+
+
+.auth-field small {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: #91a1b5;
+
+    font-size: 10px;
+
+}
+
+
+.password-wrapper {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.password-wrapper input {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.password-toggle {
+
+    padding: 12px;
+
+    background: #253952;
+
+    border: 1px solid #536781;
+
+    border-radius: 7px;
+
+    color: #e4c47e;
+
+    font-size: 10px;
+
+}
+
+
+.auth-button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 8px;
+
+    border: 1px solid #e0c080;
+
+    border-radius: 7px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #f0d69c,
+            #ad8543
+        );
+
+    color: #101827;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    transition: .2s ease;
+
+}
+
+
+.auth-button:hover {
+
+    transform: translateY(-2px);
+
+    filter: brightness(1.08);
+
+}
+
+
+.auth-button:disabled {
+
+    opacity: .55;
+
+}
+
+
+.auth-message {
+
+    min-height: 20px;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+}
+
+
+.auth-message.error {
+
+    color: #f08d8d;
+
+}
+
+
+.auth-message.success {
+
+    color: #85dba6;
+
+}
+
+
+.auth-footer {
+
+    margin-top: 23px;
+
+    text-align: center;
+
+    color: #aab7c6;
+
+    font-size: 12px;
+
+}
+
 
 .auth-footer a {
-    color: #e3c37b;
+
+    color: #e3c17d;
+
     text-decoration: none;
+
 }
 
+
 .auth-copyright {
-    color: #8d9bad;
-    font-size: 11px;
-    margin-top: 25px;
+
+    margin-top: 24px;
+
+    color: #72839a;
+
+    font-size: 10px;
+
 }
+
+
+@keyframes authEnter {
+
+    from {
+
+        opacity: 0;
+
+        transform: translateY(15px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
 
 @media (max-width: 480px) {
 
-    .auth-container {
-        padding: 15px;
-    }
-
     .auth-card {
-        padding: 23px;
-    }
 
-    .auth-brand h1 {
-        font-size: 18px;
+        padding: 24px;
+
     }
 
 }
