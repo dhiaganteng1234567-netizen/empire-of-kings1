@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#101827"
+    >
+
+    <title>Dashboard | Empire of Kings</title>
+
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/dashboard.css"
+    >
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+    <header class="dashboard-topbar">
+
+
+        <a
+            href="index.html"
+            class="dashboard-brand"
+        >
+
+            <span>♛</span>
+
+            EMPIRE OF KINGS
+
+        </a>
+
+
+
+        <div class="dashboard-user">
+
+            <span id="top-user-name">
+
+                Player
+
+            </span>
+
+
+            <button
+                id="logout-button"
+                class="logout-button"
+            >
+
+                Logout
+
+            </button>
+
+        </div>
+
+
+    </header>
+
+
+
+    <main class="dashboard-main">
+
+
+        <section class="dashboard-heading">
+
+            <div>
+
+                <p class="eyebrow">
+
+                    PLAYER REALM
+
+                </p>
+
+                <h1>
+
+                    Player Dashboard
+
+                </h1>
+
+                <p>
+
+                    Selamat datang kembali di dunia Empire of Kings.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <div class="dashboard-grid">
+
+
+            <!-- PLAYER PROFILE -->
+
+            <section class="dashboard-panel player-panel">
+
+
+                <div class="panel-heading">
+
+                    <h2>
+
+                        Player Identity
+
+                    </h2>
+
+                    <span id="role-label" class="role-badge">
+
+                        Player
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="player-identity">
+
+
+                    <div class="player-avatar">
+
+                        ♟
+
+                    </div>
+
+
+                    <div>
+
+                        <h3 id="player-display-name">
+
+                            Player
+
+                        </h3>
+
+                        <p id="player-username">
+
+                            @player
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="player-details">
+
+
+                    <div>
+
+                        <span>Player ID</span>
+
+                        <strong id="player-id">
+
+                            Loading...
+
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Email</span>
+
+                        <strong id="player-email">
+
+                            Loading...
+
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Account Created</span>
+
+                        <strong id="player-created">
+
+                            Loading...
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="player-stats">
+
+
+                    <div class="stat-box">
+
+                        <span>Level</span>
+
+                        <strong id="player-level">
+
+                            1
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-box">
+
+                        <span>Experience</span>
+
+                        <strong id="player-xp">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-box">
+
+                        <span>Gold</span>
+
+                        <strong id="player-gold">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- PROFILE EDITOR -->
+
+            <section class="dashboard-panel">
+
+
+                <div class="panel-heading">
+
+                    <h2>
+
+                        Edit Profile
+
+                    </h2>
+
+                </div>
+
+
+
+                <form id="profile-form">
+
+
+                    <label for="display-name">
+
+                        Display Name
+
+                    </label>
+
+
+                    <input
+
+                        type="text"
+
+                        id="display-name"
+
+                        maxlength="30"
+
+                        required
+
+                    >
+
+
+
+                    <label for="bio">
+
+                        Biography
+
+                    </label>
+
+
+                    <textarea
+
+                        id="bio"
+
+                        maxlength="160"
+
+                        rows="4"
+
+                        placeholder="Ceritakan tentang karaktermu..."
+
+                    ></textarea>
+
+
+
+                    <p
+
+                        id="profile-message"
+
+                        class="dashboard-message"
+
+                        aria-live="polite"
+
+                    ></p>
+
+
+
+                    <button
+
+                        type="submit"
+
+                        class="gold-button"
+
+                    >
+
+                        Save Profile
+
+                    </button>
+
+
+                </form>
+
+
+            </section>
+
+
+
+            <!-- GLOBAL CHAT -->
+
+            <section class="dashboard-panel chat-panel">
+
+
+                <div class="panel-heading">
+
+                    <h2>
+
+                        Global Chat
+
+                    </h2>
+
+                    <span class="online-indicator">
+
+                        Multiplayer
+
+                    </span>
+
+                </div>
+
+
+
+                <p class="panel-description">
+
+                    Chat bersama pemain lain di seluruh dunia.
+
+                </p>
+
+
+
+                <div
+
+                    id="chat-status"
+
+                    class="chat-status"
+
+                    aria-live="polite"
+
+                >
+
+                    Menghubungkan chat...
+
+                </div>
+
+
+
+                <div
+
+                    id="chat-messages"
+
+                    class="chat-messages"
+
+                >
+
+                </div>
+
+
+
+                <form id="chat-form" class="chat-form">
+
+
+                    <input
+
+                        type="text"
+
+                        id="chat-input"
+
+                        maxlength="500"
+
+                        placeholder="Tulis pesan..."
+
+                        autocomplete="off"
+
+                        required
+
+                    >
+
+
+                    <button
+
+                        type="submit"
+
+                        id="chat-send"
+
+                    >
+
+                        Kirim
+
+                    </button>
+
+
+                </form>
+
+
+            </section>
+
+
+
+            <!-- NOTIFICATIONS -->
+
+            <section class="dashboard-panel notification-panel">
+
+
+                <div class="panel-heading">
+
+                    <h2>
+
+                        Notifications
+
+                    </h2>
+
+                    <span id="notification-count">
+
+                        0
+
+                    </span>
+
+                </div>
+
+
+
+                <div
+
+                    id="notification-list"
+
+                    class="notification-list"
+
+                >
+
+                    Memuat notifikasi...
+
+                </div>
+
+
+            </section>
+
+
+        </div>
+
+
+
+        <!-- FUTURE FEATURES -->
+
+        <section class="dashboard-panel future-panel">
+
+
+            <div class="panel-heading">
+
+                <h2>
+
+                    World Development
+
+                </h2>
+
+                <span class="coming-soon">
+
+                    Coming Soon
+
+                </span>
+
+            </div>
+
+
+
+            <div class="future-grid">
+
+
+                <div>
+
+                    <span>♜</span>
+
+                    <h3>World Map</h3>
+
+                    <p>
+
+                        Dunia fiktif dengan 50 wilayah dan batas wilayahnya sendiri.
+
+                    </p>
+
+                </div>
+
+
+
+                <div>
+
+                    <span>♛</span>
+
+                    <h3>Kingdoms</h3>
+
+                    <p>
+
+                        Pembentukan kerajaan, kepemimpinan, voting, dan pemerintahan.
+
+                    </p>
+
+                </div>
+
+
+
+                <div>
+
+                    <span>⚑</span>
+
+                    <h3>Citizenship</h3>
+
+                    <p>
+
+                        Sistem kewarganegaraan dan wilayah yang belum menjadi kerajaan.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+    </main>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/dashboard.js"></script>
+
+
+</body>
+
+                  </html>
