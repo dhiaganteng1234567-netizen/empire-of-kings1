@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
 
@@ -15,217 +15,151 @@
         content="#101827"
     >
 
-    <title>Login | EMPIRE OF KINGS</title>
+    <title>Login | Empire of Kings</title>
 
     <link
         rel="stylesheet"
         href="css/style.css"
     >
 
-    <script
-        src="js/app.js"
-        defer
-    ></script>
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
 
 </head>
 
-<body class="auth-body">
+
+<body class="auth-page">
 
 
-<header class="auth-header">
-
-    <div class="container auth-header-content">
-
-        <a
-            href="index.html"
-            class="brand"
-        >
-
-            <div class="brand-symbol">
-
-                <svg
-                    viewBox="0 0 48 48"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-
-                    <path
-                        d="M24 3L39 9V22C39 32 32 40 24 45C16 40 9 32 9 22V9L24 3Z"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    />
-
-                    <path
-                        d="M15 29L20 17L24 24L28 17L33 29"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-
-                    <path
-                        d="M15 33H33"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    />
-
-                </svg>
-
-            </div>
-
-            <div class="brand-text">
-
-                <span class="brand-name">
-                    EMPIRE
-                </span>
-
-                <span class="brand-subtitle">
-                    OF KINGS
-                </span>
-
-            </div>
-
-        </a>
+    <main class="auth-container">
 
 
         <a
             href="index.html"
-            class="back-link"
+            class="auth-back"
         >
 
-            ← Back to Home
+            ← Kembali ke halaman utama
 
         </a>
 
-    </div>
-
-</header>
-
-
-
-<main class="auth-main">
-
-    <div class="container auth-layout">
-
-
-        <!-- LEFT SIDE -->
-
-        <section class="auth-intro">
-
-            <span class="section-kicker">
-
-                THE KINGDOM AWAITS
-
-            </span>
-
-
-            <h1>
-
-                RETURN TO
-
-                <span>
-                    YOUR REALM.
-                </span>
-
-            </h1>
-
-
-            <p>
-
-                Your kingdom, your ambitions,
-                and your legacy await your return.
-
-            </p>
-
-
-            <div class="auth-decoration">
-
-                <span>♛</span>
-
-                <div></div>
-
-                <small>
-                    POWER · HONOUR · LEGACY
-                </small>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- LOGIN CARD -->
 
         <section class="auth-card">
 
-            <div class="auth-card-heading">
 
-                <span class="section-kicker">
-                    PLAYER ACCESS
-                </span>
+            <div class="auth-brand">
 
-                <h2>
-                    Welcome Back
-                </h2>
+                <div class="auth-crown">
+
+                    ♛
+
+                </div>
+
+                <h1>
+
+                    EMPIRE OF KINGS
+
+                </h1>
 
                 <p>
-                    Enter your account details to continue.
+
+                    Enter the realm.
+
                 </p>
 
             </div>
 
 
 
-            <form
-                data-auth-form="login"
-                novalidate
-            >
+            <div class="auth-heading">
+
+                <h2>
+
+                    Login
+
+                </h2>
+
+                <p>
+
+                    Masuk ke akun kerajaanmu.
+
+                </p>
+
+            </div>
 
 
-                <div class="form-group">
 
-                    <label for="loginEmail">
-                        Email Address
+            <form id="login-form">
+
+
+                <div class="auth-field">
+
+                    <label for="email">
+
+                        Email
+
                     </label>
 
                     <input
+
                         type="email"
-                        id="loginEmail"
+
+                        id="email"
+
                         name="email"
-                        placeholder="Enter your email"
+
+                        placeholder="nama@email.com"
+
                         autocomplete="email"
+
                         required
+
                     >
 
                 </div>
 
 
 
-                <div class="form-group">
+                <div class="auth-field">
 
-                    <label for="loginPassword">
+                    <label for="password">
+
                         Password
+
                     </label>
 
 
                     <div class="password-wrapper">
 
                         <input
+
                             type="password"
-                            id="loginPassword"
+
+                            id="password"
+
                             name="password"
-                            placeholder="Enter your password"
+
+                            placeholder="Masukkan password"
+
                             autocomplete="current-password"
+
                             required
+
                         >
 
                         <button
+
                             type="button"
+
                             class="password-toggle"
-                            data-password-toggle="loginPassword"
+
+                            data-toggle-password="password"
+
                         >
 
-                            Show
+                            Lihat
 
                         </button>
 
@@ -235,24 +169,29 @@
 
 
 
-                <div
-                    class="form-feedback"
-                    data-form-feedback
-                    role="status"
+                <p
+
+                    id="auth-message"
+
+                    class="auth-message"
+
                     aria-live="polite"
-                    hidden
-                ></div>
+
+                ></p>
 
 
 
                 <button
+
                     type="submit"
-                    class="button button-gold auth-submit"
+
+                    class="auth-button"
+
+                    id="login-submit"
+
                 >
 
-                    ENTER THE KINGDOM
-
-                    <span>→</span>
+                    Masuk ke Dunia
 
                 </button>
 
@@ -261,50 +200,41 @@
 
 
 
-            <div class="auth-switch">
+            <div class="auth-footer">
 
-                <p>
-                    Don't have an account?
-                </p>
+                Belum memiliki akun?
 
                 <a href="register.html">
-                    Create Account
+
+                    Daftar sekarang
+
                 </a>
-
-            </div>
-
-
-            <div class="auth-divider">
-
-                <span></span>
-
-                <small>
-                    EMPIRE OF KINGS
-                </small>
-
-                <span></span>
 
             </div>
 
 
         </section>
 
-    </div>
-
-</main>
 
 
+        <p class="auth-copyright">
 
-<footer class="auth-footer">
+            © 2026 Empire of Kings
 
-    <p>
-        © 2026 EMPIRE OF KINGS.
-        All rights reserved.
-    </p>
+        </p>
 
-</footer>
+
+    </main>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/auth.js"></script>
 
 
 </body>
 
-  </html>
+</html>
