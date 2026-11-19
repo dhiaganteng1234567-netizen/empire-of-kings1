@@ -1,28 +1,21 @@
 // ==========================================
 // EMPIRE OF KINGS
-// ADVANCED DASHBOARD SYSTEM
-// VERSION 0.30
+// COMMUNITY DASHBOARD
+// VERSION 0.40
 // ==========================================
 
-
 (async function () {
-
 
     "use strict";
 
 
-    // ======================================
-    // SUPABASE
-    // ======================================
+    const db = window.EOK?.supabase;
 
-    const supabase = window.EOK?.supabase;
-
-
-    if (!supabase) {
+    if (!db) {
 
         alert("Supabase connection failed.");
 
-        window.location.replace("login.html");
+        location.replace("login.html");
 
         return;
 
@@ -31,327 +24,160 @@
 
     const AVATAR_BUCKET = "eok-avatars";
 
-    const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
+    const current = {
 
-    const CHAT_LIMIT = 50;
+        user: null,
 
+        profile: null,
 
-    let currentUser = null;
+        settings: null,
 
-    let currentProfile = null;
+        selectedProfileId: null,
 
-    let currentStatistics = null;
+        reportTargetId: null,
 
-    let chatChannel = null;
+        reportMessageId: null,
 
-    let notificationChannel = null;
+        privateTargetId: null,
 
-    let lastMessageTime = 0;
+        chatChannel: null,
 
+        dmChannel: null,
 
+        notificationChannel: null,
 
-    // ======================================
-    // DOM ELEMENTS
-    // ======================================
-
-    const el = {
-
-        topName: document.getElementById(
-            "top-user-name"
-        ),
-
-        topAvatar: document.getElementById(
-            "top-avatar"
-        ),
-
-        headerProfile: document.getElementById(
-            "header-profile-button"
-        ),
-
-        logout: document.getElementById(
-            "logout-button"
-        ),
-
-        heroId: document.getElementById(
-            "hero-player-id"
-        ),
-
-        level: document.getElementById(
-            "player-level"
-        ),
-
-        xp: document.getElementById(
-            "player-xp"
-        ),
-
-        gold: document.getElementById(
-            "player-gold"
-        ),
-
-        badgeCount: document.getElementById(
-            "player-badge-count"
-        ),
-
-        editorAvatar: document.getElementById(
-            "editor-avatar"
-        ),
-
-        editorUsername: document.getElementById(
-            "editor-username"
-        ),
-
-        editorTitle: document.getElementById(
-            "editor-player-title"
-        ),
-
-        avatarInput: document.getElementById(
-            "avatar-input"
-        ),
-
-        avatarStatus: document.getElementById(
-            "avatar-status"
-        ),
-
-        profileForm: document.getElementById(
-            "profile-form"
-        ),
-
-        displayNameInput: document.getElementById(
-            "display-name"
-        ),
-
-        titleInput: document.getElementById(
-            "profile-title"
-        ),
-
-        mottoInput: document.getElementById(
-            "motto"
-        ),
-
-        bioInput: document.getElementById(
-            "bio"
-        ),
-
-        profileMessage: document.getElementById(
-            "profile-message"
-        ),
-
-        chatStatus: document.getElementById(
-            "chat-status"
-        ),
-
-        chatMessages: document.getElementById(
-            "chat-messages"
-        ),
-
-        chatForm: document.getElementById(
-            "chat-form"
-        ),
-
-        chatInput: document.getElementById(
-            "chat-input"
-        ),
-
-        chatSend: document.getElementById(
-            "chat-send"
-        ),
-
-        notificationList: document.getElementById(
-            "notification-list"
-        ),
-
-        notificationCount: document.getElementById(
-            "notification-count"
-        ),
-
-        accountUsername: document.getElementById(
-            "account-username"
-        ),
-
-        accountEmail: document.getElementById(
-            "account-email"
-        ),
-
-        accountRole: document.getElementById(
-            "account-role"
-        ),
-
-        accountCreated: document.getElementById(
-            "account-created"
-        ),
-
-        accountMessages: document.getElementById(
-            "account-messages"
-        ),
-
-        accountViewProfile: document.getElementById(
-            "account-view-profile"
-        ),
-
-        editProfileView: document.getElementById(
-            "edit-profile-view-button"
-        ),
-
-        modal: document.getElementById(
-            "profile-modal"
-        ),
-
-        modalBackdrop: document.getElementById(
-            "modal-backdrop"
-        ),
-
-        modalClose: document.getElementById(
-            "modal-close"
-        ),
-
-        modalAvatar: document.getElementById(
-            "modal-avatar"
-        ),
-
-        modalName: document.getElementById(
-            "modal-display-name"
-        ),
-
-        modalUsername: document.getElementById(
-            "modal-username"
-        ),
-
-        modalStatus: document.getElementById(
-            "modal-status"
-        ),
-
-        modalTitle: document.getElementById(
-            "modal-title"
-        ),
-
-        modalMotto: document.getElementById(
-            "modal-motto"
-        ),
-
-        modalBio: document.getElementById(
-            "modal-bio"
-        ),
-
-        modalPlayerId: document.getElementById(
-            "modal-player-id"
-        ),
-
-        modalCreated: document.getElementById(
-            "modal-created"
-        ),
-
-        modalRole: document.getElementById(
-            "modal-role"
-        ),
-
-        modalLevel: document.getElementById(
-            "modal-level"
-        ),
-
-        modalXP: document.getElementById(
-            "modal-xp"
-        ),
-
-        modalGold: document.getElementById(
-            "modal-gold"
-        ),
-
-        modalMessages: document.getElementById(
-            "modal-messages"
-        ),
-
-        modalBadgeCount: document.getElementById(
-            "modal-badge-count"
-        ),
-
-        modalAchievementCount: document.getElementById(
-            "modal-achievement-count"
-        ),
-
-        modalBadges: document.getElementById(
-            "modal-badges"
-        ),
-
-        modalAchievements: document.getElementById(
-            "modal-achievements"
-        )
+        lastGlobalMessage: 0
 
     };
 
+
+    const $ = id => document.getElementById(id);
 
 
     // ======================================
     // HELPERS
     // ======================================
 
-    function formatNumber(value) {
+    function text(id, value) {
 
-        return Number(value || 0).toLocaleString(
-            "id-ID"
-        );
+        const element = $(id);
+
+        if (element) {
+
+            element.textContent =
+                value == null ? "" : String(value);
+
+        }
 
     }
 
 
-    function formatDate(value) {
+    function number(value) {
+
+        return Number(value || 0).toLocaleString("id-ID");
+
+    }
+
+
+    function date(value) {
 
         if (!value) return "-";
 
-        return new Intl.DateTimeFormat(
+        return new Intl.DateTimeFormat("id-ID", {
 
-            "id-ID",
+            dateStyle: "medium"
 
-            {
-
-                dateStyle: "medium"
-
-            }
-
-        ).format(new Date(value));
+        }).format(new Date(value));
 
     }
 
 
-    function formatDateTime(value) {
+    function dateTime(value) {
 
-        if (!value) return "-";
+        if (!value) return "";
 
-        return new Intl.DateTimeFormat(
+        return new Intl.DateTimeFormat("id-ID", {
 
-            "id-ID",
+            dateStyle: "short",
 
-            {
+            timeStyle: "short"
 
-                dateStyle: "short",
-
-                timeStyle: "short"
-
-            }
-
-        ).format(new Date(value));
+        }).format(new Date(value));
 
     }
 
 
-    function setText(element, value) {
+    function avatarURL(path) {
+
+        if (!path) return null;
+
+        if (/^https?:\/\//i.test(path)) {
+
+            return path;
+
+        }
+
+        return db.storage
+
+            .from(AVATAR_BUCKET)
+
+            .getPublicUrl(path)
+
+            .data.publicUrl;
+
+    }
+
+
+    function setAvatar(container, path) {
+
+        if (!container) return;
+
+        container.replaceChildren();
+
+        container.textContent = "♟";
+
+        const url = avatarURL(path);
+
+        if (!url) return;
+
+        const img = document.createElement("img");
+
+        img.src = url;
+
+        img.alt = "Player avatar";
+
+        img.loading = "lazy";
+
+        img.onerror = () => img.remove();
+
+        container.appendChild(img);
+
+    }
+
+
+    function show(id, visible) {
+
+        const element = $(id);
+
+        if (element) {
+
+            element.hidden = !visible;
+
+        }
+
+    }
+
+
+    function message(id, value, success = true) {
+
+        const element = $(id);
 
         if (!element) return;
 
-        element.textContent =
-            value == null ? "" : String(value);
+        element.textContent = value;
 
-    }
-
-
-    function showProfileMessage(message, success = true) {
-
-        setText(
-            el.profileMessage,
-            message
-        );
-
-        el.profileMessage.style.color =
-            success ? "#77d6a0" : "#df7d7d";
+        element.style.color =
+            success ? "#75d9a2" : "#e38a8a";
 
     }
 
@@ -361,979 +187,312 @@
     // AUTHENTICATION
     // ======================================
 
-    async function authenticate() {
+    const authResult = await db.auth.getUser();
 
-        const { data, error } =
-            await supabase.auth.getUser();
+    if (authResult.error || !authResult.data.user) {
 
+        location.replace("login.html");
 
-        if (error || !data.user) {
-
-            window.location.replace("login.html");
-
-            return null;
-
-        }
-
-
-        return data.user;
+        return;
 
     }
+
+    current.user = authResult.data.user;
 
 
 
     // ======================================
-    // AVATAR HELPERS
-    // ======================================
-
-    function getAvatarURL(path) {
-
-        if (!path) return null;
-
-
-        if (
-            typeof path === "string" &&
-            /^https?:\/\//i.test(path)
-        ) {
-
-            return path;
-
-        }
-
-
-        const { data } =
-            supabase.storage
-                .from(AVATAR_BUCKET)
-                .getPublicUrl(path);
-
-
-        return data?.publicUrl || null;
-
-    }
-
-
-
-    function setAvatar(container, path, fallback = "♟") {
-
-        if (!container) return;
-
-
-        container.replaceChildren();
-
-
-        const fallbackElement =
-            document.createElement("span");
-
-        fallbackElement.textContent = fallback;
-
-        container.appendChild(fallbackElement);
-
-
-        const url = getAvatarURL(path);
-
-        if (!url) return;
-
-
-        const image =
-            document.createElement("img");
-
-        image.src = url;
-
-        image.alt = "Player avatar";
-
-        image.loading = "lazy";
-
-
-        image.onerror = function () {
-
-            image.remove();
-
-        };
-
-
-        container.appendChild(image);
-
-    }
-
-
-
-    // ======================================
-    // LOAD OWN PROFILE
+    // LOAD PROFILE
     // ======================================
 
     async function loadOwnProfile() {
 
+        const { data, error } = await db
 
-        const { data, error } =
-            await supabase
+            .from("profiles")
 
-                .from("profiles")
+            .select("*")
 
-                .select(`
+            .eq("id", current.user.id)
 
-                    id,
-
-                    player_id,
-
-                    username,
-
-                    display_name,
-
-                    avatar_url,
-
-                    profile_title,
-
-                    motto,
-
-                    bio,
-
-                    level,
-
-                    experience,
-
-                    gold,
-
-                    account_role,
-
-                    created_at,
-
-                    last_seen_at
-
-                `)
-
-                .eq("id", currentUser.id)
-
-                .single();
+            .single();
 
 
         if (error) {
 
-            console.error(
-                "Profile loading failed:",
-                error
-            );
+            console.error(error);
 
-            throw new Error(
-                "Player profile was not found."
-            );
+            throw new Error("Player profile could not be loaded.");
 
         }
 
 
-        currentProfile = data;
+        current.profile = data;
 
 
-        const { data: statistics, error: statsError } =
-            await supabase
+        const suspended =
 
-                .from("player_statistics")
+            data.account_status === "suspended"
 
-                .select("total_messages")
+            && (
 
-                .eq("user_id", currentUser.id)
+                !data.suspended_until
 
-                .maybeSingle();
+                || new Date(data.suspended_until) > new Date()
+
+            );
 
 
-        if (statsError) {
+        if (suspended) {
 
-            console.error(statsError);
+            alert(
+                "Your account is currently suspended."
+            );
+
+            await db.auth.signOut();
+
+            location.replace("login.html");
+
+            return false;
 
         }
 
 
-        currentStatistics = statistics || {
-            total_messages: 0
-        };
-
-
-        // TOP BAR
-
-        setText(
-            el.topName,
+        text(
+            "top-user-name",
             data.display_name
         );
 
 
         setAvatar(
-            el.topAvatar,
+            $("top-avatar"),
             data.avatar_url
         );
 
 
-        // HERO
+        setAvatar(
+            $("editor-avatar"),
+            data.avatar_url
+        );
 
-        setText(
-            el.heroId,
+
+        text(
+            "hero-player-id",
             data.player_id
         );
 
 
-        // STATS
-
-        setText(
-            el.level,
-            formatNumber(data.level)
-        );
-
-
-        setText(
-            el.xp,
-            formatNumber(data.experience)
-        );
-
-
-        setText(
-            el.gold,
-            formatNumber(data.gold)
-        );
-
-
-        setText(
-            el.accountMessages,
-            formatNumber(
-                currentStatistics.total_messages
-            )
-        );
-
-
-        // EDITOR
-
-        setAvatar(
-            el.editorAvatar,
-            data.avatar_url
-        );
-
-
-        setText(
-            el.editorUsername,
+        text(
+            "editor-username",
             "@" + data.username
         );
 
 
-        setText(
-            el.editorTitle,
+        text(
+            "editor-title",
             data.profile_title || "Wanderer"
         );
 
 
-        el.displayNameInput.value =
-            data.display_name || "";
+        text(
+            "player-level",
+            number(data.level)
+        );
 
 
-        el.titleInput.value =
-            data.profile_title || "Wanderer";
+        text(
+            "player-xp",
+            number(data.experience)
+        );
 
 
-        el.mottoInput.value =
-            data.motto || "";
+        text(
+            "player-gold",
+            number(data.gold)
+        );
 
 
-        el.bioInput.value =
-            data.bio || "";
-
-
-        // ACCOUNT INFORMATION
-
-        setText(
-            el.accountUsername,
+        text(
+            "account-username",
             "@" + data.username
         );
 
 
-        setText(
-            el.accountEmail,
-            currentUser.email || "-"
+        text(
+            "account-email",
+            current.user.email || "-"
         );
 
 
-        setText(
-            el.accountRole,
-            String(data.account_role || "player").toUpperCase()
+        text(
+            "account-role",
+            String(data.account_role).toUpperCase()
         );
 
 
-        setText(
-            el.accountCreated,
-            formatDate(data.created_at)
+        text(
+            "account-created",
+            date(data.created_at)
         );
 
+
+        $("display-name").value =
+            data.display_name || "";
+
+
+        $("profile-title").value =
+            data.profile_title || "Wanderer";
+
+
+        $("motto").value =
+            data.motto || "";
+
+
+        $("bio").value =
+            data.bio || "";
+
+
+        if (data.account_role === "admin") {
+
+            show("admin-nav-link", true);
+
+            show("admin-panel", true);
+
+        }
+
+
+        return true;
 
     }
 
 
 
     // ======================================
-    // LOAD BADGES
+    // PLAYER SETTINGS
     // ======================================
 
-    async function getPlayerBadges(userId) {
+    async function loadSettings() {
 
+        const { data, error } = await db
 
-        const { data: awarded, error } =
-            await supabase
+            .from("player_settings")
 
-                .from("player_badges")
+            .select("*")
 
-                .select("badge_id, awarded_at")
+            .eq("user_id", current.user.id)
 
-                .eq("user_id", userId)
-
-                .order(
-                    "awarded_at",
-                    {
-                        ascending: false
-                    }
-                );
+            .single();
 
 
         if (error) {
 
             console.error(error);
-
-            return [];
-
-        }
-
-
-        if (!awarded || awarded.length === 0) {
-
-            return [];
-
-        }
-
-
-        const badgeIds =
-            awarded.map(item => item.badge_id);
-
-
-        const { data: badges, error: badgeError } =
-            await supabase
-
-                .from("badges")
-
-                .select("id, name, description, icon, rarity")
-
-                .in("id", badgeIds);
-
-
-        if (badgeError) {
-
-            console.error(badgeError);
-
-            return [];
-
-        }
-
-
-        const badgeMap = new Map(
-
-            (badges || []).map(
-                badge => [badge.id, badge]
-            )
-
-        );
-
-
-        return awarded
-
-            .map(item => ({
-
-                ...badgeMap.get(item.badge_id),
-
-                awarded_at: item.awarded_at
-
-            }))
-
-            .filter(item => item.id);
-
-    }
-
-
-
-    // ======================================
-    // LOAD ACHIEVEMENTS
-    // ======================================
-
-    async function getPlayerAchievements(userId) {
-
-
-        const { data: unlocked, error } =
-            await supabase
-
-                .from("player_achievements")
-
-                .select("achievement_id, unlocked_at")
-
-                .eq("user_id", userId)
-
-                .order(
-                    "unlocked_at",
-                    {
-                        ascending: false
-                    }
-                );
-
-
-        if (error) {
-
-            console.error(error);
-
-            return [];
-
-        }
-
-
-        if (!unlocked || unlocked.length === 0) {
-
-            return [];
-
-        }
-
-
-        const achievementIds =
-            unlocked.map(item => item.achievement_id);
-
-
-        const { data: achievements, error: achievementError } =
-            await supabase
-
-                .from("achievements")
-
-                .select("id, name, description, icon, points")
-
-                .in("id", achievementIds);
-
-
-        if (achievementError) {
-
-            console.error(achievementError);
-
-            return [];
-
-        }
-
-
-        const achievementMap = new Map(
-
-            (achievements || []).map(
-                item => [item.id, item]
-            )
-
-        );
-
-
-        return unlocked
-
-            .map(item => ({
-
-                ...achievementMap.get(item.achievement_id),
-
-                unlocked_at: item.unlocked_at
-
-            }))
-
-            .filter(item => item.id);
-
-    }
-
-
-
-    // ======================================
-    // PROFILE ONLINE STATUS
-    // ======================================
-
-    function isOnline(lastSeen) {
-
-        if (!lastSeen) return false;
-
-
-        const difference =
-            Date.now() - new Date(lastSeen).getTime();
-
-
-        return difference <= 120000;
-
-    }
-
-
-
-    // ======================================
-    // CREATE AWARD CARD
-    // ======================================
-
-    function createAwardCard(item, kind) {
-
-
-        const card =
-            document.createElement("article");
-
-        card.className = "award-card";
-
-
-        const icon =
-            document.createElement("div");
-
-        icon.className = "award-icon";
-
-        icon.textContent =
-            item.icon || "✦";
-
-
-        const info =
-            document.createElement("div");
-
-        info.className = "award-info";
-
-
-        const name =
-            document.createElement("strong");
-
-        name.textContent =
-            item.name || "Unknown";
-
-
-        const description =
-            document.createElement("p");
-
-        description.textContent =
-            item.description || "";
-
-
-        const extra =
-            document.createElement("small");
-
-
-        if (kind === "badge") {
-
-            extra.textContent =
-                String(item.rarity || "common").toUpperCase();
-
-        } else {
-
-            extra.textContent =
-                formatNumber(item.points) + " points";
-
-        }
-
-
-        info.appendChild(name);
-
-        info.appendChild(description);
-
-        info.appendChild(extra);
-
-
-        card.appendChild(icon);
-
-        card.appendChild(info);
-
-
-        return card;
-
-    }
-
-
-
-    function renderAwards(container, items, kind) {
-
-
-        container.replaceChildren();
-
-
-        if (!items || items.length === 0) {
-
-            const empty =
-                document.createElement("div");
-
-            empty.className = "empty-awards";
-
-            empty.textContent =
-                kind === "badge"
-                    ? "This player has no badges yet."
-                    : "No achievements unlocked yet.";
-
-
-            container.appendChild(empty);
 
             return;
 
         }
 
 
-        items.forEach(item => {
+        current.settings = data;
 
-            container.appendChild(
-                createAwardCard(item, kind)
-            );
 
-        });
+        $("profile-visibility").value =
+            data.profile_visibility;
+
+
+        $("private-message-policy").value =
+            data.private_message_policy;
+
+
+        $("show-online-status").checked =
+            data.show_online_status;
+
+
+        $("show-activity").checked =
+            data.show_activity;
+
+
+        $("notifications-enabled").checked =
+            data.notifications_enabled;
 
     }
 
 
 
     // ======================================
-    // OPEN PLAYER PROFILE
+    // SAVE SETTINGS
     // ======================================
 
-    async function openPlayerProfile(userId) {
+    $("settings-form").addEventListener(
 
+        "submit",
 
-        if (!userId) return;
+        async function (event) {
 
+            event.preventDefault();
 
-        el.modal.hidden = false;
 
-        document.body.style.overflow = "hidden";
+            const values = {
 
+                profile_visibility:
+                    $("profile-visibility").value,
 
-        setText(
-            el.modalName,
-            "Loading profile..."
-        );
+                private_message_policy:
+                    $("private-message-policy").value,
 
+                show_online_status:
+                    $("show-online-status").checked,
 
-        el.modalBadges.replaceChildren();
+                show_activity:
+                    $("show-activity").checked,
 
-        el.modalAchievements.replaceChildren();
+                notifications_enabled:
+                    $("notifications-enabled").checked
 
+            };
 
-        try {
 
+            const { error } = await db
 
-            const [
+                .from("player_settings")
 
-                profileResult,
+                .update(values)
 
-                statsResult,
+                .eq("user_id", current.user.id);
 
-                badges,
 
-                achievements
+            if (error) {
 
-            ] = await Promise.all([
+                console.error(error);
 
-
-                supabase
-
-                    .from("profiles")
-
-                    .select(`
-
-                        id,
-
-                        player_id,
-
-                        username,
-
-                        display_name,
-
-                        avatar_url,
-
-                        profile_title,
-
-                        motto,
-
-                        bio,
-
-                        level,
-
-                        experience,
-
-                        gold,
-
-                        account_role,
-
-                        created_at,
-
-                        last_seen_at
-
-                    `)
-
-                    .eq("id", userId)
-
-                    .single(),
-
-
-                supabase
-
-                    .from("player_statistics")
-
-                    .select("total_messages")
-
-                    .eq("user_id", userId)
-
-                    .maybeSingle(),
-
-
-                getPlayerBadges(userId),
-
-
-                getPlayerAchievements(userId)
-
-
-            ]);
-
-
-            if (profileResult.error) {
-
-                throw profileResult.error;
-
-            }
-
-
-            const profile =
-                profileResult.data;
-
-
-            const statistics =
-                statsResult.data || {
-                    total_messages: 0
-                };
-
-
-            // BASIC INFORMATION
-
-            setAvatar(
-                el.modalAvatar,
-                profile.avatar_url
-            );
-
-
-            setText(
-                el.modalName,
-                profile.display_name
-            );
-
-
-            setText(
-                el.modalUsername,
-                "@" + profile.username
-            );
-
-
-            setText(
-                el.modalTitle,
-                profile.profile_title || "Wanderer"
-            );
-
-
-            setText(
-                el.modalMotto,
-                profile.motto
-                    ? '"' + profile.motto + '"'
-                    : ""
-            );
-
-
-            setText(
-                el.modalBio,
-                profile.bio || "No biography."
-            );
-
-
-            setText(
-                el.modalPlayerId,
-                profile.player_id
-            );
-
-
-            setText(
-                el.modalCreated,
-                formatDate(profile.created_at)
-            );
-
-
-            setText(
-                el.modalRole,
-                String(profile.account_role || "player").toUpperCase()
-            );
-
-
-            // ONLINE STATUS
-
-            const online =
-                isOnline(profile.last_seen_at);
-
-
-            setText(
-                el.modalStatus,
-                online ? "● Online" : "● Offline"
-            );
-
-
-            el.modalStatus.classList.toggle(
-                "online",
-                online
-            );
-
-
-            // STATISTICS
-
-            setText(
-                el.modalLevel,
-                formatNumber(profile.level)
-            );
-
-
-            setText(
-                el.modalXP,
-                formatNumber(profile.experience)
-            );
-
-
-            setText(
-                el.modalGold,
-                formatNumber(profile.gold)
-            );
-
-
-            setText(
-                el.modalMessages,
-                formatNumber(statistics.total_messages)
-            );
-
-
-            setText(
-                el.modalBadgeCount,
-                formatNumber(badges.length)
-            );
-
-
-            setText(
-                el.modalAchievementCount,
-                formatNumber(achievements.length)
-            );
-
-
-            // AWARDS
-
-            renderAwards(
-                el.modalBadges,
-                badges,
-                "badge"
-            );
-
-
-            renderAwards(
-                el.modalAchievements,
-                achievements,
-                "achievement"
-            );
-
-
-            // UPDATE OWN DASHBOARD BADGE COUNT
-
-            if (userId === currentUser.id) {
-
-                setText(
-                    el.badgeCount,
-                    badges.length
+                message(
+                    "settings-message",
+                    "Failed to save settings.",
+                    false
                 );
 
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Profile display error:",
-                error
-            );
-
-
-            setText(
-                el.modalName,
-                "Profile unavailable"
-            );
-
-
-            setText(
-                el.modalBio,
-                "Could not load this player profile."
-            );
-
-        }
-
-    }
-
-
-
-    // ======================================
-    // CLOSE PROFILE MODAL
-    // ======================================
-
-    function closeProfileModal() {
-
-        el.modal.hidden = true;
-
-        document.body.style.overflow = "";
-
-    }
-
-
-    el.modalClose.addEventListener(
-        "click",
-        closeProfileModal
-    );
-
-
-    el.modalBackdrop.addEventListener(
-        "click",
-        closeProfileModal
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Escape" &&
-                !el.modal.hidden
-            ) {
-
-                closeProfileModal();
+                return;
 
             }
 
-        }
-    );
+
+            current.settings = {
+
+                ...current.settings,
+
+                ...values
+
+            };
 
 
+            message(
+                "settings-message",
+                "Settings successfully saved."
+            );
 
-    // ======================================
-    // PROFILE BUTTONS
-    // ======================================
-
-    el.headerProfile.addEventListener(
-        "click",
-        function () {
-
-            openPlayerProfile(currentUser.id);
-
-        }
-    );
-
-
-    el.accountViewProfile.addEventListener(
-        "click",
-        function () {
-
-            openPlayerProfile(currentUser.id);
 
         }
-    );
 
-
-    el.editProfileView.addEventListener(
-        "click",
-        function () {
-
-            openPlayerProfile(currentUser.id);
-
-        }
     );
 
 
@@ -1342,28 +501,29 @@
     // SAVE PROFILE
     // ======================================
 
-    el.profileForm.addEventListener(
-        "submit",
-        async function (event) {
+    $("profile-form").addEventListener(
 
+        "submit",
+
+        async function (event) {
 
             event.preventDefault();
 
 
             const displayName =
-                el.displayNameInput.value.trim();
+                $("display-name").value.trim();
 
 
             const profileTitle =
-                el.titleInput.value.trim() || "Wanderer";
+                $("profile-title").value.trim();
 
 
             const motto =
-                el.mottoInput.value.trim();
+                $("motto").value.trim();
 
 
             const bio =
-                el.bioInput.value.trim();
+                $("bio").value.trim();
 
 
             if (
@@ -1371,8 +531,9 @@
                 displayName.length > 30
             ) {
 
-                showProfileMessage(
-                    "Display name must contain 1–30 characters.",
+                message(
+                    "profile-message",
+                    "Display name must be 1–30 characters.",
                     false
                 );
 
@@ -1383,8 +544,9 @@
 
             if (profileTitle.length > 30) {
 
-                showProfileMessage(
-                    "Profile title maximum is 30 characters.",
+                message(
+                    "profile-message",
+                    "Profile title is too long.",
                     false
                 );
 
@@ -1393,72 +555,35 @@
             }
 
 
-            if (motto.length > 80) {
+            const { data, error } = await db
 
-                showProfileMessage(
-                    "Motto maximum is 80 characters.",
-                    false
-                );
+                .from("profiles")
 
-                return;
+                .update({
 
-            }
+                    display_name: displayName,
 
+                    profile_title: profileTitle || "Wanderer",
 
-            if (bio.length > 250) {
+                    motto,
 
-                showProfileMessage(
-                    "Biography maximum is 250 characters.",
-                    false
-                );
+                    bio
 
-                return;
+                })
 
-            }
+                .eq("id", current.user.id)
 
+                .select()
 
-            showProfileMessage("Saving profile...");
-
-
-            const { data, error } =
-                await supabase
-
-                    .from("profiles")
-
-                    .update({
-
-                        display_name: displayName,
-
-                        profile_title: profileTitle,
-
-                        motto: motto,
-
-                        bio: bio
-
-                    })
-
-                    .eq("id", currentUser.id)
-
-                    .select(`
-
-                        display_name,
-
-                        profile_title,
-
-                        motto,
-
-                        bio
-
-                    `)
-
-                    .single();
+                .single();
 
 
             if (error) {
 
                 console.error(error);
 
-                showProfileMessage(
+                message(
+                    "profile-message",
                     "Could not save profile.",
                     false
                 );
@@ -1468,37 +593,31 @@
             }
 
 
-            currentProfile = {
+            current.profile = {
 
-                ...currentProfile,
+                ...current.profile,
 
                 ...data
 
             };
 
 
-            setText(
-                el.topName,
-                data.display_name
+            text(
+                "top-user-name",
+                displayName
             );
 
 
-            setText(
-                el.editorTitle,
-                data.profile_title
+            text(
+                "editor-title",
+                profileTitle || "Wanderer"
             );
 
 
-            setText(
-                el.editorUsername,
-                "@" + currentProfile.username
-            );
-
-
-            showProfileMessage(
+            message(
+                "profile-message",
                 "Profile successfully updated."
             );
-
 
         }
 
@@ -1510,21 +629,19 @@
     // AVATAR UPLOAD
     // ======================================
 
-    el.avatarInput.addEventListener(
+    $("avatar-input").addEventListener(
+
         "change",
+
         async function () {
 
 
-            const file =
-                this.files?.[0];
-
+            const file = this.files?.[0];
 
             if (!file) return;
 
 
-            // CHECK TYPE
-
-            const allowedTypes = [
+            const validTypes = [
 
                 "image/jpeg",
 
@@ -1535,11 +652,11 @@
             ];
 
 
-            if (!allowedTypes.includes(file.type)) {
+            if (!validTypes.includes(file.type)) {
 
-                setText(
-                    el.avatarStatus,
-                    "Only JPG, PNG, and WebP are supported."
+                text(
+                    "avatar-status",
+                    "Unsupported image format."
                 );
 
                 this.value = "";
@@ -1549,13 +666,11 @@
             }
 
 
-            // CHECK SIZE
+            if (file.size > 2 * 1024 * 1024) {
 
-            if (file.size > MAX_AVATAR_SIZE) {
-
-                setText(
-                    el.avatarStatus,
-                    "Image exceeds the 2 MB limit."
+                text(
+                    "avatar-status",
+                    "Image maximum size is 2 MB."
                 );
 
                 this.value = "";
@@ -1565,13 +680,13 @@
             }
 
 
-            setText(
-                el.avatarStatus,
-                "Uploading profile photo..."
+            text(
+                "avatar-status",
+                "Uploading..."
             );
 
 
-            const extensionMap = {
+            const extension = {
 
                 "image/jpeg": "jpg",
 
@@ -1579,22 +694,12 @@
 
                 "image/webp": "webp"
 
-            };
+            }[file.type];
 
 
-            const extension =
-                extensionMap[file.type];
+            const path =
 
-
-            const randomId =
-                window.crypto?.randomUUID
-                    ? window.crypto.randomUUID()
-                    : Math.random().toString(36).slice(2);
-
-
-            const filePath =
-
-                currentUser.id +
+                current.user.id +
 
                 "/" +
 
@@ -1602,7 +707,7 @@
 
                 "-" +
 
-                randomId +
+                crypto.randomUUID() +
 
                 "." +
 
@@ -1615,125 +720,82 @@
             try {
 
 
-                // UPLOAD
+                const { data, error } = await db.storage
 
-                const { data: uploaded, error: uploadError } =
+                    .from(AVATAR_BUCKET)
 
-                    await supabase
+                    .upload(path, file, {
 
-                        .storage
+                        cacheControl: "3600",
+
+                        contentType: file.type,
+
+                        upsert: false
+
+                    });
+
+
+                if (error) throw error;
+
+
+                uploadedPath = data.path;
+
+
+                const oldPath = current.profile.avatar_url;
+
+
+                const { error: profileError } = await db
+
+                    .from("profiles")
+
+                    .update({
+
+                        avatar_url: uploadedPath
+
+                    })
+
+                    .eq("id", current.user.id);
+
+
+                if (profileError) throw profileError;
+
+
+                current.profile.avatar_url = uploadedPath;
+
+
+                setAvatar(
+                    $("editor-avatar"),
+                    uploadedPath
+                );
+
+
+                setAvatar(
+                    $("top-avatar"),
+                    uploadedPath
+                );
+
+
+                text(
+                    "avatar-status",
+                    "Profile photo updated."
+                );
+
+
+                if (
+                    oldPath &&
+                    !/^https?:\/\//i.test(oldPath)
+                ) {
+
+                    const { error: removeError } = await db.storage
 
                         .from(AVATAR_BUCKET)
 
-                        .upload(
-
-                            filePath,
-
-                            file,
-
-                            {
-
-                                cacheControl: "3600",
-
-                                contentType: file.type,
-
-                                upsert: false
-
-                            }
-
-                        );
-
-
-                if (uploadError) {
-
-                    throw uploadError;
-
-                }
-
-
-                uploadedPath = uploaded.path;
-
-
-                // UPDATE PROFILE
-
-                const oldAvatar =
-                    currentProfile.avatar_url;
-
-
-                const { error: updateError } =
-
-                    await supabase
-
-                        .from("profiles")
-
-                        .update({
-
-                            avatar_url: uploadedPath
-
-                        })
-
-                        .eq("id", currentUser.id);
-
-
-                if (updateError) {
-
-                    throw updateError;
-
-                }
-
-
-                // UPDATE LOCAL STATE
-
-                currentProfile.avatar_url =
-                    uploadedPath;
-
-
-                setAvatar(
-                    el.editorAvatar,
-                    uploadedPath
-                );
-
-
-                setAvatar(
-                    el.topAvatar,
-                    uploadedPath
-                );
-
-
-                setText(
-                    el.avatarStatus,
-                    "Profile photo updated successfully."
-                );
-
-
-                // REMOVE OLD FILE IF IT IS OUR STORAGE PATH
-
-                if (
-
-                    oldAvatar &&
-
-                    !/^https?:\/\//i.test(oldAvatar)
-
-                ) {
-
-
-                    const { error: removeError } =
-
-                        await supabase
-
-                            .storage
-
-                            .from(AVATAR_BUCKET)
-
-                            .remove([oldAvatar]);
+                        .remove([oldPath]);
 
 
                     if (removeError) {
 
-                        console.warn(
-                            "Old avatar cleanup failed:",
-                            removeError
-                        );
+                        console.warn(removeError);
 
                     }
 
@@ -1743,17 +805,12 @@
             } catch (error) {
 
 
-                console.error(
-                    "Avatar upload error:",
-                    error
-                );
+                console.error(error);
 
 
                 if (uploadedPath) {
 
-                    await supabase
-
-                        .storage
+                    await db.storage
 
                         .from(AVATAR_BUCKET)
 
@@ -1762,9 +819,9 @@
                 }
 
 
-                setText(
-                    el.avatarStatus,
-                    "Upload failed. Check Storage policies."
+                text(
+                    "avatar-status",
+                    "Photo upload failed."
                 );
 
 
@@ -1773,6 +830,783 @@
 
             this.value = "";
 
+        }
+
+    );
+
+
+
+    // ======================================
+    // LOAD STATISTICS
+    // ======================================
+
+    async function loadOwnStatistics() {
+
+        const { data: statistics } = await db
+
+            .from("player_statistics")
+
+            .select("total_messages")
+
+            .eq("user_id", current.user.id)
+
+            .maybeSingle();
+
+
+        text(
+            "account-messages",
+            number(statistics?.total_messages)
+        );
+
+
+        const { data: badges } = await db
+
+            .from("player_badges")
+
+            .select("badge_id")
+
+            .eq("user_id", current.user.id);
+
+
+        text(
+            "player-badge-count",
+            badges?.length || 0
+        );
+
+    }
+
+
+
+    // ======================================
+    // AWARD DATA
+    // ======================================
+
+    async function loadBadges(userId) {
+
+        const { data: awarded, error } = await db
+
+            .from("player_badges")
+
+            .select("badge_id, awarded_at")
+
+            .eq("user_id", userId)
+
+            .order("awarded_at", {
+                ascending: false
+            });
+
+
+        if (error || !awarded?.length) return [];
+
+
+        const ids = awarded.map(x => x.badge_id);
+
+
+        const { data: catalog } = await db
+
+            .from("badges")
+
+            .select("*")
+
+            .in("id", ids);
+
+
+        const map = new Map(
+
+            (catalog || []).map(x => [x.id, x])
+
+        );
+
+
+        return awarded
+
+            .map(x => ({
+
+                ...map.get(x.badge_id),
+
+                awarded_at: x.awarded_at
+
+            }))
+
+            .filter(x => x.id);
+
+    }
+
+
+
+    async function loadAchievements(userId) {
+
+        const { data: awarded, error } = await db
+
+            .from("player_achievements")
+
+            .select("achievement_id, unlocked_at")
+
+            .eq("user_id", userId)
+
+            .order("unlocked_at", {
+                ascending: false
+            });
+
+
+        if (error || !awarded?.length) return [];
+
+
+        const ids = awarded.map(x => x.achievement_id);
+
+
+        const { data: catalog } = await db
+
+            .from("achievements")
+
+            .select("*")
+
+            .in("id", ids);
+
+
+        const map = new Map(
+
+            (catalog || []).map(x => [x.id, x])
+
+        );
+
+
+        return awarded
+
+            .map(x => ({
+
+                ...map.get(x.achievement_id),
+
+                unlocked_at: x.unlocked_at
+
+            }))
+
+            .filter(x => x.id);
+
+    }
+
+
+
+    function renderAwards(id, items) {
+
+        const container = $(id);
+
+        container.replaceChildren();
+
+
+        if (!items.length) {
+
+            container.textContent = "Nothing unlocked yet.";
+
+            return;
+
+        }
+
+
+        for (const item of items) {
+
+
+            const card = document.createElement("div");
+
+            card.className = "award-item";
+
+
+            const title = document.createElement("strong");
+
+            title.textContent =
+
+                (item.icon || "✦") +
+
+                " " +
+
+                item.name;
+
+
+            const description = document.createElement("p");
+
+            description.textContent =
+                item.description || "";
+
+
+            card.appendChild(title);
+
+            card.appendChild(description);
+
+
+            container.appendChild(card);
+
+        }
+
+    }
+
+
+
+    // ======================================
+    // OPEN PUBLIC PROFILE
+    // ======================================
+
+    async function openProfile(userId) {
+
+
+        current.selectedProfileId = userId;
+
+
+        show("profile-modal", true);
+
+        document.body.style.overflow = "hidden";
+
+
+        text(
+            "modal-display-name",
+            "Loading..."
+        );
+
+
+        $("modal-badges").replaceChildren();
+
+        $("modal-achievements").replaceChildren();
+
+        $("modal-activity").replaceChildren();
+
+
+        try {
+
+
+            const { data: rows, error } = await db.rpc(
+
+                "eok_get_player_profile",
+
+                {
+
+                    p_user_id: userId
+
+                }
+
+            );
+
+
+            if (error) throw error;
+
+
+            const profile = rows?.[0];
+
+
+            if (!profile) {
+
+                throw new Error("Profile not found.");
+
+            }
+
+
+            const privateProfile = profile.is_private;
+
+
+            setAvatar(
+                $("modal-avatar"),
+                profile.avatar_url
+            );
+
+
+            text(
+                "modal-display-name",
+                profile.display_name
+            );
+
+
+            text(
+                "modal-username",
+                "@" + profile.username
+            );
+
+
+            text(
+                "modal-role",
+                String(profile.account_role).toUpperCase()
+            );
+
+
+            text(
+                "modal-player-id",
+                profile.player_id
+            );
+
+
+            text(
+                "modal-created",
+                date(profile.created_at)
+            );
+
+
+            text(
+                "modal-title",
+                privateProfile
+                    ? "Private Profile"
+                    : profile.profile_title || "Wanderer"
+            );
+
+
+            text(
+                "modal-motto",
+                privateProfile
+                    ? ""
+                    : profile.motto || ""
+            );
+
+
+            text(
+                "modal-bio",
+                privateProfile
+                    ? "This player has a private profile."
+                    : profile.bio || "No biography."
+            );
+
+
+            const online =
+
+                profile.last_seen_at &&
+
+                Date.now() -
+                    new Date(profile.last_seen_at).getTime()
+                    < 120000;
+
+
+            text(
+                "modal-status",
+                profile.last_seen_at
+                    ? online ? "● Online" : "● Offline"
+                    : "Status hidden"
+            );
+
+
+            text(
+                "modal-level",
+                privateProfile ? "—" : number(profile.level)
+            );
+
+
+            text(
+                "modal-xp",
+                privateProfile ? "—" : number(profile.experience)
+            );
+
+
+            text(
+                "modal-gold",
+                privateProfile ? "—" : number(profile.gold)
+            );
+
+
+            if (privateProfile) {
+
+                for (const id of [
+
+                    "modal-messages",
+
+                    "modal-badge-count",
+
+                    "modal-achievement-count"
+
+                ]) {
+
+                    text(id, "—");
+
+                }
+
+
+                $("modal-badges").textContent =
+                    "Profile details are private.";
+
+                $("modal-achievements").replaceChildren();
+
+                $("modal-activity").replaceChildren();
+
+            } else {
+
+
+                const [
+
+                    statistics,
+
+                    badges,
+
+                    achievements,
+
+                    activities
+
+                ] = await Promise.all([
+
+
+                    db.from("player_statistics")
+
+                        .select("total_messages")
+
+                        .eq("user_id", userId)
+
+                        .maybeSingle(),
+
+
+                    loadBadges(userId),
+
+
+                    loadAchievements(userId),
+
+
+                    db.rpc(
+                        "eok_get_player_activity",
+                        {
+                            p_user_id: userId
+                        }
+                    )
+
+
+                ]);
+
+
+                text(
+                    "modal-messages",
+                    number(statistics.data?.total_messages)
+                );
+
+
+                text(
+                    "modal-badge-count",
+                    badges.length
+                );
+
+
+                text(
+                    "modal-achievement-count",
+                    achievements.length
+                );
+
+
+                renderAwards(
+                    "modal-badges",
+                    badges
+                );
+
+
+                renderAwards(
+                    "modal-achievements",
+                    achievements
+                );
+
+
+                const activityData =
+                    activities.data || [];
+
+
+                $("modal-activity").replaceChildren();
+
+
+                for (const item of activityData) {
+
+                    const card = document.createElement("div");
+
+                    card.className = "activity-item";
+
+
+                    const heading = document.createElement("strong");
+
+                    heading.textContent = item.title;
+
+
+                    const detail = document.createElement("p");
+
+                    detail.textContent = item.details;
+
+
+                    card.appendChild(heading);
+
+                    card.appendChild(detail);
+
+
+                    $("modal-activity").appendChild(card);
+
+                }
+
+
+                if (!activityData.length) {
+
+                    $("modal-activity").textContent =
+                        "No recent activity.";
+
+                }
+
+            }
+
+
+
+            // PROFILE ACTIONS
+
+            const isSelf =
+                userId === current.user.id;
+
+
+            show(
+                "profile-chat-button",
+                !isSelf
+            );
+
+
+            show(
+                "profile-block-button",
+                !isSelf
+            );
+
+
+            show(
+                "profile-report-button",
+                !isSelf
+            );
+
+
+            if (!isSelf) {
+
+                await updateProfileActions(userId);
+
+            }
+
+
+        } catch (error) {
+
+
+            console.error(error);
+
+
+            text(
+                "modal-display-name",
+                "Profile unavailable"
+            );
+
+
+            text(
+                "modal-bio",
+                "Unable to load profile information."
+            );
+
+        }
+
+    }
+
+
+
+    // ======================================
+    // PROFILE ACTION BUTTON STATE
+    // ======================================
+
+    async function updateProfileActions(userId) {
+
+
+        const { data, error } = await db.rpc(
+
+            "eok_get_private_chat_status",
+
+            {
+
+                p_target_id: userId
+
+            }
+
+        );
+
+
+        if (error) {
+
+            console.error(error);
+
+            return;
+
+        }
+
+
+        const status = data?.[0];
+
+        if (!status) return;
+
+
+        const blockButton =
+            $("profile-block-button");
+
+
+        if (status.blocked_by_me) {
+
+            blockButton.textContent = "Unblock";
+
+        } else {
+
+            blockButton.textContent = "Block";
+
+        }
+
+
+        const chatButton =
+            $("profile-chat-button");
+
+
+        chatButton.disabled = !status.can_chat;
+
+
+        if (status.blocked_me) {
+
+            chatButton.textContent =
+                "This player blocked you";
+
+        } else if (!status.recipient_allows) {
+
+            chatButton.textContent =
+                "Private Messages Disabled";
+
+        } else if (status.blocked_by_me) {
+
+            chatButton.textContent =
+                "Unblock to Chat";
+
+        } else if (!status.target_active) {
+
+            chatButton.textContent =
+                "Player Unavailable";
+
+        } else {
+
+            chatButton.textContent =
+                "Private Chat";
+
+        }
+
+    }
+
+
+
+    // ======================================
+    // PROFILE MODAL CLOSE
+    // ======================================
+
+    $("profile-close").addEventListener(
+        "click",
+        closeProfile
+    );
+
+
+    $("profile-backdrop").addEventListener(
+        "click",
+        closeProfile
+    );
+
+
+    function closeProfile() {
+
+        show("profile-modal", false);
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    $("header-profile-button").addEventListener(
+        "click",
+        () => openProfile(current.user.id)
+    );
+
+
+    $("profile-preview-button").addEventListener(
+        "click",
+        () => openProfile(current.user.id)
+    );
+
+
+
+    // ======================================
+    // BLOCK / UNBLOCK
+    // ======================================
+
+    $("profile-block-button").addEventListener(
+
+        "click",
+
+        async function () {
+
+
+            const target = current.selectedProfileId;
+
+            if (!target || target === current.user.id) return;
+
+
+            const { data: stateData } = await db.rpc(
+
+                "eok_get_private_chat_status",
+
+                {
+
+                    p_target_id: target
+
+                }
+
+            );
+
+
+            const state = stateData?.[0];
+
+            if (!state) return;
+
+
+            let result;
+
+
+            if (state.blocked_by_me) {
+
+
+                result = await db
+
+                    .from("player_blocks")
+
+                    .delete()
+
+                    .eq("blocker_id", current.user.id)
+
+                    .eq("blocked_id", target);
+
+
+            } else {
+
+
+                result = await db
+
+                    .from("player_blocks")
+
+                    .insert({
+
+                        blocker_id: current.user.id,
+
+                        blocked_id: target
+
+                    });
+
+
+            }
+
+
+            if (result.error) {
+
+                console.error(result.error);
+
+                alert("Could not update block status.");
+
+                return;
+
+            }
+
+
+            await updateProfileActions(target);
+
+            await loadBlockedPlayers();
+
+
+            if (current.privateTargetId === target) {
+
+                closePrivateChat();
+
+            }
 
         }
 
@@ -1781,52 +1615,156 @@
 
 
     // ======================================
-    // LOAD GLOBAL CHAT
+    // PRIVATE CHAT
     // ======================================
 
-    async function loadChat() {
+    $("profile-chat-button").addEventListener(
+
+        "click",
+
+        async function () {
 
 
-        const { data: messages, error } =
+            const target = current.selectedProfileId;
 
-            await supabase
+            if (!target) return;
 
-                .from("chat_messages")
 
-                .select(`
+            await openPrivateChat(target);
 
-                    id,
+        }
 
-                    sender_id,
+    );
 
-                    content,
 
-                    created_at
+    async function openPrivateChat(targetId) {
 
-                `)
 
-                .order(
+        const { data, error } = await db.rpc(
 
-                    "created_at",
+            "eok_get_private_chat_status",
 
-                    {
+            {
 
-                        ascending: false
+                p_target_id: targetId
 
-                    }
+            }
 
-                )
+        );
 
-                .limit(CHAT_LIMIT);
+
+        if (error || !data?.[0]?.can_chat) {
+
+            alert(
+                "Private chat is unavailable. The player may have blocked you or disabled private messages."
+            );
+
+            return;
+
+        }
+
+
+        current.privateTargetId = targetId;
+
+
+        const { data: profileRows } = await db.rpc(
+
+            "eok_get_chat_profiles",
+
+            {
+
+                p_user_ids: [targetId]
+
+            }
+
+        );
+
+
+        const targetProfile = profileRows?.[0];
+
+
+        text(
+            "dm-title",
+            targetProfile?.display_name ||
+            "@" + targetProfile?.username
+        );
+
+
+        text(
+            "dm-status",
+            targetProfile?.username
+                ? "@" + targetProfile.username
+                : "Private conversation"
+        );
+
+
+        show("dm-modal", true);
+
+        document.body.style.overflow = "hidden";
+
+
+        await loadPrivateMessages();
+
+
+        await db.rpc(
+
+            "eok_mark_private_messages_read",
+
+            {
+
+                p_sender_id: targetId
+
+            }
+
+        );
+
+
+        connectPrivateRealtime();
+
+    }
+
+
+
+    async function loadPrivateMessages() {
+
+
+        if (!current.privateTargetId) return;
+
+
+        const me = current.user.id;
+
+        const other = current.privateTargetId;
+
+
+        const condition =
+
+            `and(sender_id.eq.${me},recipient_id.eq.${other}),` +
+
+            `and(sender_id.eq.${other},recipient_id.eq.${me})`;
+
+
+        const { data, error } = await db
+
+            .from("direct_messages")
+
+            .select("*")
+
+            .or(condition)
+
+            .order("created_at", {
+                ascending: true
+            })
+
+            .limit(100);
 
 
         if (error) {
 
             console.error(error);
 
-            setText(
-                el.chatStatus,
-                "Could not load global chat."
+            text(
+                "dm-status",
+                "Conversation unavailable."
             );
 
             return;
@@ -1834,280 +1772,483 @@
         }
 
 
-        const orderedMessages =
-            (messages || []).reverse();
+        const container = $("dm-messages");
 
+        container.replaceChildren();
 
-        if (orderedMessages.length === 0) {
 
-            el.chatMessages.replaceChildren();
+        for (const item of data || []) {
 
-            setText(
-                el.chatStatus,
-                "No messages yet. Start the conversation!"
-            );
 
-            return;
+            const bubble = document.createElement("div");
 
-        }
+            bubble.className =
 
+                "dm-message" +
 
-        const senderIds = [
+                (
 
-            ...new Set(
+                    item.sender_id === me
+                        ? " mine"
+                        : ""
 
-                orderedMessages.map(
-                    message => message.sender_id
-                )
+                );
 
-            )
 
-        ];
+            const body = document.createElement("div");
 
+            body.textContent = item.content;
 
-        const { data: profiles, error: profileError } =
 
-            await supabase
-
-                .from("profiles")
-
-                .select(`
-
-                    id,
-
-                    username,
-
-                    display_name,
-
-                    avatar_url,
-
-                    account_role
-
-                `)
-
-                .in("id", senderIds);
-
-
-        if (profileError) {
-
-            console.error(profileError);
-
-        }
-
-
-        const profileMap = new Map(
-
-            (profiles || []).map(
-
-                profile => [
-
-                    profile.id,
-
-                    profile
-
-                ]
-
-            )
-
-        );
-
-
-        el.chatMessages.replaceChildren();
-
-
-        orderedMessages.forEach(message => {
-
-
-            const profile =
-                profileMap.get(message.sender_id);
-
-
-            const item =
-                document.createElement("article");
-
-            item.className = "chat-item";
-
-
-            // AVATAR BUTTON
-
-            const avatarButton =
-                document.createElement("button");
-
-            avatarButton.type = "button";
-
-            avatarButton.className =
-                "chat-avatar-button";
-
-            avatarButton.setAttribute(
-                "aria-label",
-                "View player profile"
-            );
-
-
-            setAvatar(
-                avatarButton,
-                profile?.avatar_url
-            );
-
-
-            avatarButton.addEventListener(
-                "click",
-                function () {
-
-                    openPlayerProfile(message.sender_id);
-
-                }
-            );
-
-
-            // CONTENT
-
-            const content =
-                document.createElement("div");
-
-            content.className = "chat-content";
-
-
-            // HEADER
-
-            const header =
-                document.createElement("div");
-
-            header.className = "chat-header";
-
-
-            const author =
-                document.createElement("button");
-
-            author.type = "button";
-
-            author.className =
-                "chat-author-button";
-
-
-            author.textContent =
-                profile?.display_name ||
-                profile?.username ||
-                "Unknown Player";
-
-
-            author.addEventListener(
-                "click",
-                function () {
-
-                    openPlayerProfile(message.sender_id);
-
-                }
-            );
-
-
-            const username =
-                document.createElement("span");
-
-            username.className = "chat-username";
-
-            username.textContent =
-                profile?.username
-                    ? "@" + profile.username
-                    : "@unknown";
-
-
-            header.appendChild(author);
-
-            header.appendChild(username);
-
-
-            // DEVELOPER / FOUNDER LABEL
-
-            if (profile?.id === null) {
-
-                // No action.
-
-            }
-
-
-            // TIME
-
-            const time =
-                document.createElement("time");
-
-            time.className = "chat-time";
-
-            time.dateTime = message.created_at;
+            const time = document.createElement("small");
 
             time.textContent =
-                formatDateTime(message.created_at);
+                dateTime(item.created_at);
 
 
-            header.appendChild(time);
+            bubble.appendChild(body);
+
+            bubble.appendChild(time);
 
 
-            // MESSAGE
+            container.appendChild(bubble);
 
-            const text =
-                document.createElement("div");
-
-            text.className = "chat-text";
-
-            text.textContent =
-                message.content;
+        }
 
 
-            content.appendChild(header);
-
-            content.appendChild(text);
-
-
-            item.appendChild(avatarButton);
-
-            item.appendChild(content);
-
-
-            el.chatMessages.appendChild(item);
-
-
-        });
-
-
-        el.chatMessages.scrollTop =
-            el.chatMessages.scrollHeight;
-
-
-        setText(
-            el.chatStatus,
-            orderedMessages.length +
-            " recent messages"
-        );
-
+        container.scrollTop =
+            container.scrollHeight;
 
     }
 
 
 
-    // ======================================
-    // SEND CHAT MESSAGE
-    // ======================================
+    $("dm-form").addEventListener(
 
-    el.chatForm.addEventListener(
         "submit",
+
         async function (event) {
 
 
             event.preventDefault();
 
 
+            const target =
+                current.privateTargetId;
+
+
             const content =
-                el.chatInput.value.trim();
+                $("dm-input").value.trim();
 
 
-            if (!content) return;
+            if (!target || !content) return;
 
 
-            if (content.length > 500) {
+            $("dm-send").disabled = true;
 
-                setText(
-                    el.chatStatus,
-                    "Message limit: 500 characters."
+
+            const { error } = await db.rpc(
+
+                "eok_send_private_message",
+
+                {
+
+                    p_recipient_id: target,
+
+                    p_content: content
+
+                }
+
+            );
+
+
+            if (error) {
+
+                console.error(error);
+
+                text(
+                    "dm-status",
+                    "Message could not be sent."
+                );
+
+            } else {
+
+                $("dm-input").value = "";
+
+                await loadPrivateMessages();
+
+                text(
+                    "dm-status",
+                    "Connected"
+                );
+
+            }
+
+
+            $("dm-send").disabled = false;
+
+        }
+
+    );
+
+
+
+    function connectPrivateRealtime() {
+
+
+        if (current.dmChannel) {
+
+            db.removeChannel(current.dmChannel);
+
+        }
+
+
+        current.dmChannel = db
+
+            .channel(
+                "eok-dm-" + current.user.id
+            )
+
+            .on(
+
+                "postgres_changes",
+
+                {
+
+                    event: "INSERT",
+
+                    schema: "public",
+
+                    table: "direct_messages"
+
+                },
+
+                async payload => {
+
+
+                    const item = payload.new;
+
+
+                    if (
+
+                        item.sender_id === current.privateTargetId
+
+                        || item.recipient_id === current.privateTargetId
+
+                    ) {
+
+                        await loadPrivateMessages();
+
+                        await db.rpc(
+
+                            "eok_mark_private_messages_read",
+
+                            {
+
+                                p_sender_id:
+                                    current.privateTargetId
+
+                            }
+
+                        );
+
+                    }
+
+                }
+
+            )
+
+            .subscribe();
+
+    }
+
+
+
+    function closePrivateChat() {
+
+        show("dm-modal", false);
+
+        document.body.style.overflow = "";
+
+
+        if (current.dmChannel) {
+
+            db.removeChannel(current.dmChannel);
+
+            current.dmChannel = null;
+
+        }
+
+
+        current.privateTargetId = null;
+
+    }
+
+
+    $("dm-close").addEventListener(
+        "click",
+        closePrivateChat
+    );
+
+
+    $("dm-backdrop").addEventListener(
+        "click",
+        closePrivateChat
+    );
+
+
+
+    // ======================================
+    // BLOCKED PLAYERS
+    // ======================================
+
+    async function loadBlockedPlayers() {
+
+
+        const { data, error } = await db
+
+            .from("player_blocks")
+
+            .select("blocked_id, created_at")
+
+            .eq("blocker_id", current.user.id)
+
+            .order("created_at", {
+                ascending: false
+            });
+
+
+        if (error) {
+
+            console.error(error);
+
+            text(
+                "blocked-list",
+                "Could not load blocked players."
+            );
+
+            return;
+
+        }
+
+
+        const container = $("blocked-list");
+
+        container.replaceChildren();
+
+
+        if (!data?.length) {
+
+            container.textContent =
+                "You have not blocked any players.";
+
+            return;
+
+        }
+
+
+        const ids =
+            data.map(x => x.blocked_id);
+
+
+        const { data: profiles } = await db.rpc(
+
+            "eok_get_chat_profiles",
+
+            {
+
+                p_user_ids: ids
+
+            }
+
+        );
+
+
+        const map = new Map(
+
+            (profiles || []).map(x => [x.id, x])
+
+        );
+
+
+        for (const item of data) {
+
+
+            const profile = map.get(item.blocked_id);
+
+
+            const row = document.createElement("div");
+
+            row.className = "blocked-player";
+
+
+            const info = document.createElement("div");
+
+
+            const name = document.createElement("strong");
+
+            name.textContent =
+
+                "@" +
+
+                (
+
+                    profile?.username ||
+
+                    item.blocked_id.slice(0, 8)
+
+                );
+
+
+            info.appendChild(name);
+
+
+            const button = document.createElement("button");
+
+            button.className = "secondary-button";
+
+            button.textContent = "Unblock";
+
+
+            button.addEventListener(
+
+                "click",
+
+                async () => {
+
+
+                    const { error } = await db
+
+                        .from("player_blocks")
+
+                        .delete()
+
+                        .eq("blocker_id", current.user.id)
+
+                        .eq("blocked_id", item.blocked_id);
+
+
+                    if (error) {
+
+                        console.error(error);
+
+                        return;
+
+                    }
+
+
+                    await loadBlockedPlayers();
+
+                }
+
+            );
+
+
+            row.appendChild(info);
+
+            row.appendChild(button);
+
+            container.appendChild(row);
+
+        }
+
+    }
+
+
+
+    // ======================================
+    // REPORTS
+    // ======================================
+
+    function openReport(targetId, messageId = null) {
+
+        current.reportTargetId = targetId;
+
+        current.reportMessageId = messageId;
+
+
+        show("report-modal", true);
+
+    }
+
+
+    $("profile-report-button").addEventListener(
+
+        "click",
+
+        () => {
+
+            openReport(
+                current.selectedProfileId
+            );
+
+        }
+
+    );
+
+
+    $("report-close").addEventListener(
+
+        "click",
+
+        () => show("report-modal", false)
+
+    );
+
+
+    $("report-backdrop").addEventListener(
+
+        "click",
+
+        () => show("report-modal", false)
+
+    );
+
+
+    $("report-form").addEventListener(
+
+        "submit",
+
+        async function (event) {
+
+
+            event.preventDefault();
+
+
+            if (!current.reportTargetId) return;
+
+
+            const { error } = await db.rpc(
+
+                "eok_submit_report",
+
+                {
+
+                    p_reported_user_id:
+                        current.reportTargetId,
+
+                    p_message_id:
+                        current.reportMessageId,
+
+                    p_reason:
+                        $("report-reason").value,
+
+                    p_details:
+                        $("report-details").value.trim()
+
+                }
+
+            );
+
+
+            if (error) {
+
+                console.error(error);
+
+                message(
+                    "report-status",
+                    "Report could not be submitted.",
+                    false
                 );
 
                 return;
@@ -2115,15 +2256,303 @@
             }
 
 
-            // BASIC ANTI-SPAM COOLDOWN
+            message(
+                "report-status",
+                "Report submitted successfully."
+            );
+
+
+            $("report-form").reset();
+
+            current.reportTargetId = null;
+
+            current.reportMessageId = null;
+
+
+            setTimeout(
+                () => show("report-modal", false),
+                900
+            );
+
+        }
+
+    );
+
+
+
+    // ======================================
+    // GLOBAL CHAT
+    // ======================================
+
+    async function loadGlobalChat() {
+
+
+        const { data: messages, error } = await db
+
+            .from("chat_messages")
+
+            .select("id,sender_id,content,created_at")
+
+            .order("created_at", {
+                ascending: false
+            })
+
+            .limit(50);
+
+
+        if (error) {
+
+            console.error(error);
+
+            text(
+                "chat-status",
+                "Chat could not be loaded."
+            );
+
+            return;
+
+        }
+
+
+        const ordered =
+            (messages || []).reverse();
+
+
+        const ids = [
+
+            ...new Set(
+
+                ordered.map(x => x.sender_id)
+
+            )
+
+        ];
+
+
+        const { data: profiles, error: identityError } =
+
+            await db.rpc(
+
+                "eok_get_chat_profiles",
+
+                {
+
+                    p_user_ids: ids
+
+                }
+
+            );
+
+
+        if (identityError) {
+
+            console.error(
+                "Chat identity loading failed:",
+                identityError
+            );
+
+        }
+
+
+        const profileMap = new Map(
+
+            (profiles || []).map(x => [x.id, x])
+
+        );
+
+
+        const container = $("chat-messages");
+
+        container.replaceChildren();
+
+
+        for (const item of ordered) {
+
+
+            const profile = profileMap.get(item.sender_id);
+
+
+            const row = document.createElement("article");
+
+            row.className = "chat-row";
+
+
+            const avatar = document.createElement("div");
+
+            avatar.className = "chat-avatar";
+
+
+            setAvatar(
+                avatar,
+                profile?.avatar_url
+            );
+
+
+            const body = document.createElement("div");
+
+            body.className = "chat-body";
+
+
+            const userLine = document.createElement("div");
+
+            userLine.className = "chat-user-line";
+
+
+            const displayName = document.createElement("button");
+
+            displayName.className = "chat-name-button";
+
+            displayName.textContent =
+
+                profile?.display_name ||
+
+                "Player " + item.sender_id.slice(0, 8);
+
+
+            displayName.addEventListener(
+
+                "click",
+
+                () => openProfile(item.sender_id)
+
+            );
+
+
+            const handle = document.createElement("span");
+
+            handle.className = "chat-handle";
+
+
+            // Username is always shown when available.
+            // Fallback uses a unique ID fragment,
+            // never "Unknown Player".
+
+            handle.textContent =
+
+                profile?.username
+
+                    ? "@" + profile.username
+
+                    : "@player_" + item.sender_id.slice(0, 8);
+
+
+            userLine.appendChild(displayName);
+
+            userLine.appendChild(handle);
+
+
+            if (profile?.account_role === "admin") {
+
+                const badge = document.createElement("span");
+
+                badge.className = "chat-badge-mini";
+
+                badge.textContent = "ADMIN";
+
+                userLine.appendChild(badge);
+
+            }
+
+
+            const time = document.createElement("span");
+
+            time.className = "chat-time";
+
+            time.textContent = dateTime(item.created_at);
+
+
+            userLine.appendChild(time);
+
+
+            const content = document.createElement("div");
+
+            content.className = "chat-message-text";
+
+            content.textContent = item.content;
+
+
+            const report = document.createElement("button");
+
+            report.className = "chat-report-button";
+
+            report.textContent = "Report";
+
+
+            report.addEventListener(
+
+                "click",
+
+                () => openReport(
+                    item.sender_id,
+                    item.id
+                )
+
+            );
+
+
+            body.appendChild(userLine);
+
+            body.appendChild(content);
+
+            body.appendChild(report);
+
+
+            row.appendChild(avatar);
+
+            row.appendChild(body);
+
+
+            container.appendChild(row);
+
+        }
+
+
+        container.scrollTop =
+            container.scrollHeight;
+
+
+        text(
+            "chat-status",
+            ordered.length + " recent messages"
+        );
+
+    }
+
+
+
+    // ======================================
+    // SEND GLOBAL CHAT
+    // ======================================
+
+    $("chat-form").addEventListener(
+
+        "submit",
+
+        async function (event) {
+
+
+            event.preventDefault();
+
+
+            const content =
+                $("chat-input").value.trim();
+
+
+            if (!content) return;
+
+
+            if (content.length > 500) return;
+
 
             const now = Date.now();
 
 
-            if (now - lastMessageTime < 1200) {
+            if (
+                now - current.lastGlobalMessage < 1200
+            ) {
 
-                setText(
-                    el.chatStatus,
+                text(
+                    "chat-status",
                     "Please wait before sending another message."
                 );
 
@@ -2132,51 +2561,44 @@
             }
 
 
-            lastMessageTime = now;
+            current.lastGlobalMessage = now;
 
 
-            el.chatSend.disabled = true;
-
-            el.chatSend.textContent = "Sending...";
+            $("chat-send").disabled = true;
 
 
-            const { error } =
+            const { error } = await db
 
-                await supabase
+                .from("chat_messages")
 
-                    .from("chat_messages")
+                .insert({
 
-                    .insert({
+                    sender_id: current.user.id,
 
-                        sender_id: currentUser.id,
+                    content
 
-                        content: content
-
-                    });
+                });
 
 
             if (error) {
 
                 console.error(error);
 
-                setText(
-                    el.chatStatus,
+                text(
+                    "chat-status",
                     "Message could not be sent."
                 );
 
             } else {
 
-                el.chatInput.value = "";
+                $("chat-input").value = "";
 
-                await loadChat();
+                await loadGlobalChat();
 
             }
 
 
-            el.chatSend.disabled = false;
-
-            el.chatSend.textContent = "Send";
-
+            $("chat-send").disabled = false;
 
         }
 
@@ -2185,215 +2607,1176 @@
 
 
     // ======================================
-    // LOAD NOTIFICATIONS
+    // REALTIME GLOBAL CHAT
+    // ======================================
+
+    function connectGlobalRealtime() {
+
+
+        current.chatChannel = db
+
+            .channel("eok-global-community-040")
+
+            .on(
+
+                "postgres_changes",
+
+                {
+
+                    event: "INSERT",
+
+                    schema: "public",
+
+                    table: "chat_messages"
+
+                },
+
+                async () => {
+
+                    await loadGlobalChat();
+
+                    await loadOwnStatistics();
+
+                }
+
+            )
+
+            .subscribe(
+
+                status => {
+
+                    if (status === "SUBSCRIBED") {
+
+                        text(
+                            "chat-status",
+                            "Connected to global chat."
+                        );
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+
+    // ======================================
+    // NOTIFICATIONS
     // ======================================
 
     async function loadNotifications() {
 
 
-        const { data, error } =
+        const { data, error } = await db
 
-            await supabase
+            .from("notifications")
 
-                .from("notifications")
+            .select("*")
 
-                .select(`
+            .eq("user_id", current.user.id)
 
-                    id,
+            .order("created_at", {
+                ascending: false
+            })
 
-                    type,
-
-                    title,
-
-                    message,
-
-                    is_read,
-
-                    created_at
-
-                `)
-
-                .eq("user_id", currentUser.id)
-
-                .order(
-
-                    "created_at",
-
-                    {
-
-                        ascending: false
-
-                    }
-
-                )
-
-                .limit(25);
+            .limit(20);
 
 
         if (error) {
 
             console.error(error);
 
-            setText(
-                el.notificationList,
-                "Could not load notifications."
-            );
-
             return;
 
         }
 
 
-        const notifications =
-            data || [];
+        const unread =
+            (data || []).filter(x => !x.is_read).length;
 
 
-        const unreadCount =
-            notifications.filter(
-                item => !item.is_read
-            ).length;
-
-
-        setText(
-            el.notificationCount,
-            unreadCount
+        text(
+            "notification-count",
+            unread
         );
 
 
-        el.notificationList.replaceChildren();
+        const container = $("notification-list");
+
+        container.replaceChildren();
 
 
-        if (notifications.length === 0) {
+        if (!data?.length) {
 
-            setText(
-                el.notificationList,
-                "No notifications yet."
-            );
+            container.textContent =
+                "No notifications yet.";
 
             return;
 
         }
 
 
-        notifications.forEach(item => {
+        for (const item of data) {
 
 
-            const container =
-                document.createElement("article");
+            const row = document.createElement("div");
 
-            container.className =
-                "notification-item";
+            row.className = "notification-item";
 
 
             if (!item.is_read) {
 
-                container.classList.add("unread");
+                row.classList.add("unread");
 
             }
 
 
-            const title =
-                document.createElement("h3");
+            const title = document.createElement("h3");
 
-            title.textContent =
-                item.title;
+            title.textContent = item.title;
 
 
-            const message =
-                document.createElement("p");
+            const body = document.createElement("p");
 
-            message.textContent =
-                item.message;
+            body.textContent = item.message;
 
 
-            const date =
-                document.createElement("small");
+            const time = document.createElement("small");
 
-            date.textContent =
-                formatDateTime(item.created_at);
+            time.textContent = dateTime(item.created_at);
 
 
-            container.appendChild(title);
+            row.appendChild(title);
 
-            container.appendChild(message);
+            row.appendChild(body);
 
-            container.appendChild(date);
+            row.appendChild(time);
 
 
             if (!item.is_read) {
 
 
-                const button =
-                    document.createElement("button");
+                const button = document.createElement("button");
 
+                button.className = "secondary-button";
 
-                button.type = "button";
-
-                button.textContent = "Mark as read";
+                button.textContent = "Mark Read";
 
 
                 button.addEventListener(
+
                     "click",
-                    async function () {
+
+                    async () => {
 
 
-                        button.disabled = true;
+                        const { error } = await db
+
+                            .from("notifications")
+
+                            .update({
+
+                                is_read: true,
+
+                                read_at: new Date().toISOString()
+
+                            })
+
+                            .eq("id", item.id)
+
+                            .eq("user_id", current.user.id);
 
 
-                        const { error } =
+                        if (!error) {
 
-                            await supabase
-
-                                .from("notifications")
-
-                                .update({
-
-                                    is_read: true,
-
-                                    read_at:
-                                        new Date().toISOString()
-
-                                })
-
-                                .eq("id", item.id)
-
-                                .eq("user_id", currentUser.id);
-
-
-                        if (error) {
-
-                            console.error(error);
-
-                            button.disabled = false;
-
-                            return;
+                            await loadNotifications();
 
                         }
-
-
-                        await loadNotifications();
-
 
                     }
 
                 );
 
 
-                container.appendChild(button);
-
+                row.appendChild(button);
 
             }
 
 
-            el.notificationList.appendChild(
-                container
+            container.appendChild(row);
+
+        }
+
+    }
+
+
+
+    // ======================================
+    // PLAYER DIRECTORY
+    // ======================================
+
+    async function loadDirectory() {
+
+
+        const query =
+            $("directory-search").value.trim();
+
+
+        const sort =
+            $("directory-sort").value;
+
+
+        let request = db
+
+            .from("profiles")
+
+            .select(`
+
+                id,
+
+                player_id,
+
+                username,
+
+                display_name,
+
+                avatar_url,
+
+                level,
+
+                experience,
+
+                gold,
+
+                created_at,
+
+                account_role
+
+            `);
+
+
+        if (query) {
+
+            const safeQuery =
+                query.replace(/[(),]/g, "");
+
+            request = request.or(
+
+                `username.ilike.%${safeQuery}%,` +
+
+                `display_name.ilike.%${safeQuery}%,` +
+
+                `player_id.ilike.%${safeQuery}%`
+
+            );
+
+        }
+
+
+        const { data, error } = await request
+
+            .order(sort, {
+                ascending: false
+            })
+
+            .limit(40);
+
+
+        if (error) {
+
+            console.error(error);
+
+            text(
+                "directory-results",
+                "Player search failed."
+            );
+
+            return;
+
+        }
+
+
+        const container = $("directory-results");
+
+        container.replaceChildren();
+
+
+        if (!data?.length) {
+
+            container.textContent =
+                "No visible players found.";
+
+            return;
+
+        }
+
+
+        for (const player of data) {
+
+
+            const card = document.createElement("article");
+
+            card.className = "directory-card";
+
+
+            const avatar = document.createElement("div");
+
+            avatar.className = "directory-avatar";
+
+            setAvatar(avatar, player.avatar_url);
+
+
+            const info = document.createElement("div");
+
+            info.className = "directory-info";
+
+
+            const name = document.createElement("strong");
+
+            name.textContent =
+                player.display_name;
+
+
+            const handle = document.createElement("span");
+
+            handle.textContent =
+
+                "@" + player.username +
+
+                " · Level " + number(player.level);
+
+
+            info.appendChild(name);
+
+            info.appendChild(handle);
+
+
+            const view = document.createElement("button");
+
+            view.textContent = "Profile";
+
+            view.addEventListener(
+
+                "click",
+
+                () => openProfile(player.id)
+
             );
 
 
-        });
+            card.appendChild(avatar);
 
+            card.appendChild(info);
+
+            card.appendChild(view);
+
+
+            container.appendChild(card);
+
+        }
 
     }
+
+
+    $("directory-search-button").addEventListener(
+        "click",
+        loadDirectory
+    );
+
+
+    $("directory-sort").addEventListener(
+        "change",
+        loadDirectory
+    );
+
+
+    $("directory-search").addEventListener(
+
+        "keydown",
+
+        event => {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                loadDirectory();
+
+            }
+
+        }
+
+    );
+
+
+
+    // ======================================
+    // COMMUNITY STATISTICS
+    // ======================================
+
+    async function loadCommunityStatistics() {
+
+
+        const { data, error } = await db.rpc(
+
+            "eok_get_community_stats"
+
+        );
+
+
+        if (error) {
+
+            console.error(error);
+
+            return;
+
+        }
+
+
+        text(
+            "community-players",
+            number(data.total_players)
+        );
+
+
+        text(
+            "community-online",
+            number(data.online_players)
+        );
+
+
+        text(
+            "community-messages",
+            number(data.total_messages)
+        );
+
+
+        text(
+            "community-achievements",
+            number(data.total_achievements)
+        );
+
+    }
+
+
+
+    // ======================================
+    // USERNAME CHANGE
+    // ======================================
+
+    $("username-form").addEventListener(
+
+        "submit",
+
+        async function (event) {
+
+
+            event.preventDefault();
+
+
+            const username =
+                $("new-username").value.trim().toLowerCase();
+
+
+            if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+
+                message(
+                    "username-message",
+                    "Invalid username format.",
+                    false
+                );
+
+                return;
+
+            }
+
+
+            const { data, error } = await db.rpc(
+
+                "eok_change_username",
+
+                {
+
+                    p_new_username: username
+
+                }
+
+            );
+
+
+            if (error) {
+
+                console.error(error);
+
+                message(
+                    "username-message",
+                    error.message,
+                    false
+                );
+
+                return;
+
+            }
+
+
+            message(
+                "username-message",
+                "Username changed. Your next change will be available in 30 days."
+            );
+
+
+            $("new-username").value = "";
+
+
+            await loadOwnProfile();
+
+        }
+
+    );
+
+
+
+    // ======================================
+    // ADMIN PLAYER SEARCH
+    // ======================================
+
+    async function adminSearchPlayers() {
+
+
+        if (current.profile.account_role !== "admin") return;
+
+
+        const query =
+            $("admin-player-search").value.trim();
+
+
+        const { data, error } = await db.rpc(
+
+            "eok_admin_search_players",
+
+            {
+
+                p_query: query
+
+            }
+
+        );
+
+
+        if (error) {
+
+            console.error(error);
+
+            return;
+
+        }
+
+
+        const container = $("admin-player-results");
+
+        container.replaceChildren();
+
+
+        for (const player of data || []) {
+
+
+            const card = document.createElement("article");
+
+            card.className = "admin-result";
+
+
+            const name = document.createElement("strong");
+
+            name.textContent =
+                player.display_name + " · @" + player.username;
+
+
+            const details = document.createElement("p");
+
+            details.textContent =
+
+                player.player_id +
+
+                " · " +
+
+                player.account_status +
+
+                " · Level " +
+
+                player.level;
+
+
+            card.appendChild(name);
+
+            card.appendChild(details);
+
+
+            const actions = document.createElement("div");
+
+            actions.className = "admin-result-actions";
+
+
+            const activate = document.createElement("button");
+
+            activate.textContent = "Activate";
+
+
+            activate.addEventListener(
+
+                "click",
+
+                async () => {
+
+
+                    const { error } = await db.rpc(
+
+                        "eok_admin_set_player_status",
+
+                        {
+
+                            p_target_id: player.id,
+
+                            p_status: "active",
+
+                            p_suspended_until: null,
+
+                            p_note: "Reactivated by administrator"
+
+                        }
+
+                    );
+
+
+                    if (error) {
+
+                        alert(error.message);
+
+                        return;
+
+                    }
+
+
+                    await adminSearchPlayers();
+
+                    await adminLoadAudit();
+
+                }
+
+            );
+
+
+            const suspend = document.createElement("button");
+
+            suspend.textContent = "Suspend 24 Hours";
+
+
+            suspend.addEventListener(
+
+                "click",
+
+                async () => {
+
+
+                    const reason = prompt(
+                        "Suspension reason:"
+                    );
+
+
+                    if (reason === null) return;
+
+
+                    const until = new Date(
+
+                        Date.now() + 24 * 60 * 60 * 1000
+
+                    ).toISOString();
+
+
+                    const { error } = await db.rpc(
+
+                        "eok_admin_set_player_status",
+
+                        {
+
+                            p_target_id: player.id,
+
+                            p_status: "suspended",
+
+                            p_suspended_until: until,
+
+                            p_note: reason
+
+                        }
+
+                    );
+
+
+                    if (error) {
+
+                        alert(error.message);
+
+                        return;
+
+                    }
+
+
+                    await adminSearchPlayers();
+
+                    await adminLoadAudit();
+
+                }
+
+            );
+
+
+            const notice = document.createElement("button");
+
+            notice.textContent = "Send Notice";
+
+
+            notice.addEventListener(
+
+                "click",
+
+                async () => {
+
+
+                    const title = prompt("Notification title:");
+
+                    if (!title) return;
+
+
+                    const body = prompt("Notification message:");
+
+                    if (!body) return;
+
+
+                    const { error } = await db.rpc(
+
+                        "eok_admin_send_notification",
+
+                        {
+
+                            p_target_id: player.id,
+
+                            p_title: title,
+
+                            p_message: body
+
+                        }
+
+                    );
+
+
+                    if (error) {
+
+                        alert(error.message);
+
+                        return;
+
+                    }
+
+
+                    alert("Notification sent.");
+
+                    await adminLoadAudit();
+
+                }
+
+            );
+
+
+            actions.appendChild(activate);
+
+            actions.appendChild(suspend);
+
+            actions.appendChild(notice);
+
+
+            card.appendChild(actions);
+
+            container.appendChild(card);
+
+        }
+
+    }
+
+
+    $("admin-search-button").addEventListener(
+        "click",
+        adminSearchPlayers
+    );
+
+
+
+    // ======================================
+    // ADMIN REPORTS
+    // ======================================
+
+    async function adminLoadReports() {
+
+
+        if (current.profile.account_role !== "admin") return;
+
+
+        const { data, error } = await db
+
+            .from("player_reports")
+
+            .select("*")
+
+            .order("created_at", {
+                ascending: false
+            })
+
+            .limit(50);
+
+
+        if (error) {
+
+            console.error(error);
+
+            return;
+
+        }
+
+
+        const container = $("admin-report-results");
+
+        container.replaceChildren();
+
+
+        if (!data?.length) {
+
+            container.textContent = "No reports.";
+
+            return;
+
+        }
+
+
+        for (const report of data) {
+
+
+            const card = document.createElement("article");
+
+            card.className = "admin-result";
+
+
+            const title = document.createElement("strong");
+
+            title.textContent =
+                report.reason.toUpperCase();
+
+
+            const detail = document.createElement("p");
+
+            detail.textContent =
+
+                report.details ||
+
+                "No additional details.";
+
+
+            const status = document.createElement("p");
+
+            status.textContent =
+                "Status: " + report.status;
+
+
+            card.appendChild(title);
+
+            card.appendChild(detail);
+
+            card.appendChild(status);
+
+
+            const actions = document.createElement("div");
+
+            actions.className = "admin-result-actions";
+
+
+            for (const state of ["reviewed", "resolved", "rejected"]) {
+
+
+                const button = document.createElement("button");
+
+                button.textContent = state;
+
+
+                button.addEventListener(
+
+                    "click",
+
+                    async () => {
+
+
+                        const { error } = await db.rpc(
+
+                            "eok_admin_update_report",
+
+                            {
+
+                                p_report_id: report.id,
+
+                                p_status: state
+
+                            }
+
+                        );
+
+
+                        if (error) {
+
+                            alert(error.message);
+
+                            return;
+
+                        }
+
+
+                        await adminLoadReports();
+
+                        await adminLoadAudit();
+
+                    }
+
+                );
+
+
+                actions.appendChild(button);
+
+            }
+
+
+            if (report.chat_message_id) {
+
+
+                const remove = document.createElement("button");
+
+                remove.textContent = "Delete Reported Message";
+
+
+                remove.addEventListener(
+
+                    "click",
+
+                    async () => {
+
+
+                        if (!confirm(
+                            "Delete the reported global chat message?"
+                        )) {
+
+                            return;
+
+                        }
+
+
+                        const { error } = await db.rpc(
+
+                            "eok_admin_delete_chat_message",
+
+                            {
+
+                                p_message_id:
+                                    report.chat_message_id
+
+                            }
+
+                        );
+
+
+                        if (error) {
+
+                            alert(error.message);
+
+                            return;
+
+                        }
+
+
+                        await adminLoadReports();
+
+                        await adminLoadAudit();
+
+                        await loadGlobalChat();
+
+                    }
+
+                );
+
+
+                actions.appendChild(remove);
+
+            }
+
+
+            card.appendChild(actions);
+
+            container.appendChild(card);
+
+        }
+
+    }
+
+
+    $("admin-load-reports").addEventListener(
+        "click",
+        adminLoadReports
+    );
+
+
+
+    // ======================================
+    // ADMIN SEND NOTIFICATION FORM
+    // ======================================
+
+    $("admin-notification-form").addEventListener(
+
+        "submit",
+
+        async function (event) {
+
+
+            event.preventDefault();
+
+
+            const target =
+                $("admin-notification-user").value.trim();
+
+
+            const title =
+                $("admin-notification-title").value.trim();
+
+
+            const body =
+                $("admin-notification-message").value.trim();
+
+
+            const { error } = await db.rpc(
+
+                "eok_admin_send_notification",
+
+                {
+
+                    p_target_id: target,
+
+                    p_title: title,
+
+                    p_message: body
+
+                }
+
+            );
+
+
+            if (error) {
+
+                console.error(error);
+
+                message(
+                    "admin-notification-status",
+                    error.message,
+                    false
+                );
+
+                return;
+
+            }
+
+
+            message(
+                "admin-notification-status",
+                "Notification sent successfully."
+            );
+
+
+            this.reset();
+
+
+            await adminLoadAudit();
+
+        }
+
+    );
+
+
+
+    // ======================================
+    // ADMIN AUDIT LOGS
+    // ======================================
+
+    async function adminLoadAudit() {
+
+
+        if (current.profile.account_role !== "admin") return;
+
+
+        const { data, error } = await db
+
+            .from("admin_audit_logs")
+
+            .select("*")
+
+            .order("created_at", {
+                ascending: false
+            })
+
+            .limit(40);
+
+
+        if (error) {
+
+            console.error(error);
+
+            return;
+
+        }
+
+
+        const container = $("admin-audit-results");
+
+        container.replaceChildren();
+
+
+        for (const item of data || []) {
+
+
+            const card = document.createElement("article");
+
+            card.className = "admin-result";
+
+
+            const title = document.createElement("strong");
+
+            title.textContent = item.action_type;
+
+
+            const detail = document.createElement("p");
+
+            detail.textContent =
+                item.description + " · " + dateTime(item.created_at);
+
+
+            card.appendChild(title);
+
+            card.appendChild(detail);
+
+
+            container.appendChild(card);
+
+        }
+
+    }
+
+
+    $("admin-load-audit").addEventListener(
+        "click",
+        adminLoadAudit
+    );
 
 
 
@@ -2403,84 +3786,13 @@
 
     async function updateLastSeen() {
 
-
-        const { error } =
-            await supabase.rpc("touch_last_seen");
-
+        const { error } = await db.rpc("touch_last_seen");
 
         if (error) {
 
-            console.warn(
-                "Last seen update failed:",
-                error.message
-            );
+            console.warn(error);
 
         }
-
-    }
-
-
-
-    // ======================================
-    // REALTIME CHAT
-    // ======================================
-
-    function connectChatRealtime() {
-
-
-        chatChannel =
-
-            supabase
-
-                .channel("eok-global-chat-v030")
-
-                .on(
-
-                    "postgres_changes",
-
-                    {
-
-                        event: "INSERT",
-
-                        schema: "public",
-
-                        table: "chat_messages"
-
-                    },
-
-                    async function () {
-
-                        await loadChat();
-
-                    }
-
-                )
-
-                .subscribe(status => {
-
-
-                    if (status === "SUBSCRIBED") {
-
-                        setText(
-                            el.chatStatus,
-                            "Connected to global chat."
-                        );
-
-                    }
-
-
-                    if (status === "CHANNEL_ERROR") {
-
-                        setText(
-                            el.chatStatus,
-                            "Realtime connection error."
-                        );
-
-                    }
-
-
-                });
-
 
     }
 
@@ -2493,41 +3805,33 @@
     function connectNotificationRealtime() {
 
 
-        notificationChannel =
+        current.notificationChannel = db
 
-            supabase
+            .channel(
+                "eok-user-notifications-" + current.user.id
+            )
 
-                .channel(
-                    "eok-notifications-" + currentUser.id
-                )
+            .on(
 
-                .on(
+                "postgres_changes",
 
-                    "postgres_changes",
+                {
 
-                    {
+                    event: "*",
 
-                        event: "*",
+                    schema: "public",
 
-                        schema: "public",
+                    table: "notifications",
 
-                        table: "notifications",
+                    filter: "user_id=eq." + current.user.id
 
-                        filter:
-                            "user_id=eq." + currentUser.id
+                },
 
-                    },
+                loadNotifications
 
-                    async function () {
+            )
 
-                        await loadNotifications();
-
-                    }
-
-                )
-
-                .subscribe();
-
+            .subscribe();
 
     }
 
@@ -2537,64 +3841,56 @@
     // LOGOUT
     // ======================================
 
-    el.logout.addEventListener(
+    $("logout-button").addEventListener(
+
         "click",
+
         async function () {
 
 
-            const confirmed =
-                window.confirm(
-                    "Are you sure you want to log out?"
-                );
-
-
-            if (!confirmed) return;
-
-
-            el.logout.disabled = true;
-
-            el.logout.textContent = "Logging out...";
-
-
-            if (chatChannel) {
-
-                await supabase.removeChannel(
-                    chatChannel
-                );
-
-            }
-
-
-            if (notificationChannel) {
-
-                await supabase.removeChannel(
-                    notificationChannel
-                );
-
-            }
-
-
-            const { error } =
-                await supabase.auth.signOut();
-
-
-            if (error) {
-
-                console.error(error);
-
-                el.logout.disabled = false;
-
-                el.logout.textContent = "Logout";
-
-                alert("Logout failed.");
+            if (!confirm("Are you sure you want to log out?")) {
 
                 return;
 
             }
 
 
-            window.location.replace("login.html");
+            this.disabled = true;
 
+
+            const channels = [
+
+                current.chatChannel,
+
+                current.dmChannel,
+
+                current.notificationChannel
+
+            ].filter(Boolean);
+
+
+            for (const channel of channels) {
+
+                await db.removeChannel(channel);
+
+            }
+
+
+            const { error } = await db.auth.signOut();
+
+
+            if (error) {
+
+                console.error(error);
+
+                this.disabled = false;
+
+                return;
+
+            }
+
+
+            location.replace("login.html");
 
         }
 
@@ -2603,50 +3899,57 @@
 
 
     // ======================================
-    // INITIALIZE
+    // INITIALIZATION
     // ======================================
 
     try {
 
 
-        currentUser = await authenticate();
+        const loaded = await loadOwnProfile();
 
-
-        if (!currentUser) return;
-
-
-        await loadOwnProfile();
+        if (!loaded) return;
 
 
         await Promise.all([
 
-            loadChat(),
+            loadSettings(),
+
+            loadOwnStatistics(),
+
+            loadGlobalChat(),
 
             loadNotifications(),
+
+            loadBlockedPlayers(),
+
+            loadDirectory(),
+
+            loadCommunityStatistics(),
 
             updateLastSeen()
 
         ]);
 
 
-        connectChatRealtime();
+        connectGlobalRealtime();
 
         connectNotificationRealtime();
 
 
-        // BADGE COUNT
+        if (current.profile.account_role === "admin") {
 
-        const badges =
-            await getPlayerBadges(currentUser.id);
+            await Promise.all([
 
+                adminSearchPlayers(),
 
-        setText(
-            el.badgeCount,
-            badges.length
-        );
+                adminLoadReports(),
 
+                adminLoadAudit()
 
-        // LAST SEEN UPDATE
+            ]);
+
+        }
+
 
         setInterval(
 
@@ -2657,19 +3960,23 @@
         );
 
 
+        setInterval(
+
+            loadCommunityStatistics,
+
+            60000
+
+        );
+
+
     } catch (error) {
 
 
-        console.error(
-            "Dashboard initialization error:",
-            error
-        );
-
+        console.error(error);
 
         alert(
-            "Dashboard could not be initialized. Check the Supabase tables and policies."
+            "Dashboard initialization failed. Check the SQL migration and database policies."
         );
-
 
     }
 
