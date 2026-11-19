@@ -15,7 +15,13 @@
         content="#0b1422"
     >
 
-    <title>Empire of Kings | Realm Dashboard</title>
+    <meta
+        name="eok-version"
+        content="0.0.1"
+    >
+
+    <title>Empire of Kings</title>
+
 
     <link
         rel="stylesheet"
@@ -29,41 +35,44 @@
 
 </head>
 
+
 <body class="dashboard-page">
 
 
 <!-- ======================================
-     NAVIGATION
+     HEADER
 ====================================== -->
 
-<header class="main-header">
+<header class="realm-header">
 
-    <a href="index.html" class="brand">
 
-        <span class="brand-symbol">♛</span>
+    <a href="index.html" class="realm-brand">
+
+        <span class="realm-symbol">♛</span>
 
         <span>
 
             EMPIRE OF KINGS
 
-            <small>THE CHRONICLES OF A REALM</small>
+            <small>BUILD YOUR KINGDOM. SHAPE YOUR DESTINY.</small>
 
         </span>
 
     </a>
 
 
-    <nav class="main-nav">
+
+    <nav class="realm-navigation">
 
         <a href="#overview">Overview</a>
 
-        <a href="#player-directory">Players</a>
+        <a href="#world">World</a>
+
+        <a href="#kingdoms">Kingdoms</a>
 
         <a href="#community">Community</a>
 
-        <a href="#account-settings">Settings</a>
-
-        <a href="#blocked-players">Blocked</a>
+        <a href="#account-settings">Account</a>
 
         <a
             href="#admin-panel"
@@ -76,21 +85,33 @@
     </nav>
 
 
-    <div class="header-account">
+
+    <div class="realm-account">
+
 
         <button
             id="header-profile-button"
-            class="header-profile"
+            class="account-profile-button"
         >
 
             <span
                 id="top-avatar"
                 class="top-avatar"
-            >♟</span>
+            >
 
-            <span id="top-user-name">Player</span>
+                ♟
+
+            </span>
+
+
+            <span id="top-user-name">
+
+                Player
+
+            </span>
 
         </button>
+
 
 
         <button
@@ -102,49 +123,55 @@
 
         </button>
 
+
     </div>
+
 
 </header>
 
 
 
-<main class="dashboard-main">
+<main class="realm-main">
 
 
 <!-- ======================================
      OVERVIEW
 ====================================== -->
 
-<section id="overview" class="section-spacing">
+<section
+    id="overview"
+    class="realm-section"
+>
 
 
-    <div class="welcome-banner">
+    <div class="realm-hero">
 
 
-        <div>
+        <div class="hero-content">
+
 
             <span class="eyebrow">
 
-                THE REALM IS AWAKE
+                THE CHRONICLES BEGIN
 
             </span>
 
 
             <h1>
 
-                Welcome to Empire of Kings
+                Welcome to the Realm
 
             </h1>
 
 
             <p>
 
-                Every player has a story. Every action can become a legacy.
+                A persistent medieval world shaped by its players.
 
             </p>
 
 
-            <div class="player-identity-line">
+            <div class="hero-id">
 
                 PLAYER ID:
 
@@ -156,10 +183,22 @@
 
             </div>
 
+
+            <a
+                href="#world"
+                class="hero-button"
+            >
+
+                Explore the World →
+
+            </a>
+
+
         </div>
 
 
-        <div class="welcome-emblem">
+
+        <div class="hero-decoration">
 
             ♛
 
@@ -170,12 +209,12 @@
 
 
 
-    <!-- STATS -->
+    <!-- STATISTICS -->
 
-    <div class="stats-grid">
+    <div class="realm-statistics">
 
 
-        <article class="stat-card">
+        <article class="realm-stat-card">
 
             <span>♟</span>
 
@@ -186,7 +225,7 @@
         </article>
 
 
-        <article class="stat-card">
+        <article class="realm-stat-card">
 
             <span>✦</span>
 
@@ -197,7 +236,7 @@
         </article>
 
 
-        <article class="stat-card">
+        <article class="realm-stat-card">
 
             <span>◈</span>
 
@@ -208,7 +247,7 @@
         </article>
 
 
-        <article class="stat-card">
+        <article class="realm-stat-card">
 
             <span>🏅</span>
 
@@ -223,30 +262,31 @@
 
 
 
-    <div class="content-grid">
+    <div class="overview-grid">
 
 
-        <!-- PROFILE EDITOR -->
+        <!-- PLAYER PROFILE -->
 
-        <article class="panel">
+        <article class="realm-panel">
 
-            <div class="panel-heading">
+
+            <div class="panel-title">
 
                 <div>
 
-                    <span class="eyebrow">IDENTITY</span>
+                    <span class="eyebrow">PLAYER IDENTITY</span>
 
-                    <h2>My Profile</h2>
+                    <h2>My Character</h2>
 
                 </div>
 
 
                 <button
-                    class="subtle-button"
-                    id="profile-preview-button"
+                    id="edit-profile-view-button"
+                    class="small-outline-button"
                 >
 
-                    View Public Profile
+                    Preview
 
                 </button>
 
@@ -258,8 +298,8 @@
 
 
                 <div
-                    class="editor-avatar"
                     id="editor-avatar"
+                    class="editor-avatar"
                 >
 
                     ♟
@@ -267,27 +307,29 @@
                 </div>
 
 
-                <div>
+                <div class="profile-editor-info">
 
-                    <h3 id="editor-username">
+
+                    <strong id="editor-username">
 
                         Player
 
-                    </h3>
+                    </strong>
 
-                    <p id="editor-title">
+
+                    <span id="editor-title">
 
                         Wanderer
 
-                    </p>
+                    </span>
 
 
                     <label
                         for="avatar-input"
-                        class="upload-button"
+                        class="avatar-upload-button"
                     >
 
-                        Change Profile Photo
+                        Change Photo
 
                     </label>
 
@@ -302,9 +344,10 @@
 
                     <small id="avatar-status">
 
-                        JPG / PNG / WebP · Maximum 2 MB
+                        JPG, PNG, WebP · Max 2 MB
 
                     </small>
+
 
                 </div>
 
@@ -322,6 +365,7 @@
 
                 </label>
 
+
                 <input
                     id="display-name"
                     maxlength="30"
@@ -335,6 +379,7 @@
 
                 </label>
 
+
                 <input
                     id="profile-title"
                     maxlength="30"
@@ -346,6 +391,7 @@
                     Personal Motto
 
                 </label>
+
 
                 <input
                     id="motto"
@@ -359,10 +405,11 @@
 
                 </label>
 
+
                 <textarea
                     id="bio"
                     maxlength="250"
-                    rows="4"
+                    rows="3"
                 ></textarea>
 
 
@@ -372,10 +419,7 @@
                 ></p>
 
 
-                <button
-                    type="submit"
-                    class="gold-button"
-                >
+                <button class="gold-button">
 
                     Save Profile
 
@@ -391,10 +435,10 @@
 
         <!-- GLOBAL CHAT -->
 
-        <article class="panel chat-panel">
+        <article class="realm-panel">
 
 
-            <div class="panel-heading">
+            <div class="panel-title">
 
                 <div>
 
@@ -405,7 +449,7 @@
                 </div>
 
 
-                <span class="live-tag">
+                <span class="live-label">
 
                     <i></i>
 
@@ -413,17 +457,21 @@
 
                 </span>
 
+
             </div>
 
 
-            <p class="muted">
+            <p class="panel-subtitle">
 
-                Tekan username pemain untuk membuka profilnya.
+                Click a username to view their profile.
 
             </p>
 
 
-            <p id="chat-status" class="status-text">
+            <p
+                id="chat-status"
+                class="chat-status"
+            >
 
                 Connecting...
 
@@ -436,20 +484,22 @@
             ></div>
 
 
-            <form id="chat-form" class="chat-form">
+            <form
+                id="chat-form"
+                class="chat-form"
+            >
 
 
                 <input
                     id="chat-input"
                     maxlength="500"
-                    placeholder="Write a message..."
+                    placeholder="Write your message..."
                     autocomplete="off"
                     required
                 >
 
 
                 <button
-                    type="submit"
                     id="chat-send"
                     class="gold-button"
                 >
@@ -468,10 +518,10 @@
 
         <!-- NOTIFICATIONS -->
 
-        <article class="panel">
+        <article class="realm-panel">
 
 
-            <div class="panel-heading">
+            <div class="panel-title">
 
                 <div>
 
@@ -484,12 +534,13 @@
 
                 <span
                     id="notification-count"
-                    class="count-badge"
+                    class="counter-badge"
                 >
 
                     0
 
                 </span>
+
 
             </div>
 
@@ -504,12 +555,12 @@
 
 
 
-        <!-- ACCOUNT -->
+        <!-- ACCOUNT INFORMATION -->
 
-        <article class="panel">
+        <article class="realm-panel">
 
 
-            <div class="panel-heading">
+            <div class="panel-title">
 
                 <div>
 
@@ -519,10 +570,11 @@
 
                 </div>
 
+
             </div>
 
 
-            <div class="data-list">
+            <div class="information-list">
 
 
                 <div>
@@ -572,6 +624,17 @@
 
             </div>
 
+
+            <button
+                id="account-view-profile"
+                class="small-outline-button"
+            >
+
+                View Public Profile
+
+            </button>
+
+
         </article>
 
 
@@ -583,31 +646,890 @@
 
 
 <!-- ======================================
-     PLAYER DIRECTORY
+     PART 5
+     WORLD MAP
 ====================================== -->
 
 <section
-    id="player-directory"
-    class="section-spacing"
+    id="world"
+    class="realm-section"
 >
 
 
-    <div class="section-title">
+    <div class="section-heading">
 
-        <span class="eyebrow">DISCOVER THE PLAYERS</span>
 
-        <h2>Player Directory</h2>
+        <span class="eyebrow">
+
+            PART V — THE KNOWN WORLD
+
+        </span>
+
+
+        <h2>
+
+            The World of EMPIRE OF KINGS
+
+        </h2>
+
 
         <p>
 
-            Cari pemain berdasarkan username atau Player ID.
+            Explore the lands, boundaries, and regions of the realm.
 
         </p>
+
 
     </div>
 
 
-    <div class="panel">
+
+    <div class="world-overview-bar">
+
+
+        <div>
+
+            <span>CONTINENTS</span>
+
+            <strong>2</strong>
+
+        </div>
+
+
+        <div>
+
+            <span>TOTAL REGIONS</span>
+
+            <strong id="world-total-regions">50</strong>
+
+        </div>
+
+
+        <div>
+
+            <span>FOUNDING REGIONS</span>
+
+            <strong id="world-foundation-count">5</strong>
+
+        </div>
+
+
+        <div>
+
+            <span>EVENT REGIONS</span>
+
+            <strong id="world-locked-count">45</strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <article class="realm-panel world-panel">
+
+
+        <div class="panel-title">
+
+
+            <div>
+
+                <span class="eyebrow">ATLAS</span>
+
+                <h2>World Atlas</h2>
+
+            </div>
+
+
+            <select id="world-filter">
+
+                <option value="all">All Regions</option>
+
+                <option value="available">Available</option>
+
+                <option value="claimed">Kingdom Territories</option>
+
+                <option value="event_locked">Event Locked</option>
+
+            </select>
+
+
+        </div>
+
+
+
+        <div class="map-legend">
+
+
+            <span>
+
+                <i class="legend-available"></i>
+
+                Founding Region
+
+            </span>
+
+
+            <span>
+
+                <i class="legend-claimed"></i>
+
+                Kingdom Territory
+
+            </span>
+
+
+            <span>
+
+                <i class="legend-locked"></i>
+
+                Event Locked
+
+            </span>
+
+
+        </div>
+
+
+
+        <div class="map-layout">
+
+
+            <div class="world-map-container">
+
+
+                <svg
+
+                    id="world-map-svg"
+
+                    viewBox="0 0 1200 500"
+
+                    role="img"
+
+                    aria-label="World map with 50 regions"
+
+                >
+
+                </svg>
+
+
+            </div>
+
+
+
+            <aside class="region-inspector">
+
+
+                <span class="eyebrow">
+
+                    REGION INSPECTOR
+
+                </span>
+
+
+                <div class="inspector-emblem">
+
+                    ♜
+
+                </div>
+
+
+                <h3 id="selected-region-name">
+
+                    Select a Region
+
+                </h3>
+
+
+                <p id="selected-region-continent">
+
+                    Click any region on the map.
+
+                </p>
+
+
+                <div class="region-information">
+
+
+                    <div>
+
+                        <span>Region ID</span>
+
+                        <strong id="selected-region-id">-</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Status</span>
+
+                        <strong id="selected-region-status">-</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Territorial Owner</span>
+
+                        <strong id="selected-region-owner">None</strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <div
+                    id="region-countdown"
+                    class="region-countdown"
+                ></div>
+
+
+                <p
+                    id="selected-region-description"
+                    class="region-description"
+                >
+
+                    No region selected.
+
+                </p>
+
+
+                <button
+                    id="found-kingdom-button"
+                    class="gold-button"
+                    hidden
+                >
+
+                    Establish Kingdom
+
+                </button>
+
+
+                <p
+                    id="region-action-message"
+                    class="form-message"
+                ></p>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </article>
+
+
+</section>
+
+
+
+<!-- ======================================
+     PART 6
+     KINGDOM SYSTEM
+====================================== -->
+
+<section
+    id="kingdoms"
+    class="realm-section"
+>
+
+
+    <div class="section-heading">
+
+
+        <span class="eyebrow">
+
+            PART VI — RISE OF KINGDOMS
+
+        </span>
+
+
+        <h2>
+
+            Kingdoms of the Realm
+
+        </h2>
+
+
+        <p>
+
+            Establish a kingdom, gather members, and determine its ruler.
+
+        </p>
+
+
+    </div>
+
+
+
+    <div class="kingdom-overview-bar">
+
+
+        <div>
+
+            <span>ESTABLISHED KINGDOMS</span>
+
+            <strong id="kingdom-total-count">0</strong>
+
+        </div>
+
+
+        <div>
+
+            <span>ACTIVE MONARCHIES</span>
+
+            <strong id="kingdom-active-count">0</strong>
+
+        </div>
+
+
+        <div>
+
+            <span>AWAITING RULER</span>
+
+            <strong id="kingdom-pending-count">0</strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="kingdom-layout">
+
+
+        <!-- KINGDOM DIRECTORY -->
+
+        <article class="realm-panel kingdom-directory">
+
+
+            <div class="panel-title">
+
+                <div>
+
+                    <span class="eyebrow">KINGDOM DIRECTORY</span>
+
+                    <h2>Known Kingdoms</h2>
+
+                </div>
+
+
+                <button
+                    id="refresh-kingdoms"
+                    class="small-outline-button"
+                >
+
+                    Refresh
+
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="kingdom-list"
+                class="kingdom-list"
+            >
+
+                Loading kingdoms...
+
+            </div>
+
+
+        </article>
+
+
+
+        <!-- KINGDOM DETAILS -->
+
+        <article
+            class="realm-panel kingdom-detail-panel"
+            id="kingdom-detail-panel"
+        >
+
+
+            <div id="kingdom-empty-state">
+
+
+                <div class="empty-state-symbol">
+
+                    ♛
+
+                </div>
+
+
+                <h3>Select a Kingdom</h3>
+
+
+                <p>
+
+                    Choose a kingdom to view its information and government.
+
+                </p>
+
+
+            </div>
+
+
+
+            <div
+                id="kingdom-detail-content"
+                hidden
+            >
+
+
+                <div class="kingdom-detail-banner">
+
+
+                    <span
+                        id="kingdom-detail-symbol"
+                        class="kingdom-detail-symbol"
+                    >
+
+                        ♛
+
+                    </span>
+
+
+                    <div>
+
+                        <span class="eyebrow">
+
+                            KINGDOM PROFILE
+
+                        </span>
+
+
+                        <h2 id="kingdom-detail-name">
+
+                            Kingdom
+
+                        </h2>
+
+
+                        <span id="kingdom-detail-status">
+
+                            AWAITING RULER
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="kingdom-detail-information">
+
+
+                    <div>
+
+                        <span>Founding Region</span>
+
+                        <strong id="kingdom-detail-region">-</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Ideology</span>
+
+                        <strong id="kingdom-detail-ideology">-</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Ruler</span>
+
+                        <strong id="kingdom-detail-ruler">Not appointed</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Population</span>
+
+                        <strong id="kingdom-detail-population">0</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Members</span>
+
+                        <strong id="kingdom-detail-members">0</strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Founded</span>
+
+                        <strong id="kingdom-detail-created">-</strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <p
+                    id="kingdom-detail-description"
+                    class="kingdom-description"
+                ></p>
+
+
+
+                <div class="kingdom-actions">
+
+
+                    <button
+                        id="kingdom-join-button"
+                        class="gold-button"
+                    >
+
+                        Join Kingdom
+
+                    </button>
+
+
+                    <button
+                        id="kingdom-leave-button"
+                        class="secondary-button"
+                        hidden
+                    >
+
+                        Leave Kingdom
+
+                    </button>
+
+
+                    <button
+                        id="kingdom-start-election"
+                        class="secondary-button"
+                        hidden
+                    >
+
+                        Start Royal Election
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- MEMBERS -->
+
+                <div class="kingdom-subsection">
+
+
+                    <h3>Kingdom Members</h3>
+
+
+                    <div
+                        id="kingdom-member-list"
+                        class="kingdom-member-list"
+                    ></div>
+
+
+                </div>
+
+
+
+                <!-- ELECTION -->
+
+                <div class="kingdom-subsection">
+
+
+                    <h3>Royal Election</h3>
+
+
+                    <p
+                        id="kingdom-election-status"
+                        class="muted"
+                    >
+
+                        No election.
+
+                    </p>
+
+
+                    <div
+                        id="kingdom-election-countdown"
+                        class="election-countdown"
+                    ></div>
+
+
+                    <form
+                        id="kingdom-nomination-form"
+                        hidden
+                    >
+
+
+                        <label for="kingdom-nomination-statement">
+
+                            Candidate Statement
+
+                        </label>
+
+
+                        <textarea
+                            id="kingdom-nomination-statement"
+                            maxlength="500"
+                            rows="3"
+                            placeholder="Explain your vision for the kingdom..."
+                        ></textarea>
+
+
+                        <button class="gold-button">
+
+                            Nominate Myself
+
+                        </button>
+
+
+                    </form>
+
+
+
+                    <div
+                        id="kingdom-candidates"
+                        class="kingdom-candidates"
+                    ></div>
+
+
+                </div>
+
+
+
+                <!-- EDIT KINGDOM -->
+
+                <details
+                    id="kingdom-edit-details"
+                    class="kingdom-edit-details"
+                    hidden
+                >
+
+
+                    <summary>
+
+                        Kingdom Administration
+
+                    </summary>
+
+
+                    <form
+                        id="kingdom-edit-form"
+                    >
+
+
+                        <label for="kingdom-edit-name">
+
+                            Kingdom Name
+
+                        </label>
+
+
+                        <input
+                            id="kingdom-edit-name"
+                            maxlength="40"
+                        >
+
+
+                        <label for="kingdom-edit-ideology">
+
+                            Ideology
+
+                        </label>
+
+
+                        <input
+                            id="kingdom-edit-ideology"
+                            maxlength="50"
+                        >
+
+
+                        <label for="kingdom-edit-description">
+
+                            Description
+
+                        </label>
+
+
+                        <textarea
+                            id="kingdom-edit-description"
+                            maxlength="500"
+                            rows="3"
+                        ></textarea>
+
+
+                        <label for="kingdom-edit-banner">
+
+                            Banner Symbol
+
+                        </label>
+
+
+                        <select id="kingdom-edit-banner">
+
+                            <option value="♛">♛ Royal Crown</option>
+
+                            <option value="⚜">⚜ Fleur</option>
+
+                            <option value="☀">☀ Sun</option>
+
+                            <option value="✦">✦ Star</option>
+
+                            <option value="♜">♜ Tower</option>
+
+                            <option value="⚔">⚔ Crossed Swords</option>
+
+                        </select>
+
+
+                        <label for="kingdom-edit-color">
+
+                            Banner Color
+
+                        </label>
+
+
+                        <input
+                            id="kingdom-edit-color"
+                            type="color"
+                            value="#B58C49"
+                        >
+
+
+                        <button class="gold-button">
+
+                            Save Kingdom Changes
+
+                        </button>
+
+
+                        <p
+                            id="kingdom-edit-message"
+                            class="form-message"
+                        ></p>
+
+
+                    </form>
+
+
+                </details>
+
+
+
+                <!-- ADMIN APPOINTMENT -->
+
+                <div
+                    id="admin-king-appointment"
+                    class="admin-king-appointment"
+                    hidden
+                >
+
+
+                    <h3>Administrator — Royal Appointment</h3>
+
+
+                    <p class="muted">
+
+                        Select an existing kingdom member to appoint as king.
+
+                    </p>
+
+
+                    <select id="admin-king-select"></select>
+
+
+                    <button
+                        id="admin-appoint-king-button"
+                        class="gold-button"
+                    >
+
+                        Appoint King
+
+                    </button>
+
+
+                    <p
+                        id="admin-king-status"
+                        class="form-message"
+                    ></p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </article>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     COMMUNITY
+====================================== -->
+
+<section
+    id="community"
+    class="realm-section"
+>
+
+
+    <div class="section-heading">
+
+
+        <span class="eyebrow">THE PEOPLE OF THE REALM</span>
+
+
+        <h2>Community</h2>
+
+
+        <p>
+
+            Discover the players inhabiting this world.
+
+        </p>
+
+
+    </div>
+
+
+
+    <article class="realm-panel">
+
+
+        <div class="panel-title">
+
+            <h2>Player Directory</h2>
+
+        </div>
 
 
         <div class="directory-controls">
@@ -621,7 +1543,7 @@
 
             <select id="directory-sort">
 
-                <option value="created_at">Newest Players</option>
+                <option value="created_at">Newest</option>
 
                 <option value="level">Highest Level</option>
 
@@ -647,44 +1569,12 @@
 
         <div
             id="directory-results"
-            class="player-directory-grid"
-        >
-
-            Search for players...
-
-        </div>
+            class="directory-grid"
+        ></div>
 
 
-    </div>
+    </article>
 
-
-</section>
-
-
-
-<!-- ======================================
-     COMMUNITY
-====================================== -->
-
-<section
-    id="community"
-    class="section-spacing"
->
-
-
-    <div class="section-title">
-
-        <span class="eyebrow">THE COMMUNITY</span>
-
-        <h2>Community Statistics</h2>
-
-        <p>
-
-            Gambaran aktivitas seluruh pemain Empire of Kings.
-
-        </p>
-
-    </div>
 
 
     <div class="community-grid">
@@ -742,31 +1632,36 @@
 
 
 <!-- ======================================
-     ACCOUNT SETTINGS
+     ACCOUNT AND PRIVACY
 ====================================== -->
 
 <section
     id="account-settings"
-    class="section-spacing"
+    class="realm-section"
 >
 
 
-    <div class="section-title">
+    <div class="section-heading">
 
-        <span class="eyebrow">PERSONALIZATION</span>
 
-        <h2>Account Settings</h2>
+        <span class="eyebrow">PERSONAL CONTROL</span>
+
+
+        <h2>Account & Privacy</h2>
+
 
         <p>
 
-            Atur privasi dan bagaimana pemain lain berinteraksi denganmu.
+            Manage your account and privacy preferences.
 
         </p>
+
 
     </div>
 
 
-    <div class="panel">
+
+    <article class="realm-panel">
 
 
         <form id="settings-form">
@@ -778,7 +1673,7 @@
 
                     <strong>Profile Visibility</strong>
 
-                    <p>Apakah profil detailmu terlihat pemain lain?</p>
+                    <p>Choose whether your profile details are public.</p>
 
                 </div>
 
@@ -800,7 +1695,7 @@
 
                     <strong>Private Messages</strong>
 
-                    <p>Siapa yang dapat mengirim pesan pribadi?</p>
+                    <p>Choose who can start a private conversation.</p>
 
                 </div>
 
@@ -822,7 +1717,7 @@
 
                     <strong>Online Status</strong>
 
-                    <p>Tampilkan status online kepada pemain lain.</p>
+                    <p>Allow others to see your activity status.</p>
 
                 </div>
 
@@ -841,7 +1736,7 @@
 
                     <strong>Activity Visibility</strong>
 
-                    <p>Tampilkan riwayat aktivitas pada profilmu.</p>
+                    <p>Show recent activity on your profile.</p>
 
                 </div>
 
@@ -860,7 +1755,7 @@
 
                     <strong>Notifications</strong>
 
-                    <p>Aktifkan preferensi penerimaan notifikasi.</p>
+                    <p>Enable account notifications.</p>
 
                 </div>
 
@@ -879,10 +1774,7 @@
             ></p>
 
 
-            <button
-                type="submit"
-                class="gold-button"
-            >
+            <button class="gold-button">
 
                 Save Settings
 
@@ -892,14 +1784,16 @@
         </form>
 
 
-        <hr class="divider">
+
+        <hr class="realm-divider">
 
 
-        <h3>Change Username</h3>
+        <h3>Username</h3>
+
 
         <p class="muted">
 
-            Perubahan username dibatasi satu kali setiap 30 hari.
+            Username changes are limited to once every 30 days.
 
         </p>
 
@@ -917,7 +1811,7 @@
             >
 
 
-            <button class="gold-button" type="submit">
+            <button class="gold-button">
 
                 Change Username
 
@@ -927,19 +1821,17 @@
         </form>
 
 
-        <p id="username-message" class="form-message"></p>
+        <p
+            id="username-message"
+            class="form-message"
+        ></p>
 
 
-        <hr class="divider">
+
+        <hr class="realm-divider">
 
 
-        <h3>Password</h3>
-
-        <p class="muted">
-
-            Pemulihan password tersedia melalui email.
-
-        </p>
+        <h3>Password Recovery</h3>
 
 
         <a
@@ -952,46 +1844,34 @@
         </a>
 
 
-    </div>
+
+        <details class="privacy-details">
 
 
-</section>
+            <summary>
+
+                Privacy & Blocked Players
+
+            </summary>
 
 
+            <p class="muted">
 
-<!-- ======================================
-     BLOCKED PLAYERS
-====================================== -->
+                Manage accounts you have blocked.
 
-<section
-    id="blocked-players"
-    class="section-spacing"
->
+            </p>
 
 
-    <div class="section-title">
-
-        <span class="eyebrow">PERSONAL CONTROL</span>
-
-        <h2>Blocked Players</h2>
-
-        <p>
-
-            Kamu dapat membuka blokir kapan saja.
-
-        </p>
-
-    </div>
+            <div
+                id="blocked-list"
+                class="blocked-list"
+            ></div>
 
 
-    <div
-        id="blocked-list"
-        class="blocked-list panel"
-    >
+        </details>
 
-        Loading...
 
-    </div>
+    </article>
 
 
 </section>
@@ -1004,46 +1884,34 @@
 
 <section
     id="admin-panel"
-    class="section-spacing"
+    class="realm-section"
     hidden
 >
 
 
-    <div class="section-title">
+    <div class="section-heading">
 
         <span class="eyebrow">RESTRICTED AREA</span>
 
-        <h2>Administration Panel</h2>
+        <h2>Administration</h2>
 
-        <p>
-
-            Management and moderation tools.
-
-        </p>
+        <p>Authorized game administration.</p>
 
     </div>
+
 
 
     <div class="admin-grid">
 
 
-        <!-- PLAYER MANAGEMENT -->
+        <article class="realm-panel">
 
-        <article class="panel">
-
-
-            <div class="panel-heading">
-
-                <h2>Player Management</h2>
-
-                <span class="admin-label">ADMIN</span>
-
-            </div>
+            <h3>Player Management</h3>
 
 
             <input
                 id="admin-player-search"
-                placeholder="Search username, name or Player ID..."
+                placeholder="Search player..."
             >
 
 
@@ -1057,26 +1925,16 @@
             </button>
 
 
-            <div
-                id="admin-player-results"
-                class="admin-results"
-            ></div>
+            <div id="admin-player-results"></div>
 
 
         </article>
 
 
 
-        <!-- REPORTS -->
+        <article class="realm-panel">
 
-        <article class="panel">
-
-
-            <div class="panel-heading">
-
-                <h2>Player Reports</h2>
-
-            </div>
+            <h3>Reports</h3>
 
 
             <button
@@ -1089,70 +1947,46 @@
             </button>
 
 
-            <div
-                id="admin-report-results"
-                class="admin-results"
-            ></div>
+            <div id="admin-report-results"></div>
 
 
         </article>
 
 
 
-        <!-- ADMIN NOTICE -->
-
-        <article class="panel">
+        <article class="realm-panel">
 
 
-            <h2>Send Notification</h2>
+            <h3>Send Notification</h3>
 
 
             <form id="admin-notification-form">
 
 
-                <label for="admin-notification-user">
-
-                    Target Player ID
-
-                </label>
-
-
                 <input
                     id="admin-notification-user"
-                    placeholder="Player UUID"
+                    placeholder="Target Player UUID"
                     required
                 >
-
-
-                <label for="admin-notification-title">
-
-                    Title
-
-                </label>
 
 
                 <input
                     id="admin-notification-title"
                     maxlength="80"
+                    placeholder="Title"
                     required
                 >
-
-
-                <label for="admin-notification-message">
-
-                    Message
-
-                </label>
 
 
                 <textarea
                     id="admin-notification-message"
                     maxlength="1000"
+                    placeholder="Message"
                     required
                 ></textarea>
 
 
-                <button class="gold-button" type="submit">
+                <button class="gold-button">
 
                     Send Notification
 
@@ -1169,16 +2003,10 @@
 
 
 
-        <!-- AUDIT LOGS -->
-
-        <article class="panel">
+        <article class="realm-panel">
 
 
-            <div class="panel-heading">
-
-                <h2>Administrator Audit Logs</h2>
-
-            </div>
+            <h3>Audit Logs</h3>
 
 
             <button
@@ -1191,10 +2019,7 @@
             </button>
 
 
-            <div
-                id="admin-audit-results"
-                class="admin-results"
-            ></div>
+            <div id="admin-audit-results"></div>
 
 
         </article>
@@ -1206,25 +2031,29 @@
 </section>
 
 
-</main>
-
-
 
 <!-- ======================================
-     PUBLIC PLAYER PROFILE
+     KINGDOM CREATION MODAL
 ====================================== -->
 
-<div id="profile-modal" class="modal" hidden>
+<div
+    id="kingdom-create-modal"
+    class="realm-modal"
+    hidden
+>
 
 
-    <div class="modal-backdrop" id="profile-backdrop"></div>
+    <div
+        id="kingdom-create-backdrop"
+        class="modal-backdrop"
+    ></div>
 
 
-    <section class="profile-modal-card">
+    <section class="realm-modal-card">
 
 
         <button
-            id="profile-close"
+            id="kingdom-create-close"
             class="modal-close"
         >
 
@@ -1233,32 +2062,225 @@
         </button>
 
 
-        <div class="profile-cover">
+        <span class="eyebrow">
 
-            <div id="modal-avatar" class="modal-avatar">
+            FOUND A NEW REALM
+
+        </span>
+
+
+        <h2>Establish a Kingdom</h2>
+
+
+        <p class="muted">
+
+            You are founding a new political entity in this region.
+
+        </p>
+
+
+
+        <form id="kingdom-create-form">
+
+
+            <label for="kingdom-create-region">
+
+                Founding Region
+
+            </label>
+
+
+            <input
+                id="kingdom-create-region"
+                readonly
+            >
+
+
+            <input
+                id="kingdom-create-region-id"
+                type="hidden"
+            >
+
+
+            <label for="kingdom-create-name">
+
+                Kingdom Name
+
+            </label>
+
+
+            <input
+                id="kingdom-create-name"
+                minlength="3"
+                maxlength="40"
+                required
+            >
+
+
+            <label for="kingdom-create-ideology">
+
+                Ideology
+
+            </label>
+
+
+            <input
+                id="kingdom-create-ideology"
+                maxlength="50"
+                placeholder="Example: Constitutional Monarchy"
+                required
+            >
+
+
+            <label for="kingdom-create-description">
+
+                Kingdom Description
+
+            </label>
+
+
+            <textarea
+                id="kingdom-create-description"
+                maxlength="500"
+                rows="3"
+            ></textarea>
+
+
+            <label for="kingdom-create-banner">
+
+                Kingdom Emblem
+
+            </label>
+
+
+            <select id="kingdom-create-banner">
+
+                <option value="♛">♛ Royal Crown</option>
+
+                <option value="⚜">⚜ Fleur</option>
+
+                <option value="☀">☀ Sun</option>
+
+                <option value="✦">✦ Star</option>
+
+                <option value="♜">♜ Tower</option>
+
+                <option value="⚔">⚔ Crossed Swords</option>
+
+            </select>
+
+
+            <label for="kingdom-create-color">
+
+                Kingdom Color
+
+            </label>
+
+
+            <input
+                id="kingdom-create-color"
+                type="color"
+                value="#B58C49"
+            >
+
+
+            <p
+                id="kingdom-create-status"
+                class="form-message"
+            ></p>
+
+
+            <button
+                id="kingdom-create-submit"
+                class="gold-button"
+            >
+
+                Establish Kingdom
+
+            </button>
+
+
+        </form>
+
+
+    </section>
+
+
+</div>
+
+
+
+<!-- ======================================
+     PLAYER PROFILE MODAL
+====================================== -->
+
+<div
+    id="profile-modal"
+    class="realm-modal"
+    hidden
+>
+
+
+    <div
+        id="modal-backdrop"
+        class="modal-backdrop"
+    ></div>
+
+
+    <section class="profile-modal-card">
+
+
+        <button
+            id="modal-close"
+            class="modal-close"
+        >
+
+            ×
+
+        </button>
+
+
+        <div class="profile-modal-cover">
+
+
+            <div
+                id="modal-avatar"
+                class="modal-avatar"
+            >
 
                 ♟
 
             </div>
 
+
         </div>
 
 
-        <div class="modal-profile-main">
+
+        <div class="profile-modal-heading">
 
 
             <div>
 
-                <h2 id="modal-display-name">Player</h2>
+                <h2 id="modal-display-name">
 
-                <p id="modal-username">@username</p>
+                    Player
+
+                </h2>
+
+
+                <p id="modal-username">@player</p>
+
 
                 <span id="modal-status">Offline</span>
 
             </div>
 
 
-            <span id="modal-role" class="role-label">
+            <span
+                id="modal-role"
+                class="role-label"
+            >
 
                 PLAYER
 
@@ -1268,53 +2290,21 @@
         </div>
 
 
-        <div class="profile-actions">
-
-
-            <button
-                id="profile-chat-button"
-                class="gold-button"
-            >
-
-                Private Chat
-
-            </button>
-
-
-            <button
-                id="profile-block-button"
-                class="secondary-button"
-            >
-
-                Block
-
-            </button>
-
-
-            <button
-                id="profile-report-button"
-                class="danger-button"
-            >
-
-                Report
-
-            </button>
-
-
-        </div>
-
 
         <div class="profile-details">
 
 
             <h3 id="modal-title">Wanderer</h3>
 
+
             <p id="modal-motto"></p>
+
 
             <p id="modal-bio"></p>
 
 
-            <div class="data-list">
+            <div class="information-list">
+
 
                 <div>
 
@@ -1333,6 +2323,7 @@
 
                 </div>
 
+
             </div>
 
 
@@ -1340,13 +2331,64 @@
 
 
 
-        <div class="profile-section">
+        <div class="profile-actions">
+
+
+            <button
+                id="profile-chat-button"
+                class="gold-button"
+            >
+
+                Private Chat
+
+            </button>
+
+
+            <details class="profile-more-actions">
+
+
+                <summary>
+
+                    More Actions
+
+                </summary>
+
+
+                <button
+                    id="profile-block-button"
+                    class="secondary-button"
+                >
+
+                    Block
+
+                </button>
+
+
+                <button
+                    id="profile-report-button"
+                    class="danger-button"
+                >
+
+                    Report
+
+                </button>
+
+
+            </details>
+
+
+        </div>
+
+
+
+        <div class="profile-subsection">
 
 
             <h3>Player Statistics</h3>
 
 
             <div class="profile-stats">
+
 
                 <div>
 
@@ -1401,6 +2443,7 @@
 
                 </div>
 
+
             </div>
 
 
@@ -1408,34 +2451,33 @@
 
 
 
-        <div class="profile-section">
+        <div class="profile-subsection">
 
             <h3>Badges</h3>
 
-            <div id="modal-badges" class="award-list"></div>
+            <div
+                id="modal-badges"
+                class="award-grid"
+            ></div>
 
         </div>
 
 
-        <div class="profile-section">
+
+        <div class="profile-subsection">
 
             <h3>Achievements</h3>
 
-            <div id="modal-achievements" class="award-list"></div>
-
-        </div>
-
-
-        <div class="profile-section">
-
-            <h3>Recent Activity</h3>
-
-            <div id="modal-activity" class="activity-list"></div>
+            <div
+                id="modal-achievements"
+                class="award-grid"
+            ></div>
 
         </div>
 
 
     </section>
+
 
 </div>
 
@@ -1445,10 +2487,17 @@
      PRIVATE CHAT MODAL
 ====================================== -->
 
-<div id="dm-modal" class="modal" hidden>
+<div
+    id="dm-modal"
+    class="realm-modal"
+    hidden
+>
 
 
-    <div class="modal-backdrop" id="dm-backdrop"></div>
+    <div
+        id="dm-backdrop"
+        class="modal-backdrop"
+    ></div>
 
 
     <section class="dm-modal-card">
@@ -1456,18 +2505,29 @@
 
         <div class="dm-header">
 
+
             <div>
 
-                <span class="eyebrow">PRIVATE CONVERSATION</span>
+                <span class="eyebrow">
+
+                    PRIVATE CONVERSATION
+
+                </span>
+
 
                 <h2 id="dm-title">Player</h2>
 
+
                 <p id="dm-status">Connected</p>
+
 
             </div>
 
 
-            <button id="dm-close" class="modal-close">
+            <button
+                id="dm-close"
+                class="modal-close"
+            >
 
                 ×
 
@@ -1477,10 +2537,12 @@
         </div>
 
 
+
         <div
             id="dm-messages"
             class="dm-messages"
         ></div>
+
 
 
         <form id="dm-form" class="chat-form">
@@ -1518,12 +2580,16 @@
      REPORT MODAL
 ====================================== -->
 
-<div id="report-modal" class="modal" hidden>
+<div
+    id="report-modal"
+    class="realm-modal"
+    hidden
+>
 
 
     <div
-        class="modal-backdrop"
         id="report-backdrop"
+        class="modal-backdrop"
     ></div>
 
 
@@ -1540,7 +2606,7 @@
         </button>
 
 
-        <h2>Report Player or Message</h2>
+        <h2>Report Player</h2>
 
 
         <form id="report-form">
@@ -1572,7 +2638,7 @@
 
             <label for="report-details">
 
-                Additional Details
+                Details
 
             </label>
 
@@ -1581,14 +2647,13 @@
                 id="report-details"
                 maxlength="500"
                 rows="4"
-                placeholder="Explain what happened..."
             ></textarea>
 
 
             <p id="report-status"></p>
 
 
-            <button class="gold-button" type="submit">
+            <button class="gold-button">
 
                 Submit Report
 
@@ -1606,16 +2671,39 @@
 
 
 <!-- ======================================
-     SCRIPTS
+     JAVASCRIPT
 ====================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <script src="js/supabase.js"></script>
+
+
+<!-- Part 1-4 -->
 
 <script src="js/dashboard.js"></script>
 
 
+<!-- Part 5 -->
+
+<script src="js/world.js"></script>
+
+
+<!-- Part 6 -->
+
+<script src="js/kingdoms.js"></script>
+
+
+<footer class="realm-footer">
+
+    EMPIRE OF KINGS
+
+    <span>GAME VERSION 0.0.1</span>
+
+</footer>
+
+
 </body>
 
-                                                                     </html>
+    </html>
