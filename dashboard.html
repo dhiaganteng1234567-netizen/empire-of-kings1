@@ -12,10 +12,10 @@
 
     <meta
         name="theme-color"
-        content="#0c1421"
+        content="#0b1422"
     >
 
-    <title>Empire of Kings | Dashboard</title>
+    <title>Empire of Kings | Realm Dashboard</title>
 
     <link
         rel="stylesheet"
@@ -29,76 +29,78 @@
 
 </head>
 
-
 <body class="dashboard-page">
 
 
 <!-- ======================================
-     TOP NAVIGATION
+     NAVIGATION
 ====================================== -->
 
-<header class="dashboard-topbar">
+<header class="main-header">
 
     <a href="index.html" class="brand">
 
-        <span class="brand-crown">♛</span>
+        <span class="brand-symbol">♛</span>
 
-        <span class="brand-text">
+        <span>
 
             EMPIRE OF KINGS
 
-            <small>THE REALM AWAITS</small>
+            <small>THE CHRONICLES OF A REALM</small>
 
         </span>
 
     </a>
 
 
-    <div class="topbar-actions">
+    <nav class="main-nav">
+
+        <a href="#overview">Overview</a>
+
+        <a href="#player-directory">Players</a>
+
+        <a href="#community">Community</a>
+
+        <a href="#account-settings">Settings</a>
+
+        <a href="#blocked-players">Blocked</a>
+
+        <a
+            href="#admin-panel"
+            id="admin-nav-link"
+            hidden
+        >
+            Administration
+        </a>
+
+    </nav>
 
 
-        <div class="top-user">
-
-            <div
-                id="top-avatar"
-                class="top-avatar"
-            >
-
-                ♟
-
-            </div>
-
-
-            <span id="top-user-name">
-
-                Loading...
-
-            </span>
-
-        </div>
-
+    <div class="header-account">
 
         <button
-            type="button"
             id="header-profile-button"
-            class="nav-button profile-nav-button"
+            class="header-profile"
         >
 
-            Lihat Profil
+            <span
+                id="top-avatar"
+                class="top-avatar"
+            >♟</span>
+
+            <span id="top-user-name">Player</span>
 
         </button>
 
 
         <button
-            type="button"
             id="logout-button"
-            class="nav-button logout-button"
+            class="logout-button"
         >
 
             Logout
 
         </button>
-
 
     </div>
 
@@ -106,42 +108,43 @@
 
 
 
-<!-- ======================================
-     MAIN DASHBOARD
-====================================== -->
-
 <main class="dashboard-main">
 
 
-    <!-- HERO -->
+<!-- ======================================
+     OVERVIEW
+====================================== -->
 
-    <section class="welcome-hero">
+<section id="overview" class="section-spacing">
 
 
-        <div class="hero-content">
+    <div class="welcome-banner">
 
-            <span class="hero-eyebrow">
 
-                YOUR JOURNEY BEGINS
+        <div>
+
+            <span class="eyebrow">
+
+                THE REALM IS AWAKE
 
             </span>
 
 
             <h1>
 
-                Welcome to the Realm
+                Welcome to Empire of Kings
 
             </h1>
 
 
             <p>
 
-                Your legacy is waiting to be written.
+                Every player has a story. Every action can become a legacy.
 
             </p>
 
 
-            <div class="hero-player-id">
+            <div class="player-identity-line">
 
                 PLAYER ID:
 
@@ -156,121 +159,94 @@
         </div>
 
 
-        <div class="hero-decoration">
+        <div class="welcome-emblem">
 
             ♛
 
         </div>
 
 
-    </section>
+    </div>
 
 
 
-    <!-- QUICK STATS -->
+    <!-- STATS -->
 
-    <section class="quick-stats">
+    <div class="stats-grid">
 
 
-        <article class="quick-stat-card">
+        <article class="stat-card">
 
-            <span class="stat-icon">♟</span>
+            <span>♟</span>
 
-            <div>
+            <small>LEVEL</small>
 
-                <small>PLAYER LEVEL</small>
-
-                <strong id="player-level">1</strong>
-
-            </div>
+            <strong id="player-level">1</strong>
 
         </article>
 
 
-        <article class="quick-stat-card">
+        <article class="stat-card">
 
-            <span class="stat-icon">✦</span>
+            <span>✦</span>
 
-            <div>
+            <small>EXPERIENCE</small>
 
-                <small>EXPERIENCE</small>
-
-                <strong id="player-xp">0</strong>
-
-            </div>
+            <strong id="player-xp">0</strong>
 
         </article>
 
 
-        <article class="quick-stat-card">
+        <article class="stat-card">
 
-            <span class="stat-icon">◈</span>
+            <span>◈</span>
 
-            <div>
+            <small>GOLD</small>
 
-                <small>GOLD</small>
-
-                <strong id="player-gold">0</strong>
-
-            </div>
+            <strong id="player-gold">0</strong>
 
         </article>
 
 
-        <article class="quick-stat-card">
+        <article class="stat-card">
 
-            <span class="stat-icon">🏅</span>
+            <span>🏅</span>
 
-            <div>
+            <small>BADGES</small>
 
-                <small>BADGES</small>
-
-                <strong id="player-badge-count">0</strong>
-
-            </div>
+            <strong id="player-badge-count">0</strong>
 
         </article>
 
 
-    </section>
+    </div>
 
 
 
-    <!-- MAIN GRID -->
-
-    <section class="dashboard-grid">
+    <div class="content-grid">
 
 
         <!-- PROFILE EDITOR -->
 
-        <article
-            class="dashboard-panel profile-editor-panel"
-            id="profile-editor-panel"
-        >
-
+        <article class="panel">
 
             <div class="panel-heading">
 
                 <div>
 
-                    <span class="panel-eyebrow">
+                    <span class="eyebrow">IDENTITY</span>
 
-                        IDENTITY
-
-                    </span>
-
-                    <h2>Player Profile</h2>
+                    <h2>My Profile</h2>
 
                 </div>
 
 
                 <button
-                    id="edit-profile-view-button"
-                    class="text-button"
-                    type="button"
+                    class="subtle-button"
+                    id="profile-preview-button"
                 >
 
-                    Preview
+                    View Public Profile
 
                 </button>
 
@@ -278,12 +254,12 @@
 
 
 
-            <div class="profile-editor-top">
+            <div class="profile-editor">
 
 
                 <div
-                    id="editor-avatar"
                     class="editor-avatar"
+                    id="editor-avatar"
                 >
 
                     ♟
@@ -291,27 +267,27 @@
                 </div>
 
 
-                <div class="avatar-editor-info">
+                <div>
 
-                    <strong id="editor-username">
+                    <h3 id="editor-username">
 
                         Player
 
-                    </strong>
+                    </h3>
 
-                    <span id="editor-player-title">
+                    <p id="editor-title">
 
                         Wanderer
 
-                    </span>
+                    </p>
 
 
                     <label
                         for="avatar-input"
-                        class="upload-avatar-button"
+                        class="upload-button"
                     >
 
-                        Change Photo
+                        Change Profile Photo
 
                     </label>
 
@@ -319,13 +295,14 @@
                     <input
                         type="file"
                         id="avatar-input"
-                        accept="image/png,image/jpeg,image/webp"
+                        accept="image/jpeg,image/png,image/webp"
                         hidden
                     >
 
+
                     <small id="avatar-status">
 
-                        JPG, PNG, WebP · Max 2 MB
+                        JPG / PNG / WebP · Maximum 2 MB
 
                     </small>
 
@@ -339,88 +316,65 @@
             <form id="profile-form">
 
 
-                <div class="form-field">
+                <label for="display-name">
 
-                    <label for="display-name">
+                    Display Name
 
-                        Display Name
+                </label>
 
-                    </label>
-
-                    <input
-                        id="display-name"
-                        type="text"
-                        maxlength="30"
-                        required
-                    >
-
-                </div>
+                <input
+                    id="display-name"
+                    maxlength="30"
+                    required
+                >
 
 
-                <div class="form-field">
+                <label for="profile-title">
 
-                    <label for="profile-title">
+                    Profile Title
 
-                        Profile Title
+                </label>
 
-                    </label>
-
-                    <input
-                        id="profile-title"
-                        type="text"
-                        maxlength="30"
-                        placeholder="Wanderer"
-                    >
-
-                </div>
+                <input
+                    id="profile-title"
+                    maxlength="30"
+                >
 
 
-                <div class="form-field">
+                <label for="motto">
 
-                    <label for="motto">
+                    Personal Motto
 
-                        Personal Motto
+                </label>
 
-                    </label>
-
-                    <input
-                        id="motto"
-                        type="text"
-                        maxlength="80"
-                        placeholder="Write your motto..."
-                    >
-
-                </div>
+                <input
+                    id="motto"
+                    maxlength="80"
+                >
 
 
-                <div class="form-field">
+                <label for="bio">
 
-                    <label for="bio">
+                    Biography
 
-                        Biography
+                </label>
 
-                    </label>
-
-                    <textarea
-                        id="bio"
-                        maxlength="250"
-                        rows="4"
-                        placeholder="Tell the realm about yourself..."
-                    ></textarea>
-
-                </div>
+                <textarea
+                    id="bio"
+                    maxlength="250"
+                    rows="4"
+                ></textarea>
 
 
                 <p
                     id="profile-message"
                     class="form-message"
-                    aria-live="polite"
                 ></p>
 
 
                 <button
                     type="submit"
-                    class="primary-button"
+                    class="gold-button"
                 >
 
                     Save Profile
@@ -435,72 +389,57 @@
 
 
 
-        <!-- CHAT -->
+        <!-- GLOBAL CHAT -->
 
-        <article class="dashboard-panel chat-panel">
+        <article class="panel chat-panel">
 
 
             <div class="panel-heading">
 
                 <div>
 
-                    <span class="panel-eyebrow">
-
-                        MULTIPLAYER
-
-                    </span>
+                    <span class="eyebrow">MULTIPLAYER</span>
 
                     <h2>Global Chat</h2>
 
                 </div>
 
 
-                <span class="realtime-badge">
+                <span class="live-tag">
 
                     <i></i>
 
-                    REALTIME
+                    LIVE
 
                 </span>
 
             </div>
 
 
-            <p class="panel-description">
+            <p class="muted">
 
-                Connect with other players across the realm.
+                Tekan username pemain untuk membuka profilnya.
+
+            </p>
+
+
+            <p id="chat-status" class="status-text">
+
+                Connecting...
 
             </p>
 
 
             <div
-                id="chat-status"
-                class="chat-status"
-                aria-live="polite"
-            >
-
-                Connecting...
-
-            </div>
-
-
-            <div
                 id="chat-messages"
                 class="chat-messages"
-                aria-live="polite"
-            >
-
-            </div>
+            ></div>
 
 
-            <form
-                id="chat-form"
-                class="chat-form"
-            >
+            <form id="chat-form" class="chat-form">
 
 
                 <input
-                    type="text"
                     id="chat-input"
                     maxlength="500"
                     placeholder="Write a message..."
@@ -512,7 +451,7 @@
                 <button
                     type="submit"
                     id="chat-send"
-                    class="chat-send-button"
+                    class="gold-button"
                 >
 
                     Send
@@ -523,31 +462,20 @@
             </form>
 
 
-            <small class="chat-hint">
-
-                Tekan nama pemain untuk melihat profilnya.
-
-            </small>
-
-
         </article>
 
 
 
         <!-- NOTIFICATIONS -->
 
-        <article class="dashboard-panel notification-panel">
+        <article class="panel">
 
 
             <div class="panel-heading">
 
                 <div>
 
-                    <span class="panel-eyebrow">
-
-                        SYSTEM
-
-                    </span>
+                    <span class="eyebrow">SYSTEM</span>
 
                     <h2>Notifications</h2>
 
@@ -556,7 +484,7 @@
 
                 <span
                     id="notification-count"
-                    class="notification-counter"
+                    class="count-badge"
                 >
 
                     0
@@ -569,31 +497,23 @@
             <div
                 id="notification-list"
                 class="notification-list"
-            >
-
-                Loading notifications...
-
-            </div>
+            ></div>
 
 
         </article>
 
 
 
-        <!-- ACCOUNT INFORMATION -->
+        <!-- ACCOUNT -->
 
-        <article class="dashboard-panel account-panel">
+        <article class="panel">
 
 
             <div class="panel-heading">
 
                 <div>
 
-                    <span class="panel-eyebrow">
-
-                        ACCOUNT
-
-                    </span>
+                    <span class="eyebrow">ACCOUNT</span>
 
                     <h2>Account Information</h2>
 
@@ -602,18 +522,14 @@
             </div>
 
 
-            <div class="account-information">
+            <div class="data-list">
 
 
                 <div>
 
                     <span>Username</span>
 
-                    <strong id="account-username">
-
-                        -
-
-                    </strong>
+                    <strong id="account-username">-</strong>
 
                 </div>
 
@@ -622,11 +538,7 @@
 
                     <span>Email</span>
 
-                    <strong id="account-email">
-
-                        -
-
-                    </strong>
+                    <strong id="account-email">-</strong>
 
                 </div>
 
@@ -635,11 +547,7 @@
 
                     <span>Account Role</span>
 
-                    <strong id="account-role">
-
-                        PLAYER
-
-                    </strong>
+                    <strong id="account-role">PLAYER</strong>
 
                 </div>
 
@@ -648,11 +556,7 @@
 
                     <span>Member Since</span>
 
-                    <strong id="account-created">
-
-                        -
-
-                    </strong>
+                    <strong id="account-created">-</strong>
 
                 </div>
 
@@ -661,322 +565,645 @@
 
                     <span>Messages Sent</span>
 
-                    <strong id="account-messages">
-
-                        0
-
-                    </strong>
+                    <strong id="account-messages">0</strong>
 
                 </div>
 
 
             </div>
 
+        </article>
 
-            <button
-                id="account-view-profile"
-                class="secondary-button"
-                type="button"
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     PLAYER DIRECTORY
+====================================== -->
+
+<section
+    id="player-directory"
+    class="section-spacing"
+>
+
+
+    <div class="section-title">
+
+        <span class="eyebrow">DISCOVER THE PLAYERS</span>
+
+        <h2>Player Directory</h2>
+
+        <p>
+
+            Cari pemain berdasarkan username atau Player ID.
+
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+
+        <div class="directory-controls">
+
+
+            <input
+                id="directory-search"
+                placeholder="Search username, display name or Player ID..."
             >
 
-                View Public Profile
+
+            <select id="directory-sort">
+
+                <option value="created_at">Newest Players</option>
+
+                <option value="level">Highest Level</option>
+
+                <option value="experience">Most Experience</option>
+
+                <option value="gold">Most Gold</option>
+
+            </select>
+
+
+            <button
+                id="directory-search-button"
+                class="gold-button"
+            >
+
+                Search
 
             </button>
+
+
+        </div>
+
+
+        <div
+            id="directory-results"
+            class="player-directory-grid"
+        >
+
+            Search for players...
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     COMMUNITY
+====================================== -->
+
+<section
+    id="community"
+    class="section-spacing"
+>
+
+
+    <div class="section-title">
+
+        <span class="eyebrow">THE COMMUNITY</span>
+
+        <h2>Community Statistics</h2>
+
+        <p>
+
+            Gambaran aktivitas seluruh pemain Empire of Kings.
+
+        </p>
+
+    </div>
+
+
+    <div class="community-grid">
+
+
+        <article class="community-card">
+
+            <span>♟</span>
+
+            <small>Total Players</small>
+
+            <strong id="community-players">0</strong>
+
+        </article>
+
+
+        <article class="community-card">
+
+            <span>●</span>
+
+            <small>Online Players</small>
+
+            <strong id="community-online">0</strong>
+
+        </article>
+
+
+        <article class="community-card">
+
+            <span>💬</span>
+
+            <small>Global Messages</small>
+
+            <strong id="community-messages">0</strong>
+
+        </article>
+
+
+        <article class="community-card">
+
+            <span>🏆</span>
+
+            <small>Achievements</small>
+
+            <strong id="community-achievements">0</strong>
+
+        </article>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     ACCOUNT SETTINGS
+====================================== -->
+
+<section
+    id="account-settings"
+    class="section-spacing"
+>
+
+
+    <div class="section-title">
+
+        <span class="eyebrow">PERSONALIZATION</span>
+
+        <h2>Account Settings</h2>
+
+        <p>
+
+            Atur privasi dan bagaimana pemain lain berinteraksi denganmu.
+
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+
+        <form id="settings-form">
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>Profile Visibility</strong>
+
+                    <p>Apakah profil detailmu terlihat pemain lain?</p>
+
+                </div>
+
+
+                <select id="profile-visibility">
+
+                    <option value="public">Public</option>
+
+                    <option value="private">Private</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>Private Messages</strong>
+
+                    <p>Siapa yang dapat mengirim pesan pribadi?</p>
+
+                </div>
+
+
+                <select id="private-message-policy">
+
+                    <option value="everyone">Everyone</option>
+
+                    <option value="nobody">Nobody</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>Online Status</strong>
+
+                    <p>Tampilkan status online kepada pemain lain.</p>
+
+                </div>
+
+
+                <input
+                    type="checkbox"
+                    id="show-online-status"
+                >
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>Activity Visibility</strong>
+
+                    <p>Tampilkan riwayat aktivitas pada profilmu.</p>
+
+                </div>
+
+
+                <input
+                    type="checkbox"
+                    id="show-activity"
+                >
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div>
+
+                    <strong>Notifications</strong>
+
+                    <p>Aktifkan preferensi penerimaan notifikasi.</p>
+
+                </div>
+
+
+                <input
+                    type="checkbox"
+                    id="notifications-enabled"
+                >
+
+            </div>
+
+
+            <p
+                id="settings-message"
+                class="form-message"
+            ></p>
+
+
+            <button
+                type="submit"
+                class="gold-button"
+            >
+
+                Save Settings
+
+            </button>
+
+
+        </form>
+
+
+        <hr class="divider">
+
+
+        <h3>Change Username</h3>
+
+        <p class="muted">
+
+            Perubahan username dibatasi satu kali setiap 30 hari.
+
+        </p>
+
+
+        <form id="username-form" class="username-form">
+
+
+            <input
+                id="new-username"
+                minlength="3"
+                maxlength="20"
+                pattern="[a-zA-Z0-9_]+"
+                placeholder="New username"
+                required
+            >
+
+
+            <button class="gold-button" type="submit">
+
+                Change Username
+
+            </button>
+
+
+        </form>
+
+
+        <p id="username-message" class="form-message"></p>
+
+
+        <hr class="divider">
+
+
+        <h3>Password</h3>
+
+        <p class="muted">
+
+            Pemulihan password tersedia melalui email.
+
+        </p>
+
+
+        <a
+            href="forgot-password.html"
+            class="secondary-link"
+        >
+
+            Reset Password
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     BLOCKED PLAYERS
+====================================== -->
+
+<section
+    id="blocked-players"
+    class="section-spacing"
+>
+
+
+    <div class="section-title">
+
+        <span class="eyebrow">PERSONAL CONTROL</span>
+
+        <h2>Blocked Players</h2>
+
+        <p>
+
+            Kamu dapat membuka blokir kapan saja.
+
+        </p>
+
+    </div>
+
+
+    <div
+        id="blocked-list"
+        class="blocked-list panel"
+    >
+
+        Loading...
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     ADMIN PANEL
+====================================== -->
+
+<section
+    id="admin-panel"
+    class="section-spacing"
+    hidden
+>
+
+
+    <div class="section-title">
+
+        <span class="eyebrow">RESTRICTED AREA</span>
+
+        <h2>Administration Panel</h2>
+
+        <p>
+
+            Management and moderation tools.
+
+        </p>
+
+    </div>
+
+
+    <div class="admin-grid">
+
+
+        <!-- PLAYER MANAGEMENT -->
+
+        <article class="panel">
+
+
+            <div class="panel-heading">
+
+                <h2>Player Management</h2>
+
+                <span class="admin-label">ADMIN</span>
+
+            </div>
+
+
+            <input
+                id="admin-player-search"
+                placeholder="Search username, name or Player ID..."
+            >
+
+
+            <button
+                id="admin-search-button"
+                class="gold-button"
+            >
+
+                Search Players
+
+            </button>
+
+
+            <div
+                id="admin-player-results"
+                class="admin-results"
+            ></div>
 
 
         </article>
 
 
-    </section>
+
+        <!-- REPORTS -->
+
+        <article class="panel">
 
 
+            <div class="panel-heading">
 
-    <!-- ==================================
-         PROFILE MODAL
-    =================================== -->
+                <h2>Player Reports</h2>
 
-    <div
-        id="profile-modal"
-        class="profile-modal"
-        hidden
-    >
-
-
-        <div
-            class="modal-backdrop"
-            id="modal-backdrop"
-        ></div>
-
-
-        <section
-            class="profile-modal-card"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-display-name"
-        >
+            </div>
 
 
             <button
-                type="button"
-                id="modal-close"
-                class="modal-close"
-                aria-label="Close profile"
+                id="admin-load-reports"
+                class="gold-button"
             >
 
-                ×
+                Refresh Reports
 
             </button>
 
 
+            <div
+                id="admin-report-results"
+                class="admin-results"
+            ></div>
 
-            <div class="modal-cover">
+
+        </article>
 
 
-                <div
-                    id="modal-avatar"
-                    class="modal-avatar"
+
+        <!-- ADMIN NOTICE -->
+
+        <article class="panel">
+
+
+            <h2>Send Notification</h2>
+
+
+            <form id="admin-notification-form">
+
+
+                <label for="admin-notification-user">
+
+                    Target Player ID
+
+                </label>
+
+
+                <input
+                    id="admin-notification-user"
+                    placeholder="Player UUID"
+                    required
                 >
 
-                    ♟
 
-                </div>
+                <label for="admin-notification-title">
 
+                    Title
+
+                </label>
+
+
+                <input
+                    id="admin-notification-title"
+                    maxlength="80"
+                    required
+                >
+
+
+                <label for="admin-notification-message">
+
+                    Message
+
+                </label>
+
+
+                <textarea
+                    id="admin-notification-message"
+                    maxlength="1000"
+                    required
+                ></textarea>
+
+
+                <button class="gold-button" type="submit">
+
+                    Send Notification
+
+                </button>
+
+
+                <p id="admin-notification-status"></p>
+
+
+            </form>
+
+
+        </article>
+
+
+
+        <!-- AUDIT LOGS -->
+
+        <article class="panel">
+
+
+            <div class="panel-heading">
+
+                <h2>Administrator Audit Logs</h2>
 
             </div>
 
 
+            <button
+                id="admin-load-audit"
+                class="gold-button"
+            >
 
-            <div class="modal-profile-header">
+                Refresh Logs
 
+            </button>
 
-                <div class="modal-player-name">
 
+            <div
+                id="admin-audit-results"
+                class="admin-results"
+            ></div>
 
-                    <h2 id="modal-display-name">
 
-                        Player
-
-                    </h2>
-
-
-                    <p id="modal-username">
-
-                        @player
-
-                    </p>
-
-
-                    <span
-                        id="modal-status"
-                        class="player-status"
-                    >
-
-                        Offline
-
-                    </span>
-
-
-                </div>
-
-
-                <span
-                    id="modal-role"
-                    class="modal-role"
-                >
-
-                    PLAYER
-
-                </span>
-
-
-            </div>
-
-
-
-            <div class="modal-profile-details">
-
-
-                <h3 id="modal-title">
-
-                    Wanderer
-
-                </h3>
-
-
-                <p id="modal-motto" class="modal-motto"></p>
-
-
-                <p id="modal-bio" class="modal-bio">
-
-                    No biography.
-
-                </p>
-
-
-
-                <div class="modal-id-row">
-
-                    <span>Player ID</span>
-
-                    <strong id="modal-player-id">
-
-                        -
-
-                    </strong>
-
-                </div>
-
-
-                <div class="modal-id-row">
-
-                    <span>Joined</span>
-
-                    <strong id="modal-created">
-
-                        -
-
-                    </strong>
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- PLAYER STATS -->
-
-            <section class="modal-section">
-
-
-                <div class="section-heading">
-
-                    <h3>Player Statistics</h3>
-
-                </div>
-
-
-                <div class="modal-stats">
-
-
-                    <div>
-
-                        <small>LEVEL</small>
-
-                        <strong id="modal-level">1</strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <small>EXPERIENCE</small>
-
-                        <strong id="modal-xp">0</strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <small>GOLD</small>
-
-                        <strong id="modal-gold">0</strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <small>MESSAGES</small>
-
-                        <strong id="modal-messages">0</strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <small>BADGES</small>
-
-                        <strong id="modal-badge-count">0</strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <small>ACHIEVEMENTS</small>
-
-                        <strong id="modal-achievement-count">0</strong>
-
-                    </div>
-
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- BADGES -->
-
-            <section class="modal-section">
-
-
-                <div class="section-heading">
-
-                    <h3>Badges</h3>
-
-                    <span>Player Awards</span>
-
-                </div>
-
-
-                <div
-                    id="modal-badges"
-                    class="award-grid"
-                >
-
-                </div>
-
-
-            </section>
-
-
-
-            <!-- ACHIEVEMENTS -->
-
-            <section class="modal-section">
-
-
-                <div class="section-heading">
-
-                    <h3>Achievements</h3>
-
-                    <span>Unlocked</span>
-
-                </div>
-
-
-                <div
-                    id="modal-achievements"
-                    class="award-grid"
-                >
-
-                </div>
-
-
-            </section>
-
-
-
-        </section>
+        </article>
 
 
     </div>
 
+
+</section>
 
 
 </main>
@@ -984,7 +1211,402 @@
 
 
 <!-- ======================================
-     JAVASCRIPT
+     PUBLIC PLAYER PROFILE
+====================================== -->
+
+<div id="profile-modal" class="modal" hidden>
+
+
+    <div class="modal-backdrop" id="profile-backdrop"></div>
+
+
+    <section class="profile-modal-card">
+
+
+        <button
+            id="profile-close"
+            class="modal-close"
+        >
+
+            ×
+
+        </button>
+
+
+        <div class="profile-cover">
+
+            <div id="modal-avatar" class="modal-avatar">
+
+                ♟
+
+            </div>
+
+        </div>
+
+
+        <div class="modal-profile-main">
+
+
+            <div>
+
+                <h2 id="modal-display-name">Player</h2>
+
+                <p id="modal-username">@username</p>
+
+                <span id="modal-status">Offline</span>
+
+            </div>
+
+
+            <span id="modal-role" class="role-label">
+
+                PLAYER
+
+            </span>
+
+
+        </div>
+
+
+        <div class="profile-actions">
+
+
+            <button
+                id="profile-chat-button"
+                class="gold-button"
+            >
+
+                Private Chat
+
+            </button>
+
+
+            <button
+                id="profile-block-button"
+                class="secondary-button"
+            >
+
+                Block
+
+            </button>
+
+
+            <button
+                id="profile-report-button"
+                class="danger-button"
+            >
+
+                Report
+
+            </button>
+
+
+        </div>
+
+
+        <div class="profile-details">
+
+
+            <h3 id="modal-title">Wanderer</h3>
+
+            <p id="modal-motto"></p>
+
+            <p id="modal-bio"></p>
+
+
+            <div class="data-list">
+
+                <div>
+
+                    <span>Player ID</span>
+
+                    <strong id="modal-player-id">-</strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Joined</span>
+
+                    <strong id="modal-created">-</strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="profile-section">
+
+
+            <h3>Player Statistics</h3>
+
+
+            <div class="profile-stats">
+
+                <div>
+
+                    <small>LEVEL</small>
+
+                    <strong id="modal-level">0</strong>
+
+                </div>
+
+
+                <div>
+
+                    <small>EXPERIENCE</small>
+
+                    <strong id="modal-xp">0</strong>
+
+                </div>
+
+
+                <div>
+
+                    <small>GOLD</small>
+
+                    <strong id="modal-gold">0</strong>
+
+                </div>
+
+
+                <div>
+
+                    <small>MESSAGES</small>
+
+                    <strong id="modal-messages">0</strong>
+
+                </div>
+
+
+                <div>
+
+                    <small>BADGES</small>
+
+                    <strong id="modal-badge-count">0</strong>
+
+                </div>
+
+
+                <div>
+
+                    <small>ACHIEVEMENTS</small>
+
+                    <strong id="modal-achievement-count">0</strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="profile-section">
+
+            <h3>Badges</h3>
+
+            <div id="modal-badges" class="award-list"></div>
+
+        </div>
+
+
+        <div class="profile-section">
+
+            <h3>Achievements</h3>
+
+            <div id="modal-achievements" class="award-list"></div>
+
+        </div>
+
+
+        <div class="profile-section">
+
+            <h3>Recent Activity</h3>
+
+            <div id="modal-activity" class="activity-list"></div>
+
+        </div>
+
+
+    </section>
+
+</div>
+
+
+
+<!-- ======================================
+     PRIVATE CHAT MODAL
+====================================== -->
+
+<div id="dm-modal" class="modal" hidden>
+
+
+    <div class="modal-backdrop" id="dm-backdrop"></div>
+
+
+    <section class="dm-modal-card">
+
+
+        <div class="dm-header">
+
+            <div>
+
+                <span class="eyebrow">PRIVATE CONVERSATION</span>
+
+                <h2 id="dm-title">Player</h2>
+
+                <p id="dm-status">Connected</p>
+
+            </div>
+
+
+            <button id="dm-close" class="modal-close">
+
+                ×
+
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="dm-messages"
+            class="dm-messages"
+        ></div>
+
+
+        <form id="dm-form" class="chat-form">
+
+
+            <input
+                id="dm-input"
+                maxlength="2000"
+                placeholder="Write a private message..."
+                required
+            >
+
+
+            <button
+                id="dm-send"
+                class="gold-button"
+            >
+
+                Send
+
+            </button>
+
+
+        </form>
+
+
+    </section>
+
+
+</div>
+
+
+
+<!-- ======================================
+     REPORT MODAL
+====================================== -->
+
+<div id="report-modal" class="modal" hidden>
+
+
+    <div
+        class="modal-backdrop"
+        id="report-backdrop"
+    ></div>
+
+
+    <section class="report-modal-card">
+
+
+        <button
+            id="report-close"
+            class="modal-close"
+        >
+
+            ×
+
+        </button>
+
+
+        <h2>Report Player or Message</h2>
+
+
+        <form id="report-form">
+
+
+            <label for="report-reason">
+
+                Reason
+
+            </label>
+
+
+            <select id="report-reason">
+
+                <option value="spam">Spam</option>
+
+                <option value="harassment">Harassment</option>
+
+                <option value="impersonation">Impersonation</option>
+
+                <option value="inappropriate_content">
+                    Inappropriate Content
+                </option>
+
+                <option value="other">Other</option>
+
+            </select>
+
+
+            <label for="report-details">
+
+                Additional Details
+
+            </label>
+
+
+            <textarea
+                id="report-details"
+                maxlength="500"
+                rows="4"
+                placeholder="Explain what happened..."
+            ></textarea>
+
+
+            <p id="report-status"></p>
+
+
+            <button class="gold-button" type="submit">
+
+                Submit Report
+
+            </button>
+
+
+        </form>
+
+
+    </section>
+
+
+</div>
+
+
+
+<!-- ======================================
+     SCRIPTS
 ====================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -996,4 +1618,4 @@
 
 </body>
 
-                    </html>
+                                                                     </html>
