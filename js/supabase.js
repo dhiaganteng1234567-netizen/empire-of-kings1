@@ -1,8 +1,8 @@
-/* =========================================
+/* ==========================================
    EMPIRE OF KINGS
-   SUPABASE CONNECTION
-   VERSION 1.0
-========================================= */
+   CORE CONNECTION
+   VERSION 0.0.1
+========================================== */
 
 (function () {
 
@@ -10,19 +10,19 @@
 
 
     // ======================================
-    // 1. SUPABASE CONFIGURATION
+    // CONNECTION CONFIGURATION
     // ======================================
 
-    const SUPABASE_URL =
+    const PROJECT_URL =
         "https://rkrwuqvczpjurljimkas.supabase.co";
 
 
-    const SUPABASE_PUBLISHABLE_KEY =
+    const PUBLIC_KEY =
         "sb_publishable_bQZjgnt1K53oBllpypTI-w_W_Ngqvr-";
 
 
     // ======================================
-    // 2. CHECK SUPABASE LIBRARY
+    // CHECK LIBRARY
     // ======================================
 
     if (
@@ -31,7 +31,7 @@
     ) {
 
         console.error(
-            "EMPIRE OF KINGS: Supabase library gagal dimuat."
+            "EOK: Core connection library unavailable."
         );
 
         return;
@@ -40,16 +40,16 @@
 
 
     // ======================================
-    // 3. CREATE SUPABASE CLIENT
+    // INITIALIZE CLIENT
     // ======================================
 
-    window.EOK_SUPABASE =
+    window.EOK_CLIENT =
 
         window.supabase.createClient(
 
-            SUPABASE_URL,
+            PROJECT_URL,
 
-            SUPABASE_PUBLISHABLE_KEY,
+            PUBLIC_KEY,
 
             {
 
@@ -68,8 +68,8 @@
         );
 
 
-    console.log(
-        "EMPIRE OF KINGS: Supabase connected."
+    console.info(
+        "EOK: Core services initialized."
     );
 
 })();
