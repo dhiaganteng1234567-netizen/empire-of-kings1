@@ -1,22 +1,161 @@
 /* ==========================================
    EMPIRE OF KINGS
-   ROYAL COMMAND CENTER
+   DASHBOARD CORE
    VERSION 0.0.1
 ========================================== */
 
 (function () {
 
-    "use strict";
+"use strict";
 
 
-    // ======================================
-    // 1. CORE CLIENT
-    // ======================================
-
-    const client = window.EOK_CLIENT;
+const client = window.EOK_CLIENT;
 
 
-    if (!client) {
+if (!client) {
+
+    window.location.replace("login.html");
+
+    return;
+
+}
+
+
+const $ = id => document.getElementById(id);
+
+
+window.EOK_STATE = {
+
+    user: null,
+
+    profile: null,
+
+    character: null,
+
+    badges: [],
+
+    achievements: []
+
+};
+
+
+function dateFormat(value) {
+
+    if (!value) return "Not available";
+
+
+    const date = new Date(value);
+
+
+    return new Intl.DateTimeFormat("id-ID", {
+
+        day: "numeric",
+
+        month: "long",
+
+        year: "numeric"
+
+    }).format(date);
+
+}
+
+
+function avatarURL(path) {
+
+    if (!path) return null;
+
+
+    return client.storage
+
+        .from("eok-avatars")
+
+        .getPublicUrl(path)
+
+        .data.publicUrl;
+
+}
+
+
+function setAvatar(image, fallback, path, initial) {
+
+    const url = avatarURL(path);
+
+
+    fallback.textContent = initial || "E";
+
+
+    if (!url) {
+
+        image.hidden = true;
+
+        fallback.hidden = false;
+
+        return;
+
+    }
+
+
+    image.onload = function () {
+
+        image.hidden = false;
+
+        fallback.hidden = true;
+
+    };
+
+
+    image.onerror = function () {
+
+        image.hidden = true;
+
+        fallback.hidden = false;
+
+    };
+
+
+    image.src = url;
+
+}
+
+
+function setFlag(element, countryCode) {
+
+    if (!element) return;
+
+
+    if (!countryCode) {
+
+        element.textContent = "🌐 Citizenship not selected";
+
+        return;
+
+    }
+
+
+    element.innerHTML =
+
+        window.EOKFlagHTML(countryCode, "eok-flag")
+
+        + " " +
+
+        window.EOKCountryName(countryCode);
+
+}
+
+
+async function loadDashboard() {
+
+
+    const {
+
+        data: userData,
+
+        error: userError
+
+    } = await client.auth.getUser();
+
+
+    if (userError || !userData.user) {
 
         window.location.replace("login.html");
 
@@ -25,338 +164,467 @@
     }
 
 
-    // ======================================
-    // 2. ELEMENTS
-    // ======================================
-
-    const logoutButton =
-        document.getElementById("logoutButton");
+    const user = userData.user;
 
 
-    const usernameElement =
-        document.getElementById("playerUsername");
+    const {
+
+        data: profile,
+
+        error: profileError
+
+    } = await client
+
+        .from("eok_profiles")
+
+        .select("*")
+
+        .eq("id", user.id)
+
+        .maybeSingle();
 
 
-    const displayNameElement =
-        document.getElementById("playerDisplayName");
+    if (profileError) {
 
+        console.error(profileError);
 
-    const playerIdElement =
-        document.getElementById("playerId");
+        alert("Unable to load player profile.");
 
-
-    const greetingElement =
-        document.getElementById("greetingName");
-
-
-    const topUsernameElement =
-        document.getElementById("topUsername");
-
-
-    const topAvatarElement =
-        document.getElementById("topAvatar");
-
-
-    const createdAtElement =
-        document.getElementById("accountCreatedAt");
-
-
-    const createdShortElement =
-        document.getElementById("accountCreatedShort");
-
-
-    const todayDateElement =
-        document.getElementById("todayDate");
-
-
-    const profileErrorElement =
-        document.getElementById("profileError");
-
-
-    // ======================================
-    // 3. DATE FORMATTER
-    // ======================================
-
-    function formatDate(dateValue) {
-
-        if (!dateValue) {
-
-            return "Not available";
-
-        }
-
-
-        const date = new Date(dateValue);
-
-
-        if (Number.isNaN(date.getTime())) {
-
-            return "Not available";
-
-        }
-
-
-        return new Intl.DateTimeFormat(
-
-            "id-ID",
-
-            {
-
-                day: "numeric",
-
-                month: "long",
-
-                year: "numeric"
-
-            }
-
-        ).format(date);
+        return;
 
     }
 
 
-    // ======================================
-    // 4. CURRENT DATE
-    // ======================================
+    if (!profile) {
 
-    todayDateElement.textContent =
+        alert("Player profile is not available. Check the account database.");
 
-        formatDate(new Date());
-
-
-    // ======================================
-    // 5. LOAD PROFILE
-    // ======================================
-
-    async function loadDashboard() {
-
-        try {
-
-
-            // VERIFY SESSION
-
-            const {
-
-                data: userData,
-
-                error: userError
-
-            } = await client.auth.getUser();
-
-
-            if (userError) throw userError;
-
-
-            const user = userData.user;
-
-
-            if (!user) {
-
-                window.location.replace("login.html");
-
-                return;
-
-            }
-
-
-            // GET PLAYER PROFILE
-
-            const {
-
-                data: profile,
-
-                error: profileError
-
-            } = await client
-
-                .from("eok_profiles")
-
-                .select(
-
-                    "player_id, username, display_name, created_at"
-
-                )
-
-                .eq("id", user.id)
-
-                .maybeSingle();
-
-
-            if (profileError) {
-
-                throw profileError;
-
-            }
-
-
-            // PROFILE NOT FOUND
-
-            if (!profile) {
-
-                profileErrorElement.hidden = false;
-
-                profileErrorElement.textContent =
-
-                    "Player profile has not been initialized. Check that all database setup sections completed successfully.";
-
-                return;
-
-            }
-
-
-            // ==================================
-            // ACCOUNT INFORMATION
-            // ==================================
-
-            const username = profile.username;
-
-            const displayName =
-                profile.display_name || username;
-
-
-            // USERNAME
-
-            usernameElement.textContent =
-                "@" + username;
-
-
-            topUsernameElement.textContent =
-                username.toUpperCase();
-
-
-            // DISPLAY NAME
-
-            displayNameElement.textContent =
-                displayName;
-
-
-            greetingElement.textContent =
-                displayName;
-
-
-            // PLAYER ID
-
-            playerIdElement.textContent =
-                profile.player_id;
-
-
-            // ACCOUNT AVATAR INITIAL
-
-            const initial =
-
-                Array.from(
-                    displayName.trim()
-                )[0]?.toUpperCase() || "E";
-
-
-            topAvatarElement.textContent =
-                initial;
-
-
-            // ACCOUNT CREATION DATE
-
-            const createdDate =
-                formatDate(profile.created_at);
-
-
-            createdAtElement.textContent =
-                createdDate;
-
-
-            createdShortElement.textContent =
-                createdDate;
-
-
-            console.info(
-                "EOK: Player dashboard initialized."
-            );
-
-
-        } catch (error) {
-
-
-            console.error(
-                "EOK: Dashboard initialization failed.",
-                error
-            );
-
-
-            profileErrorElement.hidden = false;
-
-            profileErrorElement.textContent =
-
-                "Unable to load your player information. Check your connection and database security configuration.";
-
-        }
+        return;
 
     }
 
 
-    // ======================================
-    // 6. LOGOUT
-    // ======================================
+    const {
 
-    logoutButton.addEventListener(
+        data: character,
 
-        "click",
+        error: characterError
 
-        async function () {
+    } = await client
 
+        .from("eok_characters")
 
-            logoutButton.disabled = true;
+        .select("*")
 
-            logoutButton.textContent =
-                "SIGNING OUT...";
+        .eq("user_id", user.id)
 
-
-            try {
+        .maybeSingle();
 
 
-                const {
+    if (characterError) {
 
-                    error
+        console.error(characterError);
 
-                } = await client.auth.signOut();
-
-
-                if (error) throw error;
+    }
 
 
-                window.location.replace(
-                    "index.html"
-                );
+    const {
+
+        data: badges,
+
+        error: badgeError
+
+    } = await client
+
+        .from("eok_player_badges")
+
+        .select(
+
+            "badge_code, awarded_at, eok_badges(label,description,icon,rarity)"
+
+        )
+
+        .eq("user_id", user.id)
+
+        .order("awarded_at", {ascending:true});
 
 
-            } catch (error) {
+    const {
+
+        data: achievements,
+
+        error: achievementError
+
+    } = await client
+
+        .from("eok_player_achievements")
+
+        .select(
+
+            "achievement_code, progress, unlocked_at, eok_achievements(label,description,icon)"
+
+        )
+
+        .eq("user_id", user.id);
 
 
-                console.error(
-                    "EOK: Logout failed.",
-                    error
-                );
+    if (badgeError) console.error(badgeError);
+
+    if (achievementError) console.error(achievementError);
 
 
-                logoutButton.disabled = false;
+    window.EOK_STATE = {
 
-                logoutButton.textContent =
-                    "SIGN OUT";
+        user,
 
-                alert(
-                    "Unable to sign out. Please try again."
-                );
+        profile,
 
-            }
+        character,
 
-        }
+        badges: badges || [],
+
+        achievements: achievements || []
+
+    };
+
+
+    renderDashboard();
+
+
+    if (window.EOKApplyLanguage) {
+
+        window.EOKApplyLanguage(
+
+            profile.preferred_language || "id"
+
+        );
+
+    }
+
+
+    if (window.EOKProfileInit) {
+
+        window.EOKProfileInit();
+
+    }
+
+
+    if (window.EOKChatInit) {
+
+        window.EOKChatInit();
+
+    }
+
+}
+
+
+function renderDashboard() {
+
+
+    const state = window.EOK_STATE;
+
+    const profile = state.profile;
+
+    const character = state.character || {};
+
+
+    const name = profile.display_name || profile.username;
+
+
+    $("greetingName").textContent = name;
+
+    $("playerDisplayName").textContent = name;
+
+    $("playerUsername").textContent = "@" + profile.username;
+
+    $("playerId").textContent = profile.player_id;
+
+
+    $("todayDate").textContent = dateFormat(new Date());
+
+
+    $("playerLevel").textContent = character.level || 1;
+
+    $("playerXP").textContent = character.experience || 0;
+
+    $("playerReputation").textContent = character.reputation || 0;
+
+    $("playerBadgeCount").textContent = state.badges.length;
+
+
+    const initial = Array.from(name)[0]?.toUpperCase() || "E";
+
+
+    setAvatar(
+
+        $("ownAvatar"),
+
+        $("ownAvatarFallback"),
+
+        profile.avatar_path,
+
+        initial
 
     );
 
 
-    // ======================================
-    // 7. INITIALIZE DASHBOARD
-    // ======================================
+    setAvatar(
 
-    loadDashboard();
+        document.createElement("img"),
+
+        $("quickAvatar"),
+
+        profile.avatar_path,
+
+        initial
+
+    );
 
 
+    const quickAvatar = $("quickAvatar");
+
+    quickAvatar.innerHTML = "";
+
+    const quickImageURL = avatarURL(profile.avatar_path);
+
+
+    if (quickImageURL) {
+
+        const img = document.createElement("img");
+
+        img.src = quickImageURL;
+
+        img.alt = "Profile picture";
+
+        img.onerror = function () {
+
+            quickAvatar.textContent = initial;
+
+        };
+
+        quickAvatar.appendChild(img);
+
+    } else {
+
+        quickAvatar.textContent = initial;
+
+    }
+
+
+    $("quickDisplayName").textContent = name;
+
+    $("quickUsername").textContent = "@" + profile.username;
+
+
+    setFlag($("playerCountry"), profile.country_code);
+
+    setFlag($("quickCountry"), profile.country_code);
+
+
+    $("citizenshipNotice").hidden =
+
+        Boolean(profile.country_code);
+
+
+    $("quickBadgeList").innerHTML = "";
+
+    $("quickAchievementList").innerHTML = "";
+
+
+    if (state.badges.length === 0) {
+
+        $("quickBadgeList").textContent = "No badges yet.";
+
+    }
+
+
+    state.badges.slice(0, 3).forEach(item => {
+
+        const badge = item.eok_badges;
+
+        if (!badge) return;
+
+
+        const row = document.createElement("div");
+
+        row.className = "quick-badge";
+
+
+        row.innerHTML = `
+
+            <span class="quick-badge-icon">
+
+                ${badge.icon}
+
+            </span>
+
+            <div>
+
+                <strong>${badge.label}</strong>
+
+                <small>${badge.rarity}</small>
+
+            </div>
+
+        `;
+
+
+        $("quickBadgeList").appendChild(row);
+
+    });
+
+
+    if (!state.achievements.length) {
+
+        $("quickAchievementList").textContent =
+
+            "No achievements yet.";
+
+    }
+
+
+    state.achievements.slice(0, 3).forEach(item => {
+
+        const achievement = item.eok_achievements;
+
+        if (!achievement) return;
+
+
+        const row = document.createElement("div");
+
+        row.className = "quick-badge";
+
+
+        row.innerHTML = `
+
+            <span class="quick-badge-icon">
+
+                ${achievement.icon}
+
+            </span>
+
+            <div>
+
+                <strong>${achievement.label}</strong>
+
+                <small>UNLOCKED</small>
+
+            </div>
+
+        `;
+
+
+        $("quickAchievementList").appendChild(row);
+
+    });
+
+}
+
+
+window.EOKRefreshDashboard = loadDashboard;
+
+
+document.addEventListener("DOMContentLoaded", async function () {
+
+
+    try {
+
+        await loadDashboard();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+
+    $("logoutButton").addEventListener("click", async function () {
+
+
+        this.disabled = true;
+
+
+        const {error} = await client.auth.signOut();
+
+
+        if (error) {
+
+            this.disabled = false;
+
+            alert("Unable to sign out.");
+
+            return;
+
+        }
+
+
+        window.location.replace("index.html");
+
+    });
+
+
+    $("viewProfileButton").addEventListener("click", function () {
+
+        window.EOKOpenProfile(window.EOK_STATE.user.id);
+
+    });
+
+
+    $("quickProfileButton").addEventListener("click", function () {
+
+        window.EOKOpenProfile(window.EOK_STATE.user.id);
+
+    });
+
+
+    $("sidebarProfileButton").addEventListener("click", function () {
+
+        window.EOKOpenProfile(window.EOK_STATE.user.id);
+
+    });
+
+
+    $("ownAvatarButton").addEventListener("click", function () {
+
+        window.EOKOpenSettings();
+
+    });
+
+
+    $("editProfileButton").addEventListener("click", function () {
+
+        window.EOKOpenSettings();
+
+    });
+
+
+    $("settingsIconButton").addEventListener("click", function () {
+
+        window.EOKOpenSettings();
+
+    });
+
+
+    $("sidebarSettingsButton").addEventListener("click", function () {
+
+        window.EOKOpenSettings();
+
+    });
+
+
+    $("chooseCitizenshipButton").addEventListener("click", function () {
+
+        window.EOKOpenSettings();
+
+    });
+
+
+    $("chatIconButton").addEventListener("click", function () {
+
+        window.EOKOpenInbox();
+
+    });
+
+
+});
 })();
