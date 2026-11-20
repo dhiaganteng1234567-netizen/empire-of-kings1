@@ -3,332 +3,342 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="theme-color"
-          content="#09111f">
+<meta name="theme-color" content="#09111f">
 
-    <title>Create Account — EMPIRE OF KINGS</title>
+<title>Join the Realm | EMPIRE OF KINGS</title>
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet">
-
-    <link rel="stylesheet"
-          href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body class="auth-page">
 
-    <main class="auth-shell">
+<main class="auth-shell">
 
+<section class="auth-story">
 
-        <section class="auth-story">
+<a href="index.html" class="brand">
 
+<span class="brand-crest">♛</span>
 
-            <a href="index.html"
-               class="brand">
+<span class="brand-copy">
 
-                <span class="brand-crest">
+<strong>EMPIRE <span>OF KINGS</span></strong>
 
-                    <svg viewBox="0 0 50 58"
-                         fill="none">
+<small>VERSION 0.0.1</small>
 
-                        <path d="M25 2L45 10V27C45 40 36 50 25 56C14 50 5 40 5 27V10L25 2Z"
-                              stroke="#D7B77A"
-                              stroke-width="2"/>
+</span>
 
-                        <path d="M25 17V39M17 28H33"
-                              stroke="#D7B77A"
-                              stroke-width="2"/>
+</a>
 
-                    </svg>
 
-                </span>
+<div class="auth-story-content">
 
+<span class="eyebrow">THE BEGINNING OF YOUR LEGACY</span>
 
-                <span class="brand-copy">
+<h1>
 
-                    <strong>
-                        EMPIRE <span>OF KINGS</span>
-                    </strong>
+A New Era.
 
-                    <small>
-                        VERSION 0.0.1 • THE MEDIEVAL WORLD
-                    </small>
+<em>Your Own Legacy.</em>
 
-                </span>
+</h1>
 
-            </a>
+<p>
 
+Your identity is the first step toward
+a greater destiny.
 
+Choose your origins, your community,
+and the language of your journey.
 
-            <div class="auth-story-content">
+</p>
 
-                <span class="eyebrow">
-                    WRITE YOUR OWN HISTORY
-                </span>
+<div class="story-seal">
 
+<span>✦</span>
 
-                <h1>
+<div>
 
-                    A Legacy
+<strong>198 COUNTRY OPTIONS</strong>
 
-                    <em>Begins Here.</em>
+<small>ONE PERSISTENT WORLD</small>
 
-                </h1>
+</div>
 
+</div>
 
-                <p>
+</div>
 
-                    Every great kingdom begins with
-                    a single decision. Create your
-                    account and prepare to enter
-                    the medieval world.
+</section>
 
-                </p>
 
 
-                <div class="story-seal">
+<section class="auth-form-side">
 
-                    <span>✦</span>
+<div class="auth-card">
 
-                    <div>
 
-                        <strong>YOUR DESTINY AWAITS</strong>
+<a href="index.html" class="back-link">
 
-                        <small>CLAIM YOUR PLACE IN HISTORY</small>
+← Back to home
 
-                    </div>
+</a>
 
-                </div>
 
-            </div>
+<div class="form-heading">
 
-        </section>
+<span>CREATE YOUR ACCOUNT</span>
 
+<h2>Join The Realm</h2>
 
+<p>Establish your player identity.</p>
 
-        <section class="auth-form-side">
+</div>
 
 
-            <div class="auth-card">
 
+<form id="registerForm">
 
-                <a href="index.html"
-                   class="back-link">
 
-                    ← Back to home
+<div class="form-group">
 
-                </a>
+<label for="registerUsername">
 
+Username
 
+</label>
 
-                <div class="form-heading">
+<input
 
-                    <span>CREATE YOUR ACCOUNT</span>
+type="text"
 
-                    <h2>Join The Realm</h2>
+id="registerUsername"
 
-                    <p>
-                        Begin your journey in EMPIRE OF KINGS.
-                    </p>
+minlength="3"
 
-                </div>
+maxlength="20"
 
+pattern="[A-Za-z0-9_]+"
 
+placeholder="Your username"
 
-                <form id="registerForm">
+required
 
+>
 
-                    <div class="form-group">
+</div>
 
-                        <label for="registerUsername">
-                            Username
-                        </label>
 
 
-                        <input
-                            type="text"
-                            id="registerUsername"
-                            placeholder="Your username"
-                            minlength="3"
-                            maxlength="20"
-                            pattern="[A-Za-z0-9_]+"
-                            autocomplete="username"
-                            required
-                        >
+<div class="form-group">
 
+<label for="registerEmail">
 
-                        <small class="field-help">
+Email Address
 
-                            3–20 characters. Letters, numbers,
-                            and underscores only.
+</label>
 
-                        </small>
+<input
 
-                    </div>
+type="email"
 
+id="registerEmail"
 
+placeholder="you@example.com"
 
-                    <div class="form-group">
+required
 
-                        <label for="registerEmail">
-                            Email Address
-                        </label>
+>
 
+</div>
 
-                        <input
-                            type="email"
-                            id="registerEmail"
-                            placeholder="you@example.com"
-                            autocomplete="email"
-                            required
-                        >
 
-                    </div>
 
+<div class="form-group">
 
+<label for="registerPassword">
 
-                    <div class="form-group">
+Password
 
-                        <label for="registerPassword">
-                            Password
-                        </label>
+</label>
 
+<input
 
-                        <div class="password-field">
+type="password"
 
-                            <input
-                                type="password"
-                                id="registerPassword"
-                                placeholder="Minimum 8 characters"
-                                minlength="8"
-                                autocomplete="new-password"
-                                required
-                            >
+id="registerPassword"
 
+minlength="8"
 
-                            <button
-                                type="button"
-                                class="password-toggle"
-                                data-toggle-password="registerPassword">
+placeholder="Minimum 8 characters"
 
-                                SHOW
+required
 
-                            </button>
+>
 
-                        </div>
+</div>
 
-                    </div>
 
 
+<div class="form-group">
 
-                    <div class="form-group">
+<label for="confirmPassword">
 
-                        <label for="confirmPassword">
-                            Confirm Password
-                        </label>
+Confirm Password
 
+</label>
 
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            placeholder="Repeat your password"
-                            minlength="8"
-                            autocomplete="new-password"
-                            required
-                        >
+<input
 
-                    </div>
+type="password"
 
+id="confirmPassword"
 
+minlength="8"
 
-                    <div id="registerMessage"
-                         class="form-message"
-                         aria-live="polite">
-                    </div>
+placeholder="Repeat your password"
 
+required
 
+>
 
-                    <button
-                        type="submit"
-                        class="button form-submit">
+</div>
 
-                        CREATE ACCOUNT
 
-                        <span>→</span>
 
-                    </button>
+<div class="form-group">
 
+<label for="registerCountry">
 
-                </form>
+Citizenship
 
+</label>
 
+<select
 
-                <div class="form-separator">
+id="registerCountry"
 
-                    <span></span>
+data-country-select
 
-                    OR
+data-placeholder="Choose your citizenship"
 
-                    <span></span>
+required
 
-                </div>
+></select>
 
+</div>
 
 
-                <p class="form-switch">
 
-                    Already have an account?
+<div class="form-group">
 
-                    <a href="login.html">
-                        Sign in
-                    </a>
+<label for="registerRegion">
 
-                </p>
+Preferred Regional Chat
 
+</label>
 
+<select
 
-                <div class="security-note">
+id="registerRegion"
 
-                    <span>✦</span>
+data-country-select
 
-                    YOUR ACCOUNT, YOUR IDENTITY
+data-placeholder="Choose your chat region"
 
-                </div>
+required
 
+></select>
 
-                <div class="security-note">
+</div>
 
-                    Version 0.0.1
 
-                </div>
 
+<div class="form-group">
 
-            </div>
+<label for="registerLanguage">
 
-        </section>
+Interface Language
 
-    </main>
+</label>
 
+<select id="registerLanguage">
 
+<option value="id">🇮🇩 Bahasa Indonesia</option>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<option value="en">🇬🇧 English</option>
 
-    <script src="js/supabase.js"></script>
+<option value="tr">🇹🇷 Türkçe</option>
 
-    <script src="js/auth.js"></script>
+</select>
+
+</div>
+
+
+
+<div id="registerMessage"
+
+class="form-message"
+
+aria-live="polite">
+
+</div>
+
+
+
+<button
+
+type="submit"
+
+class="button form-submit"
+
+>
+
+CREATE ACCOUNT →
+
+</button>
+
+
+</form>
+
+
+
+<p class="form-switch">
+
+Already have an account?
+
+<a href="login.html">Sign in</a>
+
+</p>
+
+
+<div class="security-note">
+
+VERSION 0.0.1
+
+</div>
+
+
+</div>
+
+</section>
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/countries.js"></script>
+
+<script src="js/auth.js"></script>
 
 </body>
 
-                        </html>
+    </html>
