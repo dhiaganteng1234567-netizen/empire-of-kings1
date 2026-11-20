@@ -1,8 +1,8 @@
-/* =========================================
+/* ==========================================
    EMPIRE OF KINGS
-   ACCOUNT DASHBOARD
-   VERSION 1.0
-========================================= */
+   ROYAL COMMAND CENTER
+   VERSION 0.0.1
+========================================== */
 
 (function () {
 
@@ -10,17 +10,15 @@
 
 
     // ======================================
-    // 1. SUPABASE CLIENT
+    // 1. CORE CLIENT
     // ======================================
 
-    const supabase = window.EOK_SUPABASE;
+    const client = window.EOK_CLIENT;
 
 
-    if (!supabase) {
+    if (!client) {
 
-        window.location.replace(
-            "login.html"
-        );
+        window.location.replace("login.html");
 
         return;
 
@@ -28,92 +26,266 @@
 
 
     // ======================================
-    // 2. ACCOUNT ELEMENTS
+    // 2. ELEMENTS
     // ======================================
-
-    const usernameElement =
-        document.getElementById("accountUsername");
-
-
-    const emailElement =
-        document.getElementById("accountEmail");
-
-
-    const idElement =
-        document.getElementById("accountId");
-
 
     const logoutButton =
         document.getElementById("logoutButton");
 
 
+    const usernameElement =
+        document.getElementById("playerUsername");
+
+
+    const displayNameElement =
+        document.getElementById("playerDisplayName");
+
+
+    const playerIdElement =
+        document.getElementById("playerId");
+
+
+    const greetingElement =
+        document.getElementById("greetingName");
+
+
+    const topUsernameElement =
+        document.getElementById("topUsername");
+
+
+    const topAvatarElement =
+        document.getElementById("topAvatar");
+
+
+    const createdAtElement =
+        document.getElementById("accountCreatedAt");
+
+
+    const createdShortElement =
+        document.getElementById("accountCreatedShort");
+
+
+    const todayDateElement =
+        document.getElementById("todayDate");
+
+
+    const profileErrorElement =
+        document.getElementById("profileError");
+
+
     // ======================================
-    // 3. LOAD AUTHENTICATED USER
+    // 3. DATE FORMATTER
     // ======================================
 
-    async function loadAccount() {
+    function formatDate(dateValue) {
+
+        if (!dateValue) {
+
+            return "Not available";
+
+        }
+
+
+        const date = new Date(dateValue);
+
+
+        if (Number.isNaN(date.getTime())) {
+
+            return "Not available";
+
+        }
+
+
+        return new Intl.DateTimeFormat(
+
+            "id-ID",
+
+            {
+
+                day: "numeric",
+
+                month: "long",
+
+                year: "numeric"
+
+            }
+
+        ).format(date);
+
+    }
+
+
+    // ======================================
+    // 4. CURRENT DATE
+    // ======================================
+
+    todayDateElement.textContent =
+
+        formatDate(new Date());
+
+
+    // ======================================
+    // 5. LOAD PROFILE
+    // ======================================
+
+    async function loadDashboard() {
 
         try {
 
 
+            // VERIFY SESSION
+
             const {
-                data,
-                error
-            } = await supabase.auth.getUser();
+
+                data: userData,
+
+                error: userError
+
+            } = await client.auth.getUser();
 
 
-            if (error) throw error;
+            if (userError) throw userError;
 
 
-            const user = data.user;
+            const user = userData.user;
 
 
             if (!user) {
 
-                window.location.replace(
-                    "login.html"
-                );
+                window.location.replace("login.html");
 
                 return;
 
             }
 
 
-            const metadata =
-                user.user_metadata || {};
+            // GET PLAYER PROFILE
+
+            const {
+
+                data: profile,
+
+                error: profileError
+
+            } = await client
+
+                .from("eok_profiles")
+
+                .select(
+
+                    "player_id, username, display_name, created_at"
+
+                )
+
+                .eq("id", user.id)
+
+                .maybeSingle();
 
 
-            const username =
-                metadata.username ||
-                metadata.display_name ||
-                user.email ||
-                "Player";
+            if (profileError) {
 
+                throw profileError;
+
+            }
+
+
+            // PROFILE NOT FOUND
+
+            if (!profile) {
+
+                profileErrorElement.hidden = false;
+
+                profileErrorElement.textContent =
+
+                    "Player profile has not been initialized. Check that all database setup sections completed successfully.";
+
+                return;
+
+            }
+
+
+            // ==================================
+            // ACCOUNT INFORMATION
+            // ==================================
+
+            const username = profile.username;
+
+            const displayName =
+                profile.display_name || username;
+
+
+            // USERNAME
 
             usernameElement.textContent =
-                username;
+                "@" + username;
 
 
-            emailElement.textContent =
-                user.email || "Not available";
+            topUsernameElement.textContent =
+                username.toUpperCase();
 
 
-            idElement.textContent =
-                user.id;
+            // DISPLAY NAME
+
+            displayNameElement.textContent =
+                displayName;
+
+
+            greetingElement.textContent =
+                displayName;
+
+
+            // PLAYER ID
+
+            playerIdElement.textContent =
+                profile.player_id;
+
+
+            // ACCOUNT AVATAR INITIAL
+
+            const initial =
+
+                Array.from(
+                    displayName.trim()
+                )[0]?.toUpperCase() || "E";
+
+
+            topAvatarElement.textContent =
+                initial;
+
+
+            // ACCOUNT CREATION DATE
+
+            const createdDate =
+                formatDate(profile.created_at);
+
+
+            createdAtElement.textContent =
+                createdDate;
+
+
+            createdShortElement.textContent =
+                createdDate;
+
+
+            console.info(
+                "EOK: Player dashboard initialized."
+            );
 
 
         } catch (error) {
 
 
             console.error(
-                "Account verification failed:",
+                "EOK: Dashboard initialization failed.",
                 error
             );
 
 
-            window.location.replace(
-                "login.html"
-            );
+            profileErrorElement.hidden = false;
+
+            profileErrorElement.textContent =
+
+                "Unable to load your player information. Check your connection and database security configuration.";
 
         }
 
@@ -121,7 +293,7 @@
 
 
     // ======================================
-    // 4. LOGOUT
+    // 6. LOGOUT
     // ======================================
 
     logoutButton.addEventListener(
@@ -130,18 +302,21 @@
 
         async function () {
 
+
             logoutButton.disabled = true;
 
             logoutButton.textContent =
-                "LOGGING OUT...";
+                "SIGNING OUT...";
 
 
             try {
 
 
                 const {
+
                     error
-                } = await supabase.auth.signOut();
+
+                } = await client.auth.signOut();
 
 
                 if (error) throw error;
@@ -156,7 +331,7 @@
 
 
                 console.error(
-                    "Logout failed:",
+                    "EOK: Logout failed.",
                     error
                 );
 
@@ -164,11 +339,10 @@
                 logoutButton.disabled = false;
 
                 logoutButton.textContent =
-                    "LOG OUT";
-
+                    "SIGN OUT";
 
                 alert(
-                    "Logout gagal. Silakan coba kembali."
+                    "Unable to sign out. Please try again."
                 );
 
             }
@@ -179,10 +353,10 @@
 
 
     // ======================================
-    // 5. INITIALIZE
+    // 7. INITIALIZE DASHBOARD
     // ======================================
 
-    loadAccount();
+    loadDashboard();
 
 
 })();
