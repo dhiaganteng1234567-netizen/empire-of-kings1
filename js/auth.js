@@ -1,8 +1,8 @@
-/* =========================================
+/* ==========================================
    EMPIRE OF KINGS
-   AUTHENTICATION SYSTEM
-   VERSION 1.0
-========================================= */
+   ACCOUNT AUTHENTICATION
+   VERSION 0.0.1
+========================================== */
 
 (function () {
 
@@ -10,17 +10,15 @@
 
 
     // ======================================
-    // 1. SUPABASE CLIENT
+    // 1. CLIENT
     // ======================================
 
-    const supabase = window.EOK_SUPABASE;
+    const client = window.EOK_CLIENT;
 
 
-    if (!supabase) {
+    if (!client) {
 
-        console.error(
-            "Supabase client tidak tersedia."
-        );
+        console.error("EOK: Account system unavailable.");
 
         return;
 
@@ -28,7 +26,7 @@
 
 
     // ======================================
-    // 2. DOM ELEMENTS
+    // 2. ELEMENTS
     // ======================================
 
     const loginForm =
@@ -89,7 +87,7 @@
 
 
     // ======================================
-    // 5. ERROR HANDLER
+    // 5. ERROR HANDLING
     // ======================================
 
     function readableError(error) {
@@ -98,38 +96,40 @@
             String(error?.message || "");
 
 
-        if (
-            /invalid login credentials/i.test(message)
-        ) {
+        if (/invalid login credentials/i.test(message)) {
 
             return "Email atau password tidak benar.";
 
         }
 
 
-        if (
-            /user already registered/i.test(message)
-        ) {
+        if (/user already registered/i.test(message)) {
 
-            return "Email ini sudah terdaftar.";
+            return "Email tersebut sudah terdaftar.";
+
+        }
+
+
+        if (/eok_username_invalid/i.test(message)) {
+
+            return "Format username tidak valid.";
 
         }
 
 
         if (
-            /password should be at least/i.test(message)
+            /duplicate key|eok_profiles_username_lower_uidx|eok_profiles_username_key|database error saving new user/i
+                .test(message)
         ) {
 
-            return "Password terlalu pendek.";
+            return "Username kemungkinan sudah digunakan. Silakan pilih username lain.";
 
         }
 
 
-        if (
-            /email not confirmed/i.test(message)
-        ) {
+        if (/email not confirmed/i.test(message)) {
 
-            return "Email belum dikonfirmasi. Periksa pengaturan Confirm Email di Supabase.";
+            return "Akun belum aktif. Periksa pengaturan pendaftaran.";
 
         }
 
@@ -147,7 +147,7 @@
 
 
     // ======================================
-    // 6. REDIRECT ACTIVE SESSION
+    // 6. CHECK SESSION
     // ======================================
 
     async function redirectIfAuthenticated() {
@@ -157,7 +157,7 @@
             const {
                 data,
                 error
-            } = await supabase.auth.getSession();
+            } = await client.auth.getSession();
 
 
             if (error) throw error;
@@ -174,7 +174,7 @@
         } catch (error) {
 
             console.error(
-                "Session check failed:",
+                "EOK: Session check failed.",
                 error
             );
 
@@ -195,7 +195,9 @@
     // ======================================
 
     document
+
         .querySelectorAll("[data-toggle-password]")
+
         .forEach(function (button) {
 
 
@@ -203,12 +205,11 @@
                 "click",
                 function () {
 
-                    const inputId =
-                        button.dataset.togglePassword;
-
-
                     const input =
-                        document.getElementById(inputId);
+
+                        document.getElementById(
+                            button.dataset.togglePassword
+                        );
 
 
                     if (!input) return;
@@ -236,7 +237,7 @@
 
 
     // ======================================
-    // 8. REGISTER SYSTEM
+    // 8. REGISTRATION
     // ======================================
 
     if (registerForm) {
@@ -252,48 +253,74 @@
 
 
                 const messageElement =
-                    document.getElementById("registerMessage");
+
+                    document.getElementById(
+                        "registerMessage"
+                    );
 
 
-                const username =
+                const originalUsername =
+
                     document
+
                         .getElementById("registerUsername")
+
                         .value
+
                         .trim();
 
 
+                const username =
+                    originalUsername.toLowerCase();
+
+
                 const email =
+
                     document
+
                         .getElementById("registerEmail")
+
                         .value
+
                         .trim()
+
                         .toLowerCase();
 
 
                 const password =
+
                     document
+
                         .getElementById("registerPassword")
+
                         .value;
 
 
                 const confirmPassword =
+
                     document
+
                         .getElementById("confirmPassword")
+
                         .value;
 
 
-                // Username validation
+                // USERNAME VALIDATION
 
                 const usernamePattern =
-                    /^[A-Za-z0-9_]{3,20}$/;
+                    /^[a-z0-9_]{3,20}$/;
 
 
                 if (!usernamePattern.test(username)) {
 
                     showMessage(
+
                         messageElement,
-                        "Username harus 3–20 karakter dan hanya menggunakan huruf, angka, atau underscore.",
+
+                        "Username harus 3–20 karakter, menggunakan huruf, angka, atau underscore.",
+
                         "error"
+
                     );
 
                     return;
@@ -301,14 +328,18 @@
                 }
 
 
-                // Password validation
+                // PASSWORD VALIDATION
 
                 if (password.length < 8) {
 
                     showMessage(
+
                         messageElement,
+
                         "Password minimal 8 karakter.",
+
                         "error"
+
                     );
 
                     return;
@@ -316,14 +347,18 @@
                 }
 
 
-                // Confirm password
+                // PASSWORD CONFIRMATION
 
                 if (password !== confirmPassword) {
 
                     showMessage(
+
                         messageElement,
+
                         "Konfirmasi password tidak cocok.",
+
                         "error"
+
                     );
 
                     return;
@@ -331,28 +366,32 @@
                 }
 
 
-                setButtonLoading(
-                    registerForm,
-                    true
-                );
+                setButtonLoading(registerForm, true);
 
 
                 showMessage(
+
                     messageElement,
+
                     "Creating your account...",
+
                     "warning"
+
                 );
 
 
                 try {
 
 
-                    // Supabase registration
+                    // CREATE ACCOUNT
 
                     const {
+
                         data,
+
                         error
-                    } = await supabase.auth.signUp({
+
+                    } = await client.auth.signUp({
 
                         email: email,
 
@@ -364,7 +403,7 @@
 
                                 username: username,
 
-                                display_name: username
+                                display_name: originalUsername
 
                             }
 
@@ -376,15 +415,19 @@
                     if (error) throw error;
 
 
-                    // Automatic session check
+                    // CHECK SESSION
 
                     if (data.session) {
 
 
                         showMessage(
+
                             messageElement,
-                            "Account created successfully. Entering the realm...",
+
+                            "Your account has been created successfully.",
+
                             "success"
+
                         );
 
 
@@ -400,7 +443,7 @@
 
                             messageElement,
 
-                            "Pendaftaran diterima, tetapi sesi belum aktif. Pastikan Confirm Email dinonaktifkan pada pengaturan Supabase.",
+                            "Account registration received. Check the account confirmation configuration before continuing.",
 
                             "warning"
 
@@ -413,7 +456,7 @@
 
 
                     console.error(
-                        "Registration error:",
+                        "EOK: Registration failed.",
                         error
                     );
 
@@ -447,7 +490,7 @@
 
 
     // ======================================
-    // 9. LOGIN SYSTEM
+    // 9. LOGIN
     // ======================================
 
     if (loginForm) {
@@ -463,33 +506,45 @@
 
 
                 const messageElement =
-                    document.getElementById("loginMessage");
+
+                    document.getElementById(
+                        "loginMessage"
+                    );
 
 
                 const email =
+
                     document
+
                         .getElementById("loginEmail")
+
                         .value
+
                         .trim()
+
                         .toLowerCase();
 
 
                 const password =
+
                     document
+
                         .getElementById("loginPassword")
+
                         .value;
 
 
-                setButtonLoading(
-                    loginForm,
-                    true
-                );
+                setButtonLoading(loginForm, true);
 
 
                 showMessage(
+
                     messageElement,
+
                     "Authenticating your account...",
+
                     "warning"
+
                 );
 
 
@@ -497,9 +552,12 @@
 
 
                     const {
+
                         data,
+
                         error
-                    } = await supabase.auth.signInWithPassword({
+
+                    } = await client.auth.signInWithPassword({
 
                         email: email,
 
@@ -514,7 +572,7 @@
                     if (!data.session) {
 
                         throw new Error(
-                            "Login berhasil tetapi sesi belum terbentuk."
+                            "Login session unavailable."
                         );
 
                     }
@@ -524,7 +582,7 @@
 
                         messageElement,
 
-                        "Login successful. Welcome back.",
+                        "Welcome back to the realm.",
 
                         "success"
 
@@ -540,7 +598,7 @@
 
 
                     console.error(
-                        "Login error:",
+                        "EOK: Login failed.",
                         error
                     );
 
