@@ -1,163 +1,255 @@
 /* ==========================================
    EMPIRE OF KINGS
-   ACCOUNT AUTHENTICATION
+   AUTHENTICATION
    VERSION 0.0.1
 ========================================== */
 
 (function () {
 
-    "use strict";
+"use strict";
 
 
-    // ======================================
-    // 1. CLIENT
-    // ======================================
+const client = window.EOK_CLIENT;
 
-    const client = window.EOK_CLIENT;
+if (!client) return;
 
 
-    if (!client) {
+const loginForm = document.getElementById("loginForm");
 
-        console.error("EOK: Account system unavailable.");
-
-        return;
-
-    }
+const registerForm = document.getElementById("registerForm");
 
 
-    // ======================================
-    // 2. ELEMENTS
-    // ======================================
+function message(element, text, type) {
 
-    const loginForm =
-        document.getElementById("loginForm");
+    if (!element) return;
+
+    element.textContent = text;
+
+    element.className = "form-message show " + type;
+
+}
 
 
-    const registerForm =
-        document.getElementById("registerForm");
+function errorText(error) {
+
+    const text = String(error?.message || "");
 
 
-    // ======================================
-    // 3. MESSAGE HANDLER
-    // ======================================
+    if (/invalid login credentials/i.test(text)) {
 
-    function showMessage(element, message, type) {
-
-        if (!element) return;
-
-        element.textContent = message;
-
-        element.className =
-            "form-message show " + type;
+        return "Email atau password salah.";
 
     }
 
 
-    // ======================================
-    // 4. BUTTON LOADING
-    // ======================================
+    if (/eok_username_invalid/i.test(text)) {
 
-    function setButtonLoading(form, loading) {
+        return "Username tidak valid.";
+
+    }
+
+
+    if (/duplicate key|username_lower_uidx|username_key|database error saving new user/i.test(text)) {
+
+        return "Username kemungkinan sudah digunakan.";
+
+    }
+
+
+    if (/eok_country_invalid/i.test(text)) {
+
+        return "Kewarganegaraan tidak valid.";
+
+    }
+
+
+    if (/eok_region_invalid/i.test(text)) {
+
+        return "Pilihan regional chat tidak valid.";
+
+    }
+
+
+    if (/email not confirmed/i.test(text)) {
+
+        return "Akun belum aktif. Periksa pengaturan pendaftaran.";
+
+    }
+
+
+    return text || "Terjadi kesalahan.";
+
+}
+
+
+async function checkSession() {
+
+    const { data, error } =
+
+        await client.auth.getSession();
+
+
+    if (!error && data.session) {
+
+        window.location.replace("dashboard.html");
+
+    }
+
+}
+
+
+if (loginForm || registerForm) {
+
+    checkSession();
+
+}
+
+
+// ======================================
+// REGISTER
+// ======================================
+
+if (registerForm) {
+
+
+    registerForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+
+        const username =
+
+            document.getElementById("registerUsername")
+
+                .value.trim().toLowerCase();
+
+
+        const email =
+
+            document.getElementById("registerEmail")
+
+                .value.trim().toLowerCase();
+
+
+        const password =
+
+            document.getElementById("registerPassword").value;
+
+
+        const confirmation =
+
+            document.getElementById("confirmPassword").value;
+
+
+        const country =
+
+            document.getElementById("registerCountry").value;
+
+
+        const region =
+
+            document.getElementById("registerRegion").value;
+
+
+        const language =
+
+            document.getElementById("registerLanguage").value;
+
+
+        const output =
+
+            document.getElementById("registerMessage");
+
 
         const button =
-            form.querySelector('button[type="submit"]');
+
+            registerForm.querySelector('button[type="submit"]');
 
 
-        if (!button) return;
+        if (!/^[a-z0-9_]{3,20}$/.test(username)) {
 
+            message(output, "Username harus 3–20 karakter.", "error");
 
-        if (!button.dataset.originalText) {
-
-            button.dataset.originalText =
-                button.textContent.trim();
-
-        }
-
-
-        button.disabled = loading;
-
-
-        button.textContent = loading
-
-            ? "PLEASE WAIT..."
-
-            : button.dataset.originalText;
-
-    }
-
-
-    // ======================================
-    // 5. ERROR HANDLING
-    // ======================================
-
-    function readableError(error) {
-
-        const message =
-            String(error?.message || "");
-
-
-        if (/invalid login credentials/i.test(message)) {
-
-            return "Email atau password tidak benar.";
+            return;
 
         }
 
 
-        if (/user already registered/i.test(message)) {
+        if (password.length < 8) {
 
-            return "Email tersebut sudah terdaftar.";
+            message(output, "Password minimal 8 karakter.", "error");
 
-        }
-
-
-        if (/eok_username_invalid/i.test(message)) {
-
-            return "Format username tidak valid.";
+            return;
 
         }
 
 
-        if (
-            /duplicate key|eok_profiles_username_lower_uidx|eok_profiles_username_key|database error saving new user/i
-                .test(message)
-        ) {
+        if (password !== confirmation) {
 
-            return "Username kemungkinan sudah digunakan. Silakan pilih username lain.";
+            message(output, "Konfirmasi password tidak cocok.", "error");
 
-        }
-
-
-        if (/email not confirmed/i.test(message)) {
-
-            return "Akun belum aktif. Periksa pengaturan pendaftaran.";
+            return;
 
         }
 
 
-        if (!message) {
+        if (!country || !region) {
 
-            return "Terjadi kesalahan. Silakan coba kembali.";
+            message(output, "Pilih kewarganegaraan dan regional chat.", "error");
+
+            return;
 
         }
 
 
-        return message;
+        if (!["id", "en", "tr"].includes(language)) {
 
-    }
+            message(output, "Bahasa tidak valid.", "error");
+
+            return;
+
+        }
 
 
-    // ======================================
-    // 6. CHECK SESSION
-    // ======================================
+        button.disabled = true;
 
-    async function redirectIfAuthenticated() {
+        button.textContent = "CREATING ACCOUNT...";
+
 
         try {
 
+
             const {
+
                 data,
+
                 error
-            } = await client.auth.getSession();
+
+            } = await client.auth.signUp({
+
+                email,
+
+                password,
+
+                options: {
+
+                    data: {
+
+                        username,
+
+                        display_name: username,
+
+                        country_code: country,
+
+                        chat_region: region,
+
+                        preferred_language: language
+
+                    }
+
+                }
+
+            });
 
 
             if (error) throw error;
@@ -165,470 +257,139 @@
 
             if (data.session) {
 
-                window.location.replace(
-                    "dashboard.html"
+                message(
+
+                    output,
+
+                    "Account created. Welcome to the realm.",
+
+                    "success"
+
+                );
+
+
+                window.location.replace("dashboard.html");
+
+
+            } else {
+
+                message(
+
+                    output,
+
+                    "Account created, but the session is not active. Check the email confirmation setting.",
+
+                    "warning"
+
                 );
 
             }
+
 
         } catch (error) {
 
-            console.error(
-                "EOK: Session check failed.",
-                error
-            );
+            console.error("EOK registration error:", error);
+
+            message(output, errorText(error), "error");
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent = "CREATE ACCOUNT →";
 
         }
 
-    }
+    });
 
+}
 
-    if (loginForm || registerForm) {
 
-        redirectIfAuthenticated();
+// ======================================
+// LOGIN
+// ======================================
 
-    }
+if (loginForm) {
 
 
-    // ======================================
-    // 7. PASSWORD VISIBILITY
-    // ======================================
+    loginForm.addEventListener("submit", async function (event) {
 
-    document
+        event.preventDefault();
 
-        .querySelectorAll("[data-toggle-password]")
 
-        .forEach(function (button) {
+        const email =
 
+            document.getElementById("loginEmail").value
 
-            button.addEventListener(
-                "click",
-                function () {
+                .trim().toLowerCase();
 
-                    const input =
 
-                        document.getElementById(
-                            button.dataset.togglePassword
-                        );
+        const password =
 
+            document.getElementById("loginPassword").value;
 
-                    if (!input) return;
 
+        const output =
 
-                    if (input.type === "password") {
+            document.getElementById("loginMessage");
 
-                        input.type = "text";
 
-                        button.textContent = "HIDE";
+        const button =
 
-                    } else {
+            loginForm.querySelector('button[type="submit"]');
 
-                        input.type = "password";
 
-                        button.textContent = "SHOW";
+        button.disabled = true;
 
-                    }
+        button.textContent = "PLEASE WAIT...";
 
-                }
 
-            );
+        try {
 
-        });
 
+            const {
 
-    // ======================================
-    // 8. REGISTRATION
-    // ======================================
+                data,
 
-    if (registerForm) {
+                error
 
+            } = await client.auth.signInWithPassword({
 
-        registerForm.addEventListener(
+                email,
 
-            "submit",
+                password
 
-            async function (event) {
+            });
 
-                event.preventDefault();
 
+            if (error) throw error;
 
-                const messageElement =
 
-                    document.getElementById(
-                        "registerMessage"
-                    );
+            if (!data.session) {
 
-
-                const originalUsername =
-
-                    document
-
-                        .getElementById("registerUsername")
-
-                        .value
-
-                        .trim();
-
-
-                const username =
-                    originalUsername.toLowerCase();
-
-
-                const email =
-
-                    document
-
-                        .getElementById("registerEmail")
-
-                        .value
-
-                        .trim()
-
-                        .toLowerCase();
-
-
-                const password =
-
-                    document
-
-                        .getElementById("registerPassword")
-
-                        .value;
-
-
-                const confirmPassword =
-
-                    document
-
-                        .getElementById("confirmPassword")
-
-                        .value;
-
-
-                // USERNAME VALIDATION
-
-                const usernamePattern =
-                    /^[a-z0-9_]{3,20}$/;
-
-
-                if (!usernamePattern.test(username)) {
-
-                    showMessage(
-
-                        messageElement,
-
-                        "Username harus 3–20 karakter, menggunakan huruf, angka, atau underscore.",
-
-                        "error"
-
-                    );
-
-                    return;
-
-                }
-
-
-                // PASSWORD VALIDATION
-
-                if (password.length < 8) {
-
-                    showMessage(
-
-                        messageElement,
-
-                        "Password minimal 8 karakter.",
-
-                        "error"
-
-                    );
-
-                    return;
-
-                }
-
-
-                // PASSWORD CONFIRMATION
-
-                if (password !== confirmPassword) {
-
-                    showMessage(
-
-                        messageElement,
-
-                        "Konfirmasi password tidak cocok.",
-
-                        "error"
-
-                    );
-
-                    return;
-
-                }
-
-
-                setButtonLoading(registerForm, true);
-
-
-                showMessage(
-
-                    messageElement,
-
-                    "Creating your account...",
-
-                    "warning"
-
-                );
-
-
-                try {
-
-
-                    // CREATE ACCOUNT
-
-                    const {
-
-                        data,
-
-                        error
-
-                    } = await client.auth.signUp({
-
-                        email: email,
-
-                        password: password,
-
-                        options: {
-
-                            data: {
-
-                                username: username,
-
-                                display_name: originalUsername
-
-                            }
-
-                        }
-
-                    });
-
-
-                    if (error) throw error;
-
-
-                    // CHECK SESSION
-
-                    if (data.session) {
-
-
-                        showMessage(
-
-                            messageElement,
-
-                            "Your account has been created successfully.",
-
-                            "success"
-
-                        );
-
-
-                        window.location.replace(
-                            "dashboard.html"
-                        );
-
-
-                    } else {
-
-
-                        showMessage(
-
-                            messageElement,
-
-                            "Account registration received. Check the account confirmation configuration before continuing.",
-
-                            "warning"
-
-                        );
-
-                    }
-
-
-                } catch (error) {
-
-
-                    console.error(
-                        "EOK: Registration failed.",
-                        error
-                    );
-
-
-                    showMessage(
-
-                        messageElement,
-
-                        readableError(error),
-
-                        "error"
-
-                    );
-
-
-                } finally {
-
-
-                    setButtonLoading(
-                        registerForm,
-                        false
-                    );
-
-                }
+                throw new Error("Session unavailable.");
 
             }
 
-        );
 
-    }
+            window.location.replace("dashboard.html");
 
 
-    // ======================================
-    // 9. LOGIN
-    // ======================================
+        } catch (error) {
 
-    if (loginForm) {
+            message(output, errorText(error), "error");
 
+        } finally {
 
-        loginForm.addEventListener(
+            button.disabled = false;
 
-            "submit",
+            button.textContent = "SIGN IN →";
 
-            async function (event) {
+        }
 
-                event.preventDefault();
+    });
 
-
-                const messageElement =
-
-                    document.getElementById(
-                        "loginMessage"
-                    );
-
-
-                const email =
-
-                    document
-
-                        .getElementById("loginEmail")
-
-                        .value
-
-                        .trim()
-
-                        .toLowerCase();
-
-
-                const password =
-
-                    document
-
-                        .getElementById("loginPassword")
-
-                        .value;
-
-
-                setButtonLoading(loginForm, true);
-
-
-                showMessage(
-
-                    messageElement,
-
-                    "Authenticating your account...",
-
-                    "warning"
-
-                );
-
-
-                try {
-
-
-                    const {
-
-                        data,
-
-                        error
-
-                    } = await client.auth.signInWithPassword({
-
-                        email: email,
-
-                        password: password
-
-                    });
-
-
-                    if (error) throw error;
-
-
-                    if (!data.session) {
-
-                        throw new Error(
-                            "Login session unavailable."
-                        );
-
-                    }
-
-
-                    showMessage(
-
-                        messageElement,
-
-                        "Welcome back to the realm.",
-
-                        "success"
-
-                    );
-
-
-                    window.location.replace(
-                        "dashboard.html"
-                    );
-
-
-                } catch (error) {
-
-
-                    console.error(
-                        "EOK: Login failed.",
-                        error
-                    );
-
-
-                    showMessage(
-
-                        messageElement,
-
-                        readableError(error),
-
-                        "error"
-
-                    );
-
-
-                } finally {
-
-
-                    setButtonLoading(
-                        loginForm,
-                        false
-                    );
-
-                }
-
-            }
-
-        );
-
-    }
+}
 
 
 })();
