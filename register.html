@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#09111f">
+
+    <title>Sign In — EMPIRE OF KINGS</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-shell">
+
+        <section class="auth-story">
+
+            <a href="index.html"
+               class="brand">
+
+                <span class="brand-crest">
+
+                    <svg viewBox="0 0 50 58"
+                         fill="none">
+
+                        <path d="M25 2L45 10V27C45 40 36 50 25 56C14 50 5 40 5 27V10L25 2Z"
+                              stroke="#D7B77A"
+                              stroke-width="2"/>
+
+                        <path d="M25 17V39M17 28H33"
+                              stroke="#D7B77A"
+                              stroke-width="2"/>
+
+                    </svg>
+
+                </span>
+
+                <span class="brand-copy">
+
+                    <strong>
+                        EMPIRE <span>OF KINGS</span>
+                    </strong>
+
+                    <small>
+                        THE MEDIEVAL WORLD
+                    </small>
+
+                </span>
+
+            </a>
+
+            <div class="auth-story-content">
+
+                <span class="eyebrow">
+                    THE GATES ARE OPEN
+                </span>
+
+                <h1>
+                    Your Kingdom
+                    <em>Awaits.</em>
+                </h1>
+
+                <p>
+                    Return to the realm and continue
+                    your journey through a world shaped
+                    by ambition, power, and legacy.
+                </p>
+
+                <div class="story-seal">
+
+                    <span>✦</span>
+
+                    <div>
+                        <strong>YOUR STORY CONTINUES</strong>
+                        <small>THE REALM REMEMBERS</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="auth-form-side">
+
+            <div class="auth-card">
+
+                <a href="index.html"
+                   class="back-link">
+
+                    ← Back to home
+
+                </a>
+
+                <div class="form-heading">
+
+                    <span>WELCOME BACK</span>
+
+                    <h2>
+                        Enter The Realm
+                    </h2>
+
+                    <p>
+                        Sign in to your account.
+                    </p>
+
+                </div>
+
+
+                <form id="loginForm">
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-toggle-password="loginPassword">
+
+                                SHOW
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="loginMessage"
+                         class="form-message"
+                         aria-live="polite">
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="button form-submit">
+
+                        SIGN IN
+
+                        <span>→</span>
+
+                    </button>
+
+                </form>
+
+
+                <div class="form-separator">
+
+                    <span></span>
+
+                    OR
+
+                    <span></span>
+
+                </div>
+
+
+                <p class="form-switch">
+
+                    New to the realm?
+
+                    <a href="register.html">
+                        Create an account
+                    </a>
+
+                </p>
+
+
+                <div class="security-note">
+
+                    <span>✦</span>
+
+                    Authentication powered by Supabase.
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="js/supabase.js"></script>
+
+    <script src="js/auth.js"></script>
+
+</body>
+
+                      </html>
