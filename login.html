@@ -11,7 +11,7 @@
     <meta name="theme-color"
           content="#09111f">
 
-    <title>Create Account — EMPIRE OF KINGS</title>
+    <title>Sign In — EMPIRE OF KINGS</title>
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -67,23 +67,21 @@
 
             </a>
 
-
             <div class="auth-story-content">
 
                 <span class="eyebrow">
-                    WRITE YOUR OWN HISTORY
+                    THE GATES ARE OPEN
                 </span>
 
                 <h1>
-                    A Legacy
-                    <em>Begins Here.</em>
+                    Your Kingdom
+                    <em>Awaits.</em>
                 </h1>
 
                 <p>
-                    Every great kingdom begins with
-                    a single decision. Create your
-                    account and prepare to enter
-                    the medieval world.
+                    Return to the realm and continue
+                    your journey through a world shaped
+                    by ambition, power, and legacy.
                 </p>
 
                 <div class="story-seal">
@@ -91,8 +89,8 @@
                     <span>✦</span>
 
                     <div>
-                        <strong>YOUR DESTINY AWAITS</strong>
-                        <small>CLAIM YOUR PLACE IN HISTORY</small>
+                        <strong>YOUR STORY CONTINUES</strong>
+                        <small>THE REALM REMEMBERS</small>
                     </div>
 
                 </div>
@@ -115,55 +113,30 @@
 
                 <div class="form-heading">
 
-                    <span>CREATE YOUR ACCOUNT</span>
+                    <span>WELCOME BACK</span>
 
                     <h2>
-                        Join The Realm
+                        Enter The Realm
                     </h2>
 
                     <p>
-                        Begin your journey in EMPIRE OF KINGS.
+                        Sign in to your account.
                     </p>
 
                 </div>
 
 
-                <form id="registerForm">
+                <form id="loginForm">
 
                     <div class="form-group">
 
-                        <label for="registerUsername">
-                            Username
-                        </label>
-
-                        <input
-                            type="text"
-                            id="registerUsername"
-                            placeholder="Your username"
-                            minlength="3"
-                            maxlength="20"
-                            pattern="[A-Za-z0-9_]+"
-                            autocomplete="username"
-                            required
-                        >
-
-                        <small class="field-help">
-                            3–20 characters. Letters, numbers,
-                            and underscores only.
-                        </small>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="registerEmail">
+                        <label for="loginEmail">
                             Email Address
                         </label>
 
                         <input
                             type="email"
-                            id="registerEmail"
+                            id="loginEmail"
                             placeholder="you@example.com"
                             autocomplete="email"
                             required
@@ -174,7 +147,7 @@
 
                     <div class="form-group">
 
-                        <label for="registerPassword">
+                        <label for="loginPassword">
                             Password
                         </label>
 
@@ -182,17 +155,16 @@
 
                             <input
                                 type="password"
-                                id="registerPassword"
-                                placeholder="Minimum 8 characters"
-                                minlength="8"
-                                autocomplete="new-password"
+                                id="loginPassword"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
                                 required
                             >
 
                             <button
                                 type="button"
                                 class="password-toggle"
-                                data-toggle-password="registerPassword">
+                                data-toggle-password="loginPassword">
 
                                 SHOW
 
@@ -203,25 +175,7 @@
                     </div>
 
 
-                    <div class="form-group">
-
-                        <label for="confirmPassword">
-                            Confirm Password
-                        </label>
-
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            placeholder="Repeat your password"
-                            minlength="8"
-                            autocomplete="new-password"
-                            required
-                        >
-
-                    </div>
-
-
-                    <div id="registerMessage"
+                    <div id="loginMessage"
                          class="form-message"
                          aria-live="polite">
                     </div>
@@ -231,7 +185,7 @@
                         type="submit"
                         class="button form-submit">
 
-                        CREATE ACCOUNT
+                        SIGN IN
 
                         <span>→</span>
 
@@ -253,10 +207,10 @@
 
                 <p class="form-switch">
 
-                    Already have an account?
+                    New to the realm?
 
-                    <a href="login.html">
-                        Sign in
+                    <a href="register.html">
+                        Create an account
                     </a>
 
                 </p>
@@ -266,7 +220,7 @@
 
                     <span>✦</span>
 
-                    Your account is managed by Supabase Auth.
+                    Authentication powered by Supabase.
 
                 </div>
 
@@ -285,4 +239,4 @@
 
 </body>
 
-  </html>
+</html>
