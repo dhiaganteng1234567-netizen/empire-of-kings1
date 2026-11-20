@@ -11,7 +11,7 @@
     <meta name="theme-color"
           content="#09111f">
 
-    <title>My Account — EMPIRE OF KINGS</title>
+    <title>Royal Command Center | EMPIRE OF KINGS</title>
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -25,14 +25,21 @@
     <link rel="stylesheet"
           href="css/style.css">
 
+    <link rel="stylesheet"
+          href="css/dashboard.css">
+
 </head>
 
-<body class="dashboard-page">
+<body class="dashboard-page eok-dashboard">
 
-    <header class="topbar">
 
-        <a href="index.html"
-           class="brand">
+    <!-- ==================================
+         TOP NAVIGATION
+    =================================== -->
+
+    <header class="topbar eok-topbar">
+
+        <a href="index.html" class="brand">
 
             <span class="brand-crest">
 
@@ -43,6 +50,10 @@
                           stroke="#D7B77A"
                           stroke-width="2"/>
 
+                    <path d="M25 10L38 15V27C38 36 32 43 25 48C18 43 12 36 12 27V15L25 10Z"
+                          fill="#15243A"
+                          stroke="#D7B77A"/>
+
                     <path d="M25 17V39M17 28H33"
                           stroke="#D7B77A"
                           stroke-width="2"/>
@@ -51,6 +62,7 @@
 
             </span>
 
+
             <span class="brand-copy">
 
                 <strong>
@@ -58,138 +70,775 @@
                 </strong>
 
                 <small>
-                    THE MEDIEVAL WORLD
+                    VERSION 0.0.1 • THE MEDIEVAL WORLD
                 </small>
 
             </span>
 
         </a>
 
-        <button id="logoutButton"
-                class="button button-small button-danger">
 
-            LOG OUT
+        <div class="eok-topbar-right">
 
-        </button>
+            <div class="eok-release">
 
-    </header>
+                <span class="release-dot"></span>
 
+                VERSION 0.0.1
 
-    <main class="account-container">
-
-        <div class="account-heading">
-
-            <span class="eyebrow">
-                YOUR ACCOUNT
-            </span>
-
-            <h1>
-                Welcome to the realm.
-            </h1>
-
-            <p>
-                Your account has been authenticated successfully.
-            </p>
-
-        </div>
+            </div>
 
 
-        <section class="account-card">
+            <div class="eok-top-user">
 
-            <div class="account-card-top">
+                <div class="top-user-avatar"
+                     id="topAvatar">
 
-                <span>ACCOUNT INFORMATION</span>
+                    E
 
-                <span class="online-indicator">
-                    AUTHENTICATED
+                </div>
+
+                <span id="topUsername">
+                    PLAYER
                 </span>
 
             </div>
 
 
-            <div class="account-emblem">
-                ♜
+            <button
+                id="logoutButton"
+                class="eok-logout">
+
+                SIGN OUT
+
+                <span>↗</span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ==================================
+         DASHBOARD LAYOUT
+    =================================== -->
+
+    <div class="eok-dashboard-layout">
+
+
+        <!-- ==================================
+             SIDEBAR
+        =================================== -->
+
+        <aside class="eok-sidebar">
+
+
+            <div class="sidebar-label">
+
+                REALM NAVIGATION
+
             </div>
 
 
-            <div class="account-information">
-
-                <span>USERNAME</span>
-
-                <h2 id="accountUsername">
-                    Loading...
-                </h2>
+            <div class="sidebar-nav">
 
 
-                <span>EMAIL ADDRESS</span>
+                <a href="dashboard.html"
+                   class="sidebar-link active">
 
-                <p id="accountEmail">
-                    Loading...
-                </p>
+                    <span class="sidebar-icon">⌂</span>
+
+                    <span>Overview</span>
+
+                    <span class="sidebar-arrow">›</span>
+
+                </a>
 
 
-                <span>SUPABASE AUTH ID</span>
+                <div class="sidebar-group-label">
 
-                <p id="accountId"
-                   class="account-id">
-                    Loading...
-                </p>
+                    CHARACTER
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">♙</span>
+
+                    <span>Character</span>
+
+                    <small>03</small>
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">⚜</span>
+
+                    <span>Inventory</span>
+
+                    <small>09</small>
+
+                </div>
+
+
+                <div class="sidebar-group-label">
+
+                    THE REALM
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">♜</span>
+
+                    <span>World Atlas</span>
+
+                    <small>05</small>
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">♛</span>
+
+                    <span>Kingdoms</span>
+
+                    <small>06</small>
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">⚖</span>
+
+                    <span>Politics</span>
+
+                    <small>14</small>
+
+                </div>
+
+
+                <div class="sidebar-group-label">
+
+                    ECONOMY
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">◇</span>
+
+                    <span>Marketplace</span>
+
+                    <small>11</small>
+
+                </div>
+
+
+                <div class="sidebar-link disabled">
+
+                    <span class="sidebar-icon">▤</span>
+
+                    <span>Bank</span>
+
+                    <small>12</small>
+
+                </div>
+
 
             </div>
 
 
-            <div class="account-divider"></div>
+            <div class="sidebar-bottom">
 
 
-            <div class="account-status">
+                <div class="sidebar-status">
 
-                <span>✦</span>
+                    <span class="status-emblem">✦</span>
+
+                    <div>
+
+                        <strong>ROYAL ARCHIVE</strong>
+
+                        <small>FOUNDATION BUILD</small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sidebar-version">
+
+                    Version 0.0.1
+
+                </div>
+
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- ==================================
+             MAIN CONTENT
+        =================================== -->
+
+        <main class="eok-main">
+
+
+            <!-- PAGE HEADING -->
+
+            <div class="eok-page-heading">
+
 
                 <div>
 
-                    <strong>
-                        ACCOUNT SESSION ACTIVE
+                    <div class="eok-breadcrumb">
+
+                        THE ROYAL ARCHIVE
+
+                        <span>/</span>
+
+                        ACCOUNT OVERVIEW
+
+                    </div>
+
+
+                    <h1>
+
+                        Welcome to the realm,
+
+                        <span id="greetingName">
+                            Player
+                        </span>.
+
+                    </h1>
+
+
+                    <p>
+
+                        Your story begins with a name.
+                        Your legacy begins with a decision.
+
+                    </p>
+
+                </div>
+
+
+                <div class="eok-date-block">
+
+                    <span>THE CHRONICLE</span>
+
+                    <strong id="todayDate">
+                        ESTABLISHING DATE...
                     </strong>
 
-                    <small>
-                        Connected to your Supabase project.
-                    </small>
+                </div>
+
+
+            </div>
+
+
+            <!-- ==================================
+                 PLAYER IDENTITY HERO
+            =================================== -->
+
+            <section class="player-hero">
+
+
+                <div class="player-hero-pattern"></div>
+
+
+                <div class="player-hero-main">
+
+
+                    <div class="player-crest">
+
+                        <svg viewBox="0 0 120 145"
+                             fill="none">
+
+                            <path d="M60 4L110 22V65C110 101 88 123 60 140C32 123 10 101 10 65V22L60 4Z"
+                                  fill="#101C2C"
+                                  stroke="#D9B878"
+                                  stroke-width="2"/>
+
+                            <path d="M60 17L96 30V66C96 94 80 112 60 126C40 112 24 94 24 66V30L60 17Z"
+                                  stroke="#D9B878"
+                                  stroke-width="1"/>
+
+                            <path d="M60 35L72 59L99 63L79 82L84 108L60 95L36 108L41 82L21 63L48 59L60 35Z"
+                                  fill="#743B49"
+                                  stroke="#D9B878"
+                                  stroke-width="1.5"/>
+
+                            <path d="M60 50V91M45 70H75"
+                                  stroke="#F2E5C9"
+                                  stroke-width="2"/>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div class="player-hero-information">
+
+
+                        <div class="player-status-tag">
+
+                            <span></span>
+
+                            ACCOUNT ACTIVE
+
+                        </div>
+
+
+                        <div class="player-overline">
+
+                            CITIZEN OF THE REALM
+
+                        </div>
+
+
+                        <h2 id="playerDisplayName">
+
+                            Loading...
+
+                        </h2>
+
+
+                        <p id="playerUsername">
+
+                            @loading
+
+                        </p>
+
+
+                        <div class="player-id-line">
+
+                            <span>PLAYER ID</span>
+
+                            <strong id="playerId">
+
+                                LOADING...
+
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div class="player-hero-side">
+
+
+                    <div class="identity-seal">
+
+                        <span>✦</span>
+
+                        <small>OFFICIAL</small>
+
+                        <strong>PLAYER<br>IDENTITY</strong>
+
+                    </div>
+
+
+                    <div class="identity-note">
+
+                        <span>REGISTERED ACCOUNT</span>
+
+                        <strong id="accountCreatedShort">
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- PROFILE ERROR -->
+
+            <div id="profileError"
+                 class="profile-error"
+                 hidden>
+
+                Your player identity has not been initialized.
+                Please check the account database configuration.
+
+            </div>
+
+
+            <!-- ==================================
+                 INFORMATION CARDS
+            =================================== -->
+
+            <div class="eok-section-heading">
+
+                <div>
+
+                    <span>YOUR PERSONAL RECORD</span>
+
+                    <h2>Player Overview</h2>
+
+                </div>
+
+
+                <div class="section-decoration">
+
+                    ✦ ───────── ✦
 
                 </div>
 
             </div>
 
-        </section>
 
 
-        <section class="development-card">
+            <section class="eok-stat-grid">
 
-            <span class="eyebrow">
-                THE WORLD IS BEING PREPARED
-            </span>
 
-            <h2>
-                Your journey is just beginning.
-            </h2>
+                <article class="eok-stat-card">
 
-            <p>
-                Character profiles, world exploration,
-                kingdoms, trade, government, and
-                multiplayer systems will be introduced
-                in the following development stages.
-            </p>
+                    <div class="stat-card-top">
 
-            <a href="index.html"
-               class="button button-outline">
+                        <span>01 / PROGRESSION</span>
 
-                RETURN HOME
+                        <span class="stat-symbol">♙</span>
 
-            </a>
+                    </div>
 
-        </section>
 
-    </main>
+                    <div class="stat-card-title">
 
+                        PLAYER LEVEL
+
+                    </div>
+
+
+                    <div class="stat-card-value">
+
+                        NOT INITIALIZED
+
+                    </div>
+
+
+                    <p>
+
+                        Character progression will be
+                        introduced in Stage 3.
+
+                    </p>
+
+
+                    <div class="stat-card-bottom">
+
+                        CHARACTER SYSTEM
+
+                        <span>COMING NEXT</span>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="eok-stat-card">
+
+                    <div class="stat-card-top">
+
+                        <span>02 / FINANCE</span>
+
+                        <span class="stat-symbol">◇</span>
+
+                    </div>
+
+
+                    <div class="stat-card-title">
+
+                        ROYAL TREASURY
+
+                    </div>
+
+
+                    <div class="stat-card-value">
+
+                        NOT INITIALIZED
+
+                    </div>
+
+
+                    <p>
+
+                        Your currency and financial records
+                        will appear when the economy system
+                        is implemented.
+
+                    </p>
+
+
+                    <div class="stat-card-bottom">
+
+                        ECONOMY SYSTEM
+
+                        <span>PLANNED</span>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="eok-stat-card">
+
+                    <div class="stat-card-top">
+
+                        <span>03 / PRESTIGE</span>
+
+                        <span class="stat-symbol">♛</span>
+
+                    </div>
+
+
+                    <div class="stat-card-title">
+
+                        REALM RANKING
+
+                    </div>
+
+
+                    <div class="stat-card-value">
+
+                        NOT AVAILABLE
+
+                    </div>
+
+
+                    <p>
+
+                        Global rankings will be calculated
+                        when player progression is implemented.
+
+                    </p>
+
+
+                    <div class="stat-card-bottom">
+
+                        WORLD RANKING
+
+                        <span>PLANNED</span>
+
+                    </div>
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- ==================================
+                 LOWER DASHBOARD
+            =================================== -->
+
+            <section class="eok-lower-grid">
+
+
+                <!-- CHRONICLE -->
+
+                <article class="chronicle-card">
+
+
+                    <div class="lower-card-heading">
+
+                        <div>
+
+                            <span>THE RECORDS OF YOUR JOURNEY</span>
+
+                            <h2>Your Chronicle</h2>
+
+                        </div>
+
+                        <span class="chronicle-icon">✦</span>
+
+                    </div>
+
+
+                    <div class="chronicle-record">
+
+
+                        <div class="chronicle-marker">
+                            01
+                        </div>
+
+
+                        <div class="chronicle-content">
+
+                            <span>ACCOUNT ESTABLISHMENT</span>
+
+                            <strong id="accountCreatedAt">
+
+                                Loading...
+
+                            </strong>
+
+                            <p>
+
+                                Your identity entered
+                                the records of the realm.
+
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="chronicle-record">
+
+
+                        <div class="chronicle-marker muted-marker">
+                            02
+                        </div>
+
+
+                        <div class="chronicle-content">
+
+                            <span>THE FIRST CHAPTER</span>
+
+                            <strong>Awaiting Character Creation</strong>
+
+                            <p>
+
+                                Character development will
+                                become available in Stage 3.
+
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- WORLD PANEL -->
+
+                <article class="world-card">
+
+
+                    <div class="world-card-top">
+
+                        <span>THE STATE OF THE REALM</span>
+
+                        <span>✧</span>
+
+                    </div>
+
+
+                    <div class="world-seal">
+
+                        ♜
+
+                    </div>
+
+
+                    <h2>
+
+                        A World In The Making.
+
+                    </h2>
+
+
+                    <p>
+
+                        The foundations are being established.
+                        New systems will progressively expand
+                        the world and its possibilities.
+
+                    </p>
+
+
+                    <div class="world-divider"></div>
+
+
+                    <div class="world-phase">
+
+                        <span>CURRENT DEVELOPMENT</span>
+
+                        <strong>VERSION 0.0.1</strong>
+
+                    </div>
+
+
+                    <div class="world-phase">
+
+                        <span>ACTIVE FOUNDATION</span>
+
+                        <strong>ACCOUNT SYSTEM</strong>
+
+                    </div>
+
+
+                </article>
+
+
+            </section>
+
+
+
+            <!-- FOOTER -->
+
+            <footer class="eok-dashboard-footer">
+
+
+                <div>
+
+                    <strong>EMPIRE OF KINGS</strong>
+
+                    <span>
+                        BUILD YOUR KINGDOM. SHAPE YOUR DESTINY.
+                    </span>
+
+                </div>
+
+
+                <span class="footer-version">
+
+                    Version 0.0.1
+
+                </span>
+
+
+            </footer>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- ==================================
+         SCRIPTS
+    =================================== -->
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -199,4 +848,4 @@
 
 </body>
 
-</html>
+            </html>
