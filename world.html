@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<meta name="theme-color" content="#09111f">
+
+<title>World Atlas | EMPIRE OF KINGS</title>
+
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/world-politics.css">
+
+</head>
+
+
+<body class="eok-world-page">
+
+
+<header class="world-header">
+
+<a href="dashboard.html" class="world-brand">
+
+♛ EMPIRE OF KINGS
+
+<small>VERSION 0.0.1</small>
+
+</a>
+
+
+<nav>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="world.html" class="active">World</a>
+
+<a href="politics.html">Politics</a>
+
+</nav>
+
+</header>
+
+
+
+<main class="world-main">
+
+
+<section class="world-heading">
+
+<div>
+
+<span>THE GRAND ATLAS</span>
+
+<h1>Explore The World.</h1>
+
+<p>
+
+A world divided into 1,000 territories.
+Fifty founding territories await their first kingdoms.
+
+</p>
+
+</div>
+
+
+<div class="world-counter">
+
+<strong id="regionCount">0 / 1,000</strong>
+
+<span>REGISTERED REGIONS</span>
+
+</div>
+
+</section>
+
+
+
+<section class="world-map-layout">
+
+
+<div class="world-map-container">
+
+<div id="worldMap"></div>
+
+<div class="map-loading" id="mapLoading">
+
+<div class="map-loading-emblem">♛</div>
+
+<strong>OPENING THE ROYAL ATLAS</strong>
+
+<p>Loading world territories...</p>
+
+</div>
+
+</div>
+
+
+
+<aside class="region-panel">
+
+
+<div class="panel-title">
+
+<span>TERRITORY RECORD</span>
+
+<h2 id="selectedRegionName">
+
+Select a region
+
+</h2>
+
+</div>
+
+
+
+<div id="regionFlag">
+
+🌍
+
+</div>
+
+
+
+<div class="region-info">
+
+<span>COUNTRY / TERRITORY</span>
+
+<strong id="selectedCountry">Not selected</strong>
+
+</div>
+
+
+
+<div class="region-info">
+
+<span>REGION CODE</span>
+
+<strong id="selectedCode">---</strong>
+
+</div>
+
+
+
+<div class="region-info">
+
+<span>FOUNDING ELIGIBILITY</span>
+
+<strong id="selectedEligibility">---</strong>
+
+</div>
+
+
+
+<div class="region-info">
+
+<span>POPULATION PRESENT</span>
+
+<strong id="selectedPopulation">0</strong>
+
+</div>
+
+
+
+<div class="region-info">
+
+<span>OWNER</span>
+
+<strong id="selectedOwner">Unclaimed</strong>
+
+</div>
+
+
+
+<button id="selectRegionButton" disabled>
+
+SET AS MY CURRENT REGION
+
+</button>
+
+
+
+<div class="region-info region-note">
+
+A kingdom can only be founded in an eligible territory
+with three participating players.
+
+</div>
+
+
+</aside>
+
+
+</section>
+
+
+
+<section class="world-tools">
+
+
+<div>
+
+<h2>World Registry</h2>
+
+<p>Search registered territories.</p>
+
+</div>
+
+
+<input
+
+id="regionSearch"
+
+type="search"
+
+placeholder="Search a territory..."
+
+>
+
+
+<button id="initializeWorldButton" hidden>
+
+INITIALIZE WORLD DATA
+
+</button>
+
+
+</section>
+
+
+
+<div id="regionDirectory" class="region-directory"></div>
+
+
+
+<footer class="world-footer">
+
+EMPIRE OF KINGS — VERSION 0.0.1
+
+<br>
+
+Map boundaries: GTAmap v1.1, ADM1 2020.
+
+Basemap attribution: © OpenStreetMap contributors.
+
+</footer>
+
+
+</main>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/supabase.js"></script>
+
+<script src="js/countries.js"></script>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+<script src="js/world.js"></script>
+
+
+</body>
+
+</html>
